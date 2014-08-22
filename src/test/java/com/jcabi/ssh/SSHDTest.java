@@ -29,6 +29,7 @@
  */
 package com.jcabi.ssh;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -41,7 +42,7 @@ import org.junit.rules.TemporaryFolder;
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
-public final class SSHITCase {
+public final class SSHDTest {
 
     /**
      * Temp directory.
@@ -55,6 +56,7 @@ public final class SSHITCase {
      * @throws Exception In case of error.
      */
     @Test
+    @Ignore
     public void executeCommandOnServer() throws Exception {
         final SSHD sshd = new SSHD(this.temp.newFolder());
         final int port = sshd.start();
