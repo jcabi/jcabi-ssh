@@ -71,6 +71,19 @@ import org.mockito.Mockito;
 public final class SSHTest {
 
     /**
+     * SSH can escape an argument.
+     * @throws Exception In case of error.
+     * @since 1.0.1
+     */
+    @Test
+    public void escapesArgument() throws Exception {
+        MatcherAssert.assertThat(
+            SSH.escape("hi,\n '$1'"),
+            Matchers.equalTo("'hi,\n '\\''$1'\\'''")
+        );
+    }
+
+    /**
      * SSH can execute command on ssh server.
      * @throws Exception In case of error.
      */
