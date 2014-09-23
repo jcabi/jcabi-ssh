@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/jcabi/jcabi-ssh.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-ssh)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh)
 
-More details are here: [ssh.jcabi.com](http://sshs.jcabi.com/index.html)
+More details are here: [ssh.jcabi.com](http://ssh.jcabi.com/)
 
 It is a convenient SSH client for Java:
 
