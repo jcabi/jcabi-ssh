@@ -31,6 +31,15 @@
 /**
  * SSH client.
  *
+ * <p>Usage scenario is very simple:
+ *
+ * <pre> String hello = new Shell.Plain(
+ *   new SSH(
+ *     "ssh.example.com", 22,
+ *     "yegor", "-----BEGIN RSA PRIVATE KEY-----..."
+ *   )
+ * ).exec("echo 'Hello, world!'");</pre>
+ *
  * <p>The only dependency you need is (check our latest version available
  * at <a href="http://ssh.jcabi.com">ssh.jcabi.com</a>):
  *
@@ -43,5 +52,6 @@
  * @version $Id$
  * @since 1.0
  * @see <a href="http://ssh.jcabi.com/">project website</a>
+ * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
  */
 package com.jcabi.ssh;

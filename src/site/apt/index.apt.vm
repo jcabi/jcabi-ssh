@@ -38,6 +38,9 @@
 
 Java SSH Client
 
+  Read this introduction article:
+  {{{http://www.yegor256.com/2014/09/02/java-ssh-client.html}Simple Java SSH Client}}.
+
   It is as simple as this:
 
 +--

@@ -45,9 +45,21 @@ import org.apache.commons.lang3.CharEncoding;
 /**
  * Shell.
  *
+ * <p>This interface is implemented by {@link SSH} class. In order to use
+ * it, just make an instance and call
+ * {@link #exec(String,InputStream,OutputStream,OutputStream)} exec()}:
+ *
+ * <pre> String hello = new Shell.Plain(
+ *   new SSH(
+ *     "ssh.example.com", 22,
+ *     "yegor", "-----BEGIN RSA PRIVATE KEY-----..."
+ *   )
+ * ).exec("echo 'Hello, world!'");</pre>
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.0
+ * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
  */
 @Immutable
 public interface Shell {

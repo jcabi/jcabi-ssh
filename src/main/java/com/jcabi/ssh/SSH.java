@@ -56,9 +56,24 @@ import org.apache.commons.lang3.Validate;
 /**
  * Single SSH Channel.
  *
+ * <p>This class implements {@link Shell} interface. In order to use
+ * it, just make an instance and call
+ * {@link #exec(String,InputStream,OutputStream,OutputStream)} exec()}:
+ *
+ * <pre> String hello = new Shell.Plain(
+ *   new SSH(
+ *     "ssh.example.com", 22,
+ *     "yegor", "-----BEGIN RSA PRIVATE KEY-----..."
+ *   )
+ * ).exec("echo 'Hello, world!'");</pre>
+ *
+ * <p>It is highly recommended to use classes from {@link Shell} interface,
+ * they will simplify operations.</p>
+ *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.0
+ * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
  */
 @ToString
 @EqualsAndHashCode(of = { "addr", "port", "login", "key" })
