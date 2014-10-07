@@ -29,6 +29,8 @@
  */
 package com.jcabi.ssh;
 
+import org.apache.commons.lang3.SystemUtils;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -56,6 +58,7 @@ public final class SSHDTest {
      */
     @Test
     public void executeCommandOnServer() throws Exception {
+        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         final SSHD sshd = new SSHD(this.temp.newFolder());
         sshd.start();
         try {

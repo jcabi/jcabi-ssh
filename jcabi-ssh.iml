@@ -12,15 +12,15 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.14.4" level="project" />
-    <orderEntry type="library" name="Maven: com.jcabi:jcabi-aspects:0.17.1" level="project" />
-    <orderEntry type="library" name="Maven: com.jcabi:jcabi-log:0.14.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.14.8" level="project" />
+    <orderEntry type="library" name="Maven: com.jcabi:jcabi-aspects:0.18" level="project" />
+    <orderEntry type="library" name="Maven: com.jcabi:jcabi-log:0.14.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
-    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.2" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.1.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:guava:17.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:guava:18.0" level="project" />
     <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.51" level="project" />
     <orderEntry type="library" name="Maven: org.apache.sshd:sshd-core:0.11.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.mina:mina-core:2.0.7" level="project" />
