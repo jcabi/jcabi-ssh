@@ -29,7 +29,6 @@
  */
 package com.jcabi.ssh;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -56,14 +55,17 @@ public final class SSHDTest {
      * @throws Exception In case of error.
      */
     @Test
-    @Ignore
     public void executeCommandOnServer() throws Exception {
         final SSHD sshd = new SSHD(this.temp.newFolder());
-        final int port = sshd.start();
-        final Shell shell = new Shell.Safe(
-            new SSH("localhost", port, sshd.login(), sshd.key())
-        );
-        new Shell.Empty(shell).exec("echo one");
+        sshd.start();
+        try {
+            final Shell shell = new Shell.Safe(
+                new SSH(sshd.host(), sshd.port(), sshd.login(), sshd.key())
+            );
+            new Shell.Empty(shell).exec("echo one");
+        } finally {
+            sshd.stop();
+        }
     }
 
 }

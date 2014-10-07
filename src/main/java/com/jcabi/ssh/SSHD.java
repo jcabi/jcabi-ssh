@@ -38,13 +38,30 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 
 /**
- * Test SSHD daemon.
+ * Test SSHD daemon (only for Linux).
+ *
+ * <p>It is a convenient class for unit testing of your SSH
+ * clients:
+ *
+ * <pre> SSHD sshd = new SSHD();
+ * sshd.start();
+ * try {
+ *   String uptime = new Shell.Plain(
+ *     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
+ *   ).exec("uptime");
+ * } finally {
+ *   sshd.stop();
+ * }</pre>
+ *
+ * <p>If you forget to call {@link #stop()}, SSH daemon will be
+ * up and running until a shutdown of the JVM.</p>
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
  * @since 1.0
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
+@SuppressWarnings("PMD.DoNotUseThreads")
 public final class SSHD {
 
     /**
@@ -53,11 +70,53 @@ public final class SSHD {
     private final transient File dir;
 
     /**
-     * Ctor.
-     * @param path Directorty to work in
+     * The process with SSHD.
      */
-    public SSHD(final File path) {
+    private final transient Process process;
+
+    /**
+     * Port.
+     */
+    private final transient int prt;
+
+    /**
+     * Ctor.
+     * @param path Directory to work in
+     * @throws IOException If fails
+     */
+    public SSHD(final File path) throws IOException {
         this.dir = path;
+        final File rsa = new File(this.dir, "host_rsa_key");
+        IOUtils.copy(
+            this.getClass().getResourceAsStream("ssh_host_rsa_key"),
+            new FileOutputStream(rsa)
+        );
+        final File keys = new File(this.dir, "authorized");
+        IOUtils.copy(
+            this.getClass().getResourceAsStream("authorized_keys"),
+            new FileOutputStream(keys)
+        );
+        new VerboseProcess(
+            new ProcessBuilder().command(
+                "chmod", "600",
+                keys.getAbsolutePath(),
+                rsa.getAbsolutePath()
+            )
+        ).stdout();
+        this.prt = SSHD.reserve();
+        this.process = new ProcessBuilder().command(
+            "/usr/sbin/sshd",
+            "-p",
+            Integer.toString(this.prt),
+            "-h",
+            rsa.getAbsolutePath(),
+            "-D",
+            "-e",
+            "-o", String.format("PidFile=%s", new File(this.dir, "pid")),
+            "-o", "UsePAM=no",
+            "-o", String.format("AuthorizedKeysFile=%s", keys),
+            "-o", "StrictModes=no"
+        ).start();
     }
 
     /**
@@ -79,6 +138,26 @@ public final class SSHD {
     }
 
     /**
+     * Get host of SSH.
+     * @return Hostname
+     * @since 1.1
+     */
+    public String host() {
+        return new VerboseProcess(
+            new ProcessBuilder().command("hostname")
+        ).stdout().trim();
+    }
+
+    /**
+     * Get port.
+     * @return Port number
+     * @since 1.1
+     */
+    public int port() {
+        return this.prt;
+    }
+
+    /**
      * Get private SSH key for login.
      * @return Key
      * @throws IOException If fails
@@ -92,51 +171,35 @@ public final class SSHD {
 
     /**
      * Start SSHD and return port number it is listening on.
-     * @return Port number
-     * @throws IOException If fails
+     * @since 1.1
      */
-    @SuppressWarnings("PMD.DoNotUseThreads")
-    public int start() throws IOException {
-        final File rsa = new File(this.dir, "host_rsa_key");
-        IOUtils.copy(
-            this.getClass().getResourceAsStream("ssh_host_rsa_key"),
-            new FileOutputStream(rsa)
-        );
-        final File keys = new File(this.dir, "authorized");
-        IOUtils.copy(
-            this.getClass().getResourceAsStream("authorized_keys"),
-            new FileOutputStream(keys)
-        );
-        new VerboseProcess(
-            new ProcessBuilder().command(
-                "chmod", "600",
-                keys.getAbsolutePath(),
-                rsa.getAbsolutePath()
-            )
-        ).stdout();
-        final int port = SSHD.port();
-        final Process proc = new ProcessBuilder().command(
-            "/usr/sbin/sshd",
-            "-p",
-            Integer.toString(port),
-            "-h",
-            rsa.getAbsolutePath(),
-            "-D",
-            "-e",
-            "-o", String.format("PidFile=%s", new File(this.dir, "pid")),
-            "-o", "UsePAM=no",
-            "-o", String.format("AuthorizedKeysFile=%s", keys),
-            "-o", "StrictModes=no"
-        ).start();
+    public void start() {
         new Thread(
             new Runnable() {
                 @Override
                 public void run() {
-                    new VerboseProcess(proc).stdout();
+                    new VerboseProcess(SSHD.this.process).stdout();
                 }
             }
         ).start();
-        return port;
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        SSHD.this.stop();
+                    }
+                }
+            )
+        );
+    }
+
+    /**
+     * Stop SSHD.
+     * @since 1.1
+     */
+    public void stop() {
+        this.process.destroy();
     }
 
     /**
@@ -144,7 +207,7 @@ public final class SSHD {
      * @return Port
      * @throws IOException If fails
      */
-    private static int port() throws IOException {
+    private static int reserve() throws IOException {
         final ServerSocket socket = new ServerSocket(0);
         try {
             return socket.getLocalPort();
