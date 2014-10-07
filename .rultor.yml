@@ -11,21 +11,21 @@ install:
   - "sudo gem install pdd"
 
 merge:
-  script:
-    - "mvn clean install -Pqulice --errors --settings ../settings.xml"
-    - "mvn clean"
-    - "pdd --source=$(pwd) --verbose --file=/dev/null"
+  script: |
+    mvn clean install -Pqulice --errors --settings ../settings.xml
+    mvn clean
+    pdd --source=$(pwd) --verbose --file=/dev/null
 
 deploy:
-  script:
-    - "mvn clean deploy -Pqulice --errors --settings ../settings.xml"
-    - "mvn clean"
-    - "pdd --source=$(pwd) --verbose --file=jcabi-ssh.xml"
-    - "s3cmd --no-progress put jcabi-ssh.xml --config=../s3cfg s3://pdd.teamed.io/jcabi-ssh.xml"
+  script: |
+    mvn clean deploy -Pqulice --errors --settings ../settings.xml
+    mvn clean
+    pdd --source=$(pwd) --verbose --file=jcabi-ssh.xml
+    s3cmd --no-progress put jcabi-ssh.xml --config=../s3cfg s3://pdd.teamed.io/jcabi-ssh.xml
 
 release:
-  script:
-    - "mvn versions:set \"-DnewVersion=${tag}\""
-    - "git commit -am \"${tag}\""
-    - "mvn clean deploy -Pqulice -Psonatype -Pjcabi --errors --settings ../settings.xml"
-    - "mvn clean site-deploy -Psite --errors --settings ../settings.xml"
+  script: |
+    mvn versions:set "-DnewVersion=${tag}"
+    git commit -am "${tag}"
+    mvn clean deploy -Pqulice -Psonatype -Pjcabi --errors --settings ../settings.xml
+    mvn clean site-deploy -Psite --errors --settings ../settings.xml
