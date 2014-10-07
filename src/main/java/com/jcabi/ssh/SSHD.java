@@ -97,9 +97,6 @@ public final class SSHD {
      */
     @SuppressWarnings("PMD.DoNotUseThreads")
     public int start() throws IOException {
-        final ServerSocket socket = new ServerSocket(0);
-        final int port = socket.getLocalPort();
-        socket.close();
         final File rsa = new File(this.dir, "host_rsa_key");
         IOUtils.copy(
             this.getClass().getResourceAsStream("ssh_host_rsa_key"),
@@ -117,6 +114,7 @@ public final class SSHD {
                 rsa.getAbsolutePath()
             )
         ).stdout();
+        final int port = SSHD.port();
         final Process proc = new ProcessBuilder().command(
             "/usr/sbin/sshd",
             "-p",
@@ -139,6 +137,20 @@ public final class SSHD {
             }
         ).start();
         return port;
+    }
+
+    /**
+     * Get a random TCP port.
+     * @return Port
+     * @throws IOException If fails
+     */
+    private static int port() throws IOException {
+        final ServerSocket socket = new ServerSocket(0);
+        try {
+            return socket.getLocalPort();
+        } finally {
+            socket.close();
+        }
     }
 
 }
