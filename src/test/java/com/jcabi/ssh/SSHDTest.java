@@ -60,14 +60,13 @@ public final class SSHDTest {
     public void executeCommandOnServer() throws Exception {
         Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         final SSHD sshd = new SSHD(this.temp.newFolder());
-        sshd.start();
         try {
             final Shell shell = new Shell.Safe(
                 new SSH(sshd.host(), sshd.port(), sshd.login(), sshd.key())
             );
             new Shell.Empty(shell).exec("echo one");
         } finally {
-            sshd.stop();
+            sshd.close();
         }
     }
 

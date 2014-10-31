@@ -30,6 +30,7 @@
 package com.jcabi.ssh;
 
 import com.jcabi.log.VerboseProcess;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,17 +44,13 @@ import org.apache.commons.lang3.CharEncoding;
  * <p>It is a convenient class for unit testing of your SSH
  * clients:
  *
- * <pre> SSHD sshd = new SSHD();
- * sshd.start();
- * try {
+ * <pre> try (SSHD sshd = new SSHD()) {
  *   String uptime = new Shell.Plain(
  *     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
  *   ).exec("uptime");
- * } finally {
- *   sshd.stop();
  * }</pre>
  *
- * <p>If you forget to call {@link #stop()}, SSH daemon will be
+ * <p>If you forget to call {@link #close()}, SSH daemon will be
  * up and running until a shutdown of the JVM.</p>
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
@@ -62,7 +59,7 @@ import org.apache.commons.lang3.CharEncoding;
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public final class SSHD {
+public final class SSHD implements Closeable {
 
     /**
      * Temp directory.
@@ -117,6 +114,29 @@ public final class SSHD {
             "-o", String.format("AuthorizedKeysFile=%s", keys),
             "-o", "StrictModes=no"
         ).start();
+        new Thread(
+            new Runnable() {
+                @Override
+                public void run() {
+                    new VerboseProcess(SSHD.this.process).stdout();
+                }
+            }
+        ).start();
+        Runtime.getRuntime().addShutdownHook(
+            new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        SSHD.this.close();
+                    }
+                }
+            )
+        );
+    }
+
+    @Override
+    public void close() {
+        this.process.destroy();
     }
 
     /**
@@ -170,57 +190,6 @@ public final class SSHD {
             this.getClass().getResourceAsStream("id_rsa"),
             CharEncoding.UTF_8
         );
-    }
-
-    /**
-     * Start SSHD daemon.
-     *
-     * <p>To get the port number it is running on, use {@link #port()}.
-     * To get its host name, use {@link #host()}. To get your test
-     * private SSH key, use {@link #key()}.
-     *
-     * <p>Don't forget to {@link #stop()} the daemon after using, inside
-     * {@code finally} block, for example:
-     *
-     * <pre> SSHD sshd = new SSHD();
-     * sshd.start();
-     * try {
-     *   String uptime = new Shell.Plain(
-     *     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
-     *   ).exec("uptime");
-     * } finally {
-     *   sshd.stop();
-     * }</pre>
-     *
-     * @since 1.1
-     */
-    public void start() {
-        new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    new VerboseProcess(SSHD.this.process).stdout();
-                }
-            }
-        ).start();
-        Runtime.getRuntime().addShutdownHook(
-            new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        SSHD.this.stop();
-                    }
-                }
-            )
-        );
-    }
-
-    /**
-     * Stop SSHD.
-     * @since 1.1
-     */
-    public void stop() {
-        this.process.destroy();
     }
 
     /**
