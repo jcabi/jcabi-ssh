@@ -58,7 +58,7 @@
     <distributionManagement>
         <site>
             <id>github-pages</id>
-            <url>https://ssh.jcabi.com/</url>
+            <url>https://github.com/jcabi/jcabi-ssh</url>
         </site>
     </distributionManagement>
     <dependencies>
