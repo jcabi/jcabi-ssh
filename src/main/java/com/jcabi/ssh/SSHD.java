@@ -150,6 +150,9 @@ public final class SSHD {
 
     /**
      * Get port.
+     *
+     * <p>Don't forget to start
+     *
      * @return Port number
      * @since 1.1
      */
@@ -170,7 +173,25 @@ public final class SSHD {
     }
 
     /**
-     * Start SSHD and return port number it is listening on.
+     * Start SSHD daemon.
+     *
+     * <p>To get the port number it is running on, use {@link #port()}.
+     * To get its host name, use {@link #host()}. To get your test
+     * private SSH key, use {@link #key()}.
+     *
+     * <p>Don't forget to {@link #stop()} the daemon after using, inside
+     * {@code finally} block, for example:
+     *
+     * <pre> SSHD sshd = new SSHD();
+     * sshd.start();
+     * try {
+     *   String uptime = new Shell.Plain(
+     *     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
+     *   ).exec("uptime");
+     * } finally {
+     *   sshd.stop();
+     * }</pre>
+     *
      * @since 1.1
      */
     public void start() {
