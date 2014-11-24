@@ -61,10 +61,7 @@ public final class SSHDTest {
         Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         final SSHD sshd = new SSHD(this.temp.newFolder());
         try {
-            final Shell shell = new Shell.Safe(
-                new SSH(sshd.host(), sshd.port(), sshd.login(), sshd.key())
-            );
-            new Shell.Empty(shell).exec("echo one");
+            new Shell.Empty(sshd.connect()).exec("echo one");
         } finally {
             sshd.close();
         }

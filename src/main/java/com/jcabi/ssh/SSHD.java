@@ -58,6 +58,7 @@ import org.apache.commons.lang3.CharEncoding;
  * @version $Id$
  * @since 1.0
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
+ * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 public final class SSHD implements Closeable {
@@ -197,6 +198,15 @@ public final class SSHD implements Closeable {
             this.getClass().getResourceAsStream("id_rsa"),
             CharEncoding.UTF_8
         );
+    }
+
+    /**
+     * Get an instance of Shell.
+     * @return Shell
+     * @throws IOException If fails
+     */
+    public Shell connect() throws IOException {
+        return new SSH(this.host(), this.port(), this.login(), this.key());
     }
 
     /**
