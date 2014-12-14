@@ -72,7 +72,9 @@ public final class SSHDTest {
         final SSHD sshd = new SSHD(this.temp.newFolder());
         try {
             MatcherAssert.assertThat(
-                new Shell.Plain(sshd.connect()).exec("echo one"),
+                new Shell.Plain(
+                    new Shell.Safe(sshd.connect())
+                ).exec("echo one"),
                 Matchers.startsWith("one")
             );
         } finally {
@@ -90,9 +92,11 @@ public final class SSHDTest {
         try {
             MatcherAssert.assertThat(
                 new Shell.Plain(
-                    new SSH(
-                        sshd.host(), sshd.port(), sshd.login(),
-                        this.getClass().getResource("id_rsa")
+                    new Shell.Safe(
+                        new SSH(
+                            sshd.host(), sshd.port(), sshd.login(),
+                            this.getClass().getResource("id_rsa")
+                        )
                     )
                 ).exec("echo 'how are you'"),
                 Matchers.startsWith("how are")

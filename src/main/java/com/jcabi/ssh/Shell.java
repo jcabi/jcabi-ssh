@@ -103,7 +103,7 @@ public interface Shell {
             final int exit = this.origin.exec(command, stdin, stdout, stderr);
             if (exit != 0) {
                 throw new IllegalArgumentException(
-                    String.format("exit code #%d: %s", exit, command)
+                    String.format("non-zero exit code #%d: %s", exit, command)
                 );
             }
             return exit;
