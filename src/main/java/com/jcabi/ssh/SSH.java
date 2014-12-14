@@ -43,7 +43,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
@@ -76,29 +75,6 @@ import org.apache.commons.lang3.Validate;
 @EqualsAndHashCode(of = { "addr", "port", "login", "key" })
 @SuppressWarnings("PMD.TooManyMethods")
 public final class SSH implements Shell {
-
-    /**
-     * Logger to use for all channels.
-     */
-    private static final com.jcraft.jsch.Logger LOGGER =
-        new com.jcraft.jsch.Logger() {
-            @Override
-            public boolean isEnabled(final int level) {
-                return level >= com.jcraft.jsch.Logger.WARN;
-            }
-            @Override
-            public void log(final int level, final String msg) {
-                final Level jul;
-                if (level >= com.jcraft.jsch.Logger.ERROR) {
-                    jul = Level.SEVERE;
-                } else if (level >= com.jcraft.jsch.Logger.WARN) {
-                    jul = Level.WARNING;
-                } else {
-                    jul = Level.INFO;
-                }
-                Logger.log(jul, SSH.class, msg);
-            }
-        };
 
     /**
      * IP address of the server.
@@ -238,7 +214,7 @@ public final class SSH implements Shell {
     private Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
-            JSch.setLogger(SSH.LOGGER);
+            JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
             final File file = File.createTempFile("jcabi-ssh", ".key");
             FileUtils.forceDeleteOnExit(file);

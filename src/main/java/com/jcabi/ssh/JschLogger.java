@@ -29,14 +29,13 @@
  */
 package com.jcabi.ssh;
 
-import com.jcraft.jsch.HostKey;
-import com.jcraft.jsch.HostKeyRepository;
-import com.jcraft.jsch.UserInfo;
+import com.jcabi.log.Logger;
+import java.util.logging.Level;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 /**
- * Host key repository that accepts all hosts.
+ * Jsch Logger.
  *
  * @author Yegor Bugayenko (yegor@tpc2.com)
  * @version $Id$
@@ -44,41 +43,24 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode
-final class EasyRepo implements HostKeyRepository {
+final class JschLogger implements com.jcraft.jsch.Logger {
 
     @Override
-    public int check(final String host, final byte[] bkey) {
-        return HostKeyRepository.OK;
+    public boolean isEnabled(final int level) {
+        return level >= com.jcraft.jsch.Logger.WARN;
     }
 
     @Override
-    public void add(final HostKey hostkey, final UserInfo info) {
-        // do nothing
-    }
-
-    @Override
-    public void remove(final String host, final String type) {
-        // do nothing
-    }
-
-    @Override
-    public void remove(final String host, final String type,
-        final byte[] bkey) {
-        // do nothing
-    }
-
-    @Override
-    public String getKnownHostsRepositoryID() {
-        return "";
-    }
-    @Override
-    public HostKey[] getHostKey() {
-        return new HostKey[0];
-    }
-
-    @Override
-    public HostKey[] getHostKey(final String host, final String type) {
-        return new HostKey[0];
+    public void log(final int level, final String msg) {
+        final Level jul;
+        if (level >= com.jcraft.jsch.Logger.ERROR) {
+            jul = Level.SEVERE;
+        } else if (level >= com.jcraft.jsch.Logger.WARN) {
+            jul = Level.WARNING;
+        } else {
+            jul = Level.INFO;
+        }
+        Logger.log(jul, SSH.class, msg);
     }
 
 }
