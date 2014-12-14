@@ -41,11 +41,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.Validate;
 
@@ -95,6 +97,21 @@ public final class SSH implements Shell {
      * Private SSH key.
      */
     private final transient String key;
+
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param priv Private SSH key
+     * @throws IOException If fails
+     * @checkstyle ParameterNumberCheck (6 lines)
+     * @since 1.4
+     */
+    public SSH(final String adr, final int prt,
+        final String user, final URL priv) throws IOException {
+        this(adr, prt, user, IOUtils.toString(priv));
+    }
 
     /**
      * Constructor.

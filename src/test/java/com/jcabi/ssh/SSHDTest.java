@@ -30,7 +30,10 @@
 package com.jcabi.ssh;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -53,15 +56,47 @@ public final class SSHDTest {
     public final transient TemporaryFolder temp = new TemporaryFolder();
 
     /**
+     * Check that it's not Windows.
+     */
+    @Before
+    public void notWindows() {
+        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+    }
+
+    /**
      * SSH can execute command on a real SSH server.
      * @throws Exception In case of error.
      */
     @Test
     public void executeCommandOnServer() throws Exception {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
         final SSHD sshd = new SSHD(this.temp.newFolder());
         try {
-            new Shell.Empty(sshd.connect()).exec("echo one");
+            MatcherAssert.assertThat(
+                new Shell.Plain(sshd.connect()).exec("echo one"),
+                Matchers.startsWith("one")
+            );
+        } finally {
+            sshd.close();
+        }
+    }
+
+    /**
+     * SSH can execute command on a real SSH server.
+     * @throws Exception In case of error.
+     */
+    @Test
+    public void executeCommandOnServerWithManualConfig() throws Exception {
+        final SSHD sshd = new SSHD(this.temp.newFolder());
+        try {
+            MatcherAssert.assertThat(
+                new Shell.Plain(
+                    new SSH(
+                        sshd.host(), sshd.port(), sshd.login(),
+                        this.getClass().getResource("id_rsa")
+                    )
+                ).exec("echo 'how are you'"),
+                Matchers.startsWith("how are")
+            );
         } finally {
             sshd.close();
         }
