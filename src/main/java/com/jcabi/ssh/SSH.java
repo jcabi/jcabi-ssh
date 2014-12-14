@@ -33,12 +33,9 @@ import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.HostKey;
-import com.jcraft.jsch.HostKeyRepository;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.jcraft.jsch.UserInfo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -102,42 +99,6 @@ public final class SSH implements Shell {
                 Logger.log(jul, SSH.class, msg);
             }
         };
-
-    /**
-     * Host key repository that accepts all hosts.
-     * @checkstyle AnonInnerLengthCheck (40 lines)
-     */
-    private static final HostKeyRepository REPO = new HostKeyRepository() {
-        @Override
-        public int check(final String host, final byte[] bkey) {
-            return HostKeyRepository.OK;
-        }
-        @Override
-        public void add(final HostKey hostkey, final UserInfo info) {
-            // do nothing
-        }
-        @Override
-        public void remove(final String host, final String type) {
-            // do nothing
-        }
-        @Override
-        public void remove(final String host, final String type,
-            final byte[] bkey) {
-            // do nothing
-        }
-        @Override
-        public String getKnownHostsRepositoryID() {
-            return "";
-        }
-        @Override
-        public HostKey[] getHostKey() {
-            return new HostKey[0];
-        }
-        @Override
-        public HostKey[] getHostKey(final String host, final String type) {
-            return new HostKey[0];
-        }
-    };
 
     /**
      * IP address of the server.
@@ -288,7 +249,7 @@ public final class SSH implements Shell {
                     .trim(),
                 CharEncoding.UTF_8
             );
-            jsch.setHostKeyRepository(SSH.REPO);
+            jsch.setHostKeyRepository(new EasyRepo());
             jsch.addIdentity(file.getAbsolutePath());
             Logger.debug(
                 this,
