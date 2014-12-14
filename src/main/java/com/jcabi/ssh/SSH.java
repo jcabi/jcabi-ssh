@@ -79,6 +79,11 @@ import org.apache.commons.lang3.Validate;
 public final class SSH implements Shell {
 
     /**
+     * Default SSH port.
+     */
+    public static final int PORT = 22;
+
+    /**
      * IP address of the server.
      */
     private final transient String addr;
@@ -97,6 +102,32 @@ public final class SSH implements Shell {
      * Private SSH key.
      */
     private final transient String key;
+
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param user Login
+     * @param priv Private SSH key
+     * @throws IOException If fails
+     * @since 1.4
+     */
+    public SSH(final String adr, final String user, final URL priv)
+        throws IOException {
+        this(adr, SSH.PORT, user, priv);
+    }
+
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param user Login
+     * @param priv Private SSH key
+     * @throws UnknownHostException If fails
+     * @since 1.4
+     */
+    public SSH(final String adr, final String user, final String priv)
+        throws UnknownHostException {
+        this(adr, SSH.PORT, user, priv);
+    }
 
     /**
      * Constructor.
