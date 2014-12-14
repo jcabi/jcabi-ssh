@@ -121,12 +121,38 @@ public final class SSH implements Shell {
      * @param adr IP address
      * @param user Login
      * @param priv Private SSH key
+     * @throws IOException If fails
+     * @since 1.4
+     */
+    public SSH(final InetAddress adr, final String user, final URL priv)
+        throws IOException {
+        this(adr, SSH.PORT, user, priv);
+    }
+
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param user Login
+     * @param priv Private SSH key
      * @throws UnknownHostException If fails
      * @since 1.4
      */
     public SSH(final String adr, final String user, final String priv)
         throws UnknownHostException {
         this(adr, SSH.PORT, user, priv);
+    }
+
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param user Login
+     * @param priv Private SSH key
+     * @throws UnknownHostException If fails
+     * @since 1.4
+     */
+    public SSH(final InetAddress adr, final String user, final String priv)
+        throws UnknownHostException {
+        this(adr.getCanonicalHostName(), SSH.PORT, user, priv);
     }
 
     /**
@@ -142,6 +168,21 @@ public final class SSH implements Shell {
     public SSH(final String adr, final int prt,
         final String user, final URL priv) throws IOException {
         this(adr, prt, user, IOUtils.toString(priv));
+    }
+
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param priv Private SSH key
+     * @throws IOException If fails
+     * @checkstyle ParameterNumberCheck (6 lines)
+     * @since 1.4
+     */
+    public SSH(final InetAddress adr, final int prt,
+        final String user, final URL priv) throws IOException {
+        this(adr.getCanonicalHostName(), prt, user, IOUtils.toString(priv));
     }
 
     /**
