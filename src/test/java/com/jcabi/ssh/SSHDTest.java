@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, jcabi.com
+ * Copyright (c) 2014-2015, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ import org.junit.rules.TemporaryFolder;
 /**
  * Integration tests for ${@link SSH}.
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)

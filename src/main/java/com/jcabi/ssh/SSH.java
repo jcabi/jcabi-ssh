@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014, jcabi.com
+ * Copyright (c) 2014-2015, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ import org.apache.commons.lang3.Validate;
  * <p>It is highly recommended to use classes from {@link Shell} interface,
  * they will simplify operations.</p>
  *
- * @author Yegor Bugayenko (yegor@tpc2.com)
+ * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
