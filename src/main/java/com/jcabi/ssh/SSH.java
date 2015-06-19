@@ -32,7 +32,6 @@ package com.jcabi.ssh;
 import com.jcabi.aspects.RetryOnFailure;
 import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
-import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -214,25 +213,9 @@ public final class SSH implements Shell {
     public int exec(final String command, final InputStream stdin,
         final OutputStream stdout, final OutputStream stderr)
         throws IOException {
-        try {
-            final Session session = this.session();
-            try {
-                final ChannelExec channel = ChannelExec.class.cast(
-                    session.openChannel("exec")
-                );
-                channel.setErrStream(stderr, false);
-                channel.setOutputStream(stdout, false);
-                channel.setInputStream(stdin, false);
-                channel.setCommand(command);
-                channel.connect();
-                Logger.info(this, "$ %s", command);
-                return this.exec(channel, session);
-            } finally {
-                session.disconnect();
-            }
-        } catch (final JSchException ex) {
-            throw new IOException(ex);
-        }
+        return new Execution(
+            command, stdin, stdout, stderr, this.session()
+        ).exec();
     }
 
     /**
@@ -242,49 +225,6 @@ public final class SSH implements Shell {
      */
     public static String escape(final String arg) {
         return String.format("'%s'", arg.replace("'", "'\\''"));
-    }
-
-    /**
-     * Exec this channel and return its exit code.
-     * @param channel The channel to exec
-     * @param session The session
-     * @return Exit code (zero in case of success)
-     * @throws IOException If fails
-     */
-    private int exec(final ChannelExec channel, final Session session)
-        throws IOException {
-        try {
-            return this.code(channel, session);
-        } finally {
-            channel.disconnect();
-        }
-    }
-
-    /**
-     * Wait until it's done and return its code.
-     * @param exec The channel
-     * @param session The session
-     * @return The exit code
-     * @throws IOException If some IO problem inside
-     */
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private int code(final ChannelExec exec, final Session session)
-        throws IOException {
-        while (!exec.isClosed()) {
-            try {
-                session.sendKeepAliveMsg();
-                // @checkstyle IllegalCatch (1 line)
-            } catch (final Exception ex) {
-                throw new IOException(ex);
-            }
-            try {
-                TimeUnit.SECONDS.sleep(1L);
-            } catch (final InterruptedException ex) {
-                Thread.currentThread().interrupt();
-                throw new IOException(ex);
-            }
-        }
-        return exec.getExitStatus();
     }
 
     /**
