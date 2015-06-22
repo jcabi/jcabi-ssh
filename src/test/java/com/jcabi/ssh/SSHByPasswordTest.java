@@ -60,8 +60,8 @@ import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link SSHByPassword}.
- * @todo SSH server setup in this class is nearly identical to the one in
- * {@link SSHTest}. It should be extracted in a separate reusable module.
+ * @todo #21:30min SSH server setup in this class is nearly identical to the
+ * one in {@link SSHTest}. It should be extracted in a separate reusable module.
  * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
