@@ -69,7 +69,7 @@ public final class SSHDTest {
      */
     @Test
     public void executeCommandOnServer() throws Exception {
-        final SSHD sshd = new SSHD(this.temp.newFolder());
+        final SSHD sshd = new SSHD();
         try {
             MatcherAssert.assertThat(
                 new Shell.Plain(

@@ -80,6 +80,15 @@ public final class SSHD implements Closeable {
 
     /**
      * Ctor.
+     * @throws IOException If fails
+     * @since 1.5
+     */
+    public SSHD() throws IOException {
+        this(new File(System.getProperty("java.io.tmpdir")));
+    }
+
+    /**
+     * Ctor.
      * @param path Directory to work in
      * @throws IOException If fails
      */
