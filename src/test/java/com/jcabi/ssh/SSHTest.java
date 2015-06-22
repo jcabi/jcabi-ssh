@@ -162,9 +162,9 @@ public final class SSHTest {
     /**
      * Factory for echo command.
      * @todo #21:30min EchoCommand and EchoCommandCreator are duplicated in
-     * SSHTest and SSHByPasswordTest, these duplicates should be extracted
-     * into package com.jcabi.ssh.mock under src/main/java, renamed to
-     * MkCommandCreator/MkCommand and unit-tested.
+     *  SSHTest and SSHByPasswordTest, these duplicates should be extracted
+     *  into package com.jcabi.ssh.mock under src/main/java, renamed to
+     *  MkCommandCreator/MkCommand and unit-tested.
      */
     private static final class EchoCommandCreator implements CommandFactory {
         @Override
