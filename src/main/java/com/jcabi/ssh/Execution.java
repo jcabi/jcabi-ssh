@@ -122,8 +122,7 @@ final class Execution {
      * @return Exit code (zero in case of success)
      * @throws IOException If fails
      */
-    private int exec(final ChannelExec channel)
-        throws IOException {
+    private int exec(final ChannelExec channel) throws IOException {
         try {
             return this.code(channel);
         } finally {
@@ -138,8 +137,7 @@ final class Execution {
      * @throws IOException If some IO problem inside
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private int code(final ChannelExec exec)
-        throws IOException {
+    private int code(final ChannelExec exec) throws IOException {
         while (!exec.isClosed()) {
             try {
                 this.session.sendKeepAliveMsg();
