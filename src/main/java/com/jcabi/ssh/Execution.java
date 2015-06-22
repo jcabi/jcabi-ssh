@@ -42,6 +42,7 @@ import java.util.concurrent.TimeUnit;
  * Execution of a command in an SSH session.
  * @author Georgy Vlasov (suseika@tendiwa.org)
  * @version $Id$
+ * @since 1.4
  */
 final class Execution {
     /**
