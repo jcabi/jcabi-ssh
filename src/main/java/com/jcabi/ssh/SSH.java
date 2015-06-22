@@ -67,6 +67,9 @@ import org.apache.commons.lang3.Validate;
  * <p>It is highly recommended to use classes from {@link Shell} interface,
  * they will simplify operations.</p>
  *
+ * @todo This class has common data, implementation of exec() and
+ * constructor validations with SSHByPassword class. Common functionality
+ * should be extracted into a separate module.
  * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 1.0
@@ -213,7 +216,7 @@ public final class SSH implements Shell {
     public int exec(final String command, final InputStream stdin,
         final OutputStream stdout, final OutputStream stderr)
         throws IOException {
-        return new Execution(
+        return new Execution.Default(
             command, stdin, stdout, stderr, this.session()
         ).exec();
     }

@@ -39,119 +39,135 @@ import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Execution of a command in an SSH session.
- * @author Georgy Vlasov (suseika@tendiwa.org)
+ * Execution of a single command.
+ * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
  */
-final class Execution {
+public interface Execution {
     /**
-     * Command.
-     */
-    private final transient String command;
-
-    /**
-     * Stdin.
-     */
-    private final transient InputStream stdin;
-
-    /**
-     * Stdout.
-     */
-    private final transient OutputStream stdout;
-
-    /**
-     * Stderr.
-     */
-    private final transient OutputStream stderr;
-
-    /**
-     * Session.
-     */
-    private final transient Session session;
-
-    /**
-     * Uses an SSH session to execute a single command and disconnect
-     * immediately.
-     * @param cmd Command
-     * @param input Stdin (will be closed)
-     * @param out Stdout (will be closed)
-     * @param err Stderr (will be closed)
-     * @param sess SSH session (will be disconnected)
-     * @checkstyle ParameterNumberCheck (6 lines)
-     */
-    Execution(final String cmd, final InputStream input,
-              final OutputStream out, final OutputStream err,
-              final Session sess) {
-        this.command = cmd;
-        this.stdin = input;
-        this.stdout = out;
-        this.stderr = err;
-        this.session = sess;
-    }
-
-    /**
-     * Execute {@link #command} in {@link #session}.
-     * @return Exit code
+     * Executes some command.
+     * @return Return code of the command.
      * @throws IOException If fails
      */
-    public int exec() throws IOException {
-        try {
+    int exec() throws IOException;
+
+    /**
+     * Execution of a command in an SSH session.
+     * @author Georgy Vlasov (wlasowegor@gmail.com)
+     * @version $Id$
+     * @since 1.4
+     */
+    final class Default implements Execution {
+        /**
+         * Command.
+         */
+        private final transient String command;
+
+        /**
+         * Stdin.
+         */
+        private final transient InputStream stdin;
+
+        /**
+         * Stdout.
+         */
+        private final transient OutputStream stdout;
+
+        /**
+         * Stderr.
+         */
+        private final transient OutputStream stderr;
+
+        /**
+         * Session.
+         */
+        private final transient Session session;
+
+        /**
+         * Uses an SSH session to execute a single command and disconnect
+         * immediately.
+         * @param cmd Command
+         * @param input Stdin (will be closed)
+         * @param out Stdout (will be closed)
+         * @param err Stderr (will be closed)
+         * @param sess SSH session (will be disconnected)
+         * @checkstyle ParameterNumberCheck (6 lines)
+         */
+        Default(final String cmd, final InputStream input,
+            final OutputStream out, final OutputStream err,
+            final Session sess) {
+            this.command = cmd;
+            this.stdin = input;
+            this.stdout = out;
+            this.stderr = err;
+            this.session = sess;
+        }
+
+        /**
+         * Execute {@link #command} in {@link #session}.
+         * @return Exit code
+         * @throws IOException If fails
+         */
+        @Override
+        public int exec() throws IOException {
             try {
-                final ChannelExec channel = ChannelExec.class.cast(
-                    this.session.openChannel("exec")
-                );
-                channel.setErrStream(this.stderr, false);
-                channel.setOutputStream(this.stdout, false);
-                channel.setInputStream(this.stdin, false);
-                channel.setCommand(this.command);
-                channel.connect();
-                Logger.info(this, "$ %s", this.command);
-                return this.exec(channel);
+                try {
+                    final ChannelExec channel = ChannelExec.class.cast(
+                        this.session.openChannel("exec")
+                    );
+                    channel.setErrStream(this.stderr, false);
+                    channel.setOutputStream(this.stdout, false);
+                    channel.setInputStream(this.stdin, false);
+                    channel.setCommand(this.command);
+                    channel.connect();
+                    Logger.info(this, "$ %s", this.command);
+                    return this.exec(channel);
+                } finally {
+                    this.session.disconnect();
+                }
+            } catch (final JSchException ex) {
+                throw new IOException(ex);
+            }
+        }
+
+        /**
+         * Exec this channel and return its exit code.
+         * @param channel The channel to exec
+         * @return Exit code (zero in case of success)
+         * @throws IOException If fails
+         */
+        private int exec(final ChannelExec channel) throws IOException {
+            try {
+                return this.code(channel);
             } finally {
-                this.session.disconnect();
+                channel.disconnect();
             }
-        } catch (final JSchException ex) {
-            throw new IOException(ex);
         }
-    }
 
-    /**
-     * Exec this channel and return its exit code.
-     * @param channel The channel to exec
-     * @return Exit code (zero in case of success)
-     * @throws IOException If fails
-     */
-    private int exec(final ChannelExec channel) throws IOException {
-        try {
-            return this.code(channel);
-        } finally {
-            channel.disconnect();
-        }
-    }
-
-    /**
-     * Wait until it's done and return its code.
-     * @param exec The channel
-     * @return The exit code
-     * @throws IOException If some IO problem inside
-     */
-    @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private int code(final ChannelExec exec) throws IOException {
-        while (!exec.isClosed()) {
-            try {
-                this.session.sendKeepAliveMsg();
-                // @checkstyle IllegalCatch (1 line)
-            } catch (final Exception ex) {
-                throw new IOException(ex);
+        /**
+         * Wait until it's done and return its code.
+         * @param exec The channel
+         * @return The exit code
+         * @throws IOException If some IO problem inside
+         */
+        @SuppressWarnings("PMD.AvoidCatchingGenericException")
+        private int code(final ChannelExec exec) throws IOException {
+            while (!exec.isClosed()) {
+                try {
+                    this.session.sendKeepAliveMsg();
+                    // @checkstyle IllegalCatch (1 line)
+                } catch (final Exception ex) {
+                    throw new IOException(ex);
+                }
+                try {
+                    TimeUnit.SECONDS.sleep(1L);
+                } catch (final InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException(ex);
+                }
             }
-            try {
-                TimeUnit.SECONDS.sleep(1L);
-            } catch (final InterruptedException ex) {
-                Thread.currentThread().interrupt();
-                throw new IOException(ex);
-            }
+            return exec.getExitStatus();
         }
-        return exec.getExitStatus();
     }
 }

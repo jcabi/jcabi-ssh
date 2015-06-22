@@ -46,7 +46,7 @@ import org.apache.commons.lang3.Validate;
 
 /**
  * SSH channel with authentication by password.
- * @author Georgy Vlasov (suseika@tendiwa.org)
+ * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
  * @see SSH For SSH channel with authenticaton using private key.
@@ -105,7 +105,7 @@ public final class SSHByPassword implements Shell {
     public int exec(final String command, final InputStream stdin,
         final OutputStream stdout, final OutputStream stderr)
         throws IOException {
-        return new Execution(
+        return new Execution.Default(
             command, stdin, stdout, stderr, this.session()
         ).exec();
     }
