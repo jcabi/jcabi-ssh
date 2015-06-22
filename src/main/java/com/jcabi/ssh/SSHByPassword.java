@@ -40,6 +40,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.apache.commons.lang3.Validate;
 
 /**
@@ -49,6 +51,8 @@ import org.apache.commons.lang3.Validate;
  * @since 1.4
  * @see SSH For SSH channel with authenticaton using private key.
  */
+@ToString
+@EqualsAndHashCode(of = { "addr", "port", "login", "password" })
 public final class SSHByPassword implements Shell {
 
     /**
