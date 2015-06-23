@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  * @version $Id$
  * @since 1.4
  */
-public interface Execution {
+interface Execution {
     /**
      * Executes some command.
      * @return Return code of the command.
