@@ -38,7 +38,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.security.PublicKey;
 import java.util.Collections;
 import java.util.logging.Level;
 import org.apache.commons.io.IOUtils;
@@ -49,9 +48,9 @@ import org.apache.sshd.server.Command;
 import org.apache.sshd.server.CommandFactory;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
-import org.apache.sshd.server.PublickeyAuthenticator;
+import org.apache.sshd.server.PasswordAuthenticator;
 import org.apache.sshd.server.UserAuth;
-import org.apache.sshd.server.auth.UserAuthPublicKey;
+import org.apache.sshd.server.auth.UserAuthPassword;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.apache.sshd.server.session.ServerSession;
 import org.hamcrest.MatcherAssert;
@@ -60,49 +59,44 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Tests for ${@link SSH}.
- *
- * @author Krzysztof Krason (Krzysztof.Krason@gmail.com)
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * Unit tests for {@link SSHByPassword}.
+ * @todo #21:30min SSH server setup in this class is nearly identical to the
+ *  one in {@link SSHTest}. It should be extracted in a separate reusable
+ *  module.
+ * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
- * @since 1.0
+ * @since 1.4
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
-public final class SSHTest {
+public final class SSHByPasswordTest {
+    /**
+     * SSH login.
+     */
+    private static final String LOGIN = "test";
 
     /**
-     * SSH can escape an argument.
-     * @throws Exception In case of error.
-     * @since 1.0.1
+     * SSH password.
      */
-    @Test
-    public void escapesArgument() throws Exception {
-        MatcherAssert.assertThat(
-            SSH.escape("hi,\n '$1'"),
-            Matchers.equalTo("'hi,\n '\\''$1'\\'''")
-        );
-    }
+    private static final String PASSWORD = "password";
 
     /**
-     * SSH can execute command on ssh server.
-     * @throws Exception In case of error.
+     * Checks if {@link SSHByPassword} can execute a command on an SSH server.
+     * @throws Exception If fails
      */
     @Test
-    public void executeCommandOnServer() throws Exception {
-        final int port = SSHTest.port();
-        final SshServer sshd = SSHTest.server(port);
-        sshd.setCommandFactory(new SSHTest.EchoCommandCreator());
+    public void executesCommand() throws Exception {
+        final int port = SSHByPasswordTest.port();
+        final SshServer sshd = SSHByPasswordTest.server(port);
+        sshd.setCommandFactory(new SSHByPasswordTest.EchoCommandCreator());
         sshd.start();
         final String cmd = "some test command";
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final Shell shell = new Shell.Verbose(
-            new SSH(
-                InetAddress.getLocalHost().getCanonicalHostName(),
+            new SSHByPassword(
+                InetAddress.getLocalHost().getHostAddress(),
                 port,
-                "test",
-                IOUtils.toString(
-                    this.getClass().getResourceAsStream("private.key")
-                )
+                LOGIN,
+                PASSWORD
             )
         );
         final int exit = shell.exec(
@@ -124,19 +118,19 @@ public final class SSHTest {
     private static SshServer server(final int port) {
         final SshServer sshd = SshServer.setUpDefaultServer();
         sshd.setPort(port);
-        final PublickeyAuthenticator auth =
-            Mockito.mock(PublickeyAuthenticator.class);
+        final PasswordAuthenticator auth =
+            Mockito.mock(PasswordAuthenticator.class);
         Mockito.when(
             auth.authenticate(
-                Mockito.anyString(),
-                Mockito.any(PublicKey.class),
+                Mockito.eq(LOGIN),
+                Mockito.eq(PASSWORD),
                 Mockito.any(ServerSession.class)
             )
         ).thenReturn(true);
-        sshd.setPublickeyAuthenticator(auth);
+        sshd.setPasswordAuthenticator(auth);
         sshd.setUserAuthFactories(
             Collections.<NamedFactory<UserAuth>>singletonList(
-                new UserAuthPublicKey.Factory()
+                new UserAuthPassword.Factory()
             )
         );
         sshd.setKeyPairProvider(
@@ -161,15 +155,11 @@ public final class SSHTest {
 
     /**
      * Factory for echo command.
-     * @todo #21:30min EchoCommand and EchoCommandCreator are duplicated in
-     *  SSHTest and SSHByPasswordTest, these duplicates should be extracted
-     *  into package com.jcabi.ssh.mock under src/main/java, renamed to
-     *  MkCommandCreator/MkCommand and unit-tested.
      */
     private static final class EchoCommandCreator implements CommandFactory {
         @Override
         public Command createCommand(final String command) {
-            return new SSHTest.EchoCommand(command);
+            return new SSHByPasswordTest.EchoCommand(command);
         }
     }
 
