@@ -87,7 +87,7 @@ public final class SSHByPassword implements Shell {
     public SSHByPassword(final String adr, final int prt,
         final String user, final String passwd)
         throws UnknownHostException {
-        this.addr = adr;
+        this.addr = InetAddress.getByName(adr).getHostAddress();
         Validate.matchesPattern(
             this.addr,
             "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
