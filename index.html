@@ -38,7 +38,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.4/index.html" title="JavaDoc 1.4">JavaDoc 1.4</a>
+                            <span>                        <a href="apidocs-1.5/index.html" title="JavaDoc 1.5">JavaDoc 1.5</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -94,13 +94,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.4</strong>
+                                    <strong itemprop="version">1.5</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2014-12-14T08:58:56Z">
+                                    <time itemprop="datePublished" datetime="2015-07-03T05:03:44Z">
                                         
-                                        14-Dec-2014
+                                        03-Jul-2015
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -145,7 +145,7 @@
                                 <img src="http://img.jcabi.com/fork-me.svg" class="fork-me"/>
                             </a>
                                                 <article role="article" itemprop="articleBody">
-                            <!--  --><!-- Copyright (c) 2014, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
+                            <!--  --><!-- Copyright (c) 2014-2015, jcabi.com --><!-- All rights reserved. --><!--  --><!-- Redistribution and use in source and binary forms, with or without --><!-- modification, are permitted provided that the following conditions --><!-- are met: 1) Redistributions of source code must retain the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer. 2) Redistributions in binary form must reproduce the above --><!-- copyright notice, this list of conditions and the following --><!-- disclaimer in the documentation and/or other materials provided --><!-- with the distribution. 3) Neither the name of the jcabi.com nor --><!-- the names of its contributors may be used to endorse or promote --><!-- products derived from this software without specific prior written --><!-- permission. --><!--  --><!-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS --><!-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT --><!-- NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND --><!-- FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL --><!-- THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, --><!-- INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES --><!-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR --><!-- SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) --><!-- HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, --><!-- STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) --><!-- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED --><!-- OF THE POSSIBILITY OF SUCH DAMAGE. --><!--  --><div class="section">
 <h2><a name="Java_SSH_Client"></a>Java SSH Client</h2>
 <p>Read this introduction article: <a class="externalLink" href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">Simple Java SSH Client</a>.</p>
 <p>It is as simple as this:</p>
@@ -154,19 +154,19 @@
 import com.jcabi.ssh.SSH;
 Shell shell = new SSH(&quot;example.com&quot;, 22, &quot;username&quot;, &quot;key...&quot;);
 String stdout = new Shell.Plain(shell).exec(&quot;echo 'Hello, world!'&quot;);</pre></div>
-<p>There is also a convenient <a href="/apidocs-1.4/com/jcabi/ssh/SSHD.html"><tt>SSHD</tt></a> class, a runner of ssh daemon, for unit testing:</p>
+<p>There is also a convenient <a href="/apidocs-1.5/com/jcabi/ssh/SSHD.html"><tt>SSHD</tt></a> class, a runner of ssh daemon, for unit testing:</p>
 <div class="source">
 <pre>try (SSHD sshd = new SSHD()) {
   String uptime = new Shell.Plain(
     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
  ).exec(&quot;uptime&quot;);
 }</pre></div>
-<p>The only dependency you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-ssh/1.4/jcabi-ssh-1.4.jar"><tt>jcabi-ssh-1.4.jar</tt></a> and add it to the classpath):</p>
+<p>The only dependency you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-ssh/1.5/jcabi-ssh-1.5.jar"><tt>jcabi-ssh-1.5.jar</tt></a> and add it to the classpath):</p>
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
   &lt;artifactId&gt;jcabi-ssh&lt;/artifactId&gt;
-  &lt;version&gt;1.4&lt;/version&gt;
+  &lt;version&gt;1.5&lt;/version&gt;
 &lt;/dependency&gt;</pre></div>
 <div class="section">
 <h3><a name="Cutting_Edge_Version"></a>Cutting Edge Version</h3>
@@ -191,7 +191,7 @@ String stdout = new Shell.Plain(shell).exec(&quot;echo 'Hello, world!'&quot;);</
                 <footer class="legal-notes">
                     <div>
                         Copyright &#169;
-                                                                            2012-2014
+                                                                            2012-2015
                                             </div>
                     <div>jcabi.com, All Rights Reserved.</div>
                     <div><a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a>.</div>
