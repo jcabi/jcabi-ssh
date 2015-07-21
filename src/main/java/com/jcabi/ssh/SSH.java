@@ -49,6 +49,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.Validate;
+import java.nio.charset.Charset;
 
 /**
  * Single SSH Channel.
@@ -104,6 +105,11 @@ public final class SSH implements Shell {
      * Private SSH key.
      */
     private final transient String key;
+    
+    /**
+     * Private SSH key pass phrase.
+     */
+    private final transient String passphrase;
 
     /**
      * Constructor.
@@ -208,6 +214,30 @@ public final class SSH implements Shell {
         this.login = user;
         Validate.notEmpty(this.login, "user name can't be empty");
         this.key = priv;
+        this.passphrase = null;
+        this.port = prt;
+    }
+    
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param priv Private SSH key
+     * @param passphrase Private SSH key pass phrase.
+     * @throws UnknownHostException If fails
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    public SSH(final String adr, final int prt, final String user,
+            final String priv, String passphrase) throws UnknownHostException {
+        this.addr = InetAddress.getByName(adr).getHostAddress();
+        Validate.matchesPattern(this.addr,
+                "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
+                "Invalid IP address of the server `%s`", this.addr);
+        this.login = user;
+        Validate.notEmpty(this.login, "user name can't be empty");
+        this.key = priv;
+        this.passphrase = passphrase;
         this.port = prt;
     }
 
@@ -258,7 +288,13 @@ public final class SSH implements Shell {
                 CharEncoding.UTF_8
             );
             jsch.setHostKeyRepository(new EasyRepo());
-            jsch.addIdentity(file.getAbsolutePath());
+            if (passphrase != null) {
+                jsch.addIdentity(this.login,
+                        this.key.getBytes(Charset.forName("UTF-8")), null,
+                        this.passphrase.getBytes(Charset.forName("UTF-8")));
+            } else {
+                jsch.addIdentity(file.getAbsolutePath());
+            }
             Logger.debug(
                 this,
                 "Opening SSH session to %s@%s:%s (%d bytes in RSA key)...",
@@ -279,5 +315,4 @@ public final class SSH implements Shell {
             throw new IOException(ex);
         }
     }
-
 }
