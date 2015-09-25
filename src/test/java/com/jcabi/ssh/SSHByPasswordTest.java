@@ -29,40 +29,28 @@
  */
 package com.jcabi.ssh;
 
-import com.google.common.io.Files;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.util.Collections;
 import java.util.logging.Level;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.sshd.SshServer;
-import org.apache.sshd.common.NamedFactory;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.CommandFactory;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
-import org.apache.sshd.server.PasswordAuthenticator;
-import org.apache.sshd.server.UserAuth;
-import org.apache.sshd.server.auth.UserAuthPassword;
-import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
-import org.apache.sshd.server.session.ServerSession;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link SSHByPassword}.
- * @todo #21:30min SSH server setup in this class is nearly identical to the
- *  one in {@link SSHTest}. It should be extracted in a separate reusable
- *  module.
+ *
  * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
@@ -86,7 +74,10 @@ public final class SSHByPasswordTest {
     @Test
     public void executesCommand() throws Exception {
         final int port = SSHByPasswordTest.port();
-        final SshServer sshd = SSHByPasswordTest.server(port);
+        final SshServer sshd =
+            MockSshServerFactory.passwordAuthenticatedServer(
+                port, LOGIN, PASSWORD
+            );
         sshd.setCommandFactory(new SSHByPasswordTest.EchoCommandCreator());
         sshd.start();
         final String cmd = "some test command";
@@ -108,37 +99,6 @@ public final class SSHByPasswordTest {
         sshd.stop();
         MatcherAssert.assertThat(exit, Matchers.equalTo(0));
         MatcherAssert.assertThat(output.toString(), Matchers.equalTo(cmd));
-    }
-
-    /**
-     * Setup SSH server.
-     * @param port Port to listen on.
-     * @return SSH server.
-     */
-    private static SshServer server(final int port) {
-        final SshServer sshd = SshServer.setUpDefaultServer();
-        sshd.setPort(port);
-        final PasswordAuthenticator auth =
-            Mockito.mock(PasswordAuthenticator.class);
-        Mockito.when(
-            auth.authenticate(
-                Mockito.eq(LOGIN),
-                Mockito.eq(PASSWORD),
-                Mockito.any(ServerSession.class)
-            )
-        ).thenReturn(true);
-        sshd.setPasswordAuthenticator(auth);
-        sshd.setUserAuthFactories(
-            Collections.<NamedFactory<UserAuth>>singletonList(
-                new UserAuthPassword.Factory()
-            )
-        );
-        sshd.setKeyPairProvider(
-            new SimpleGeneratorHostKeyProvider(
-                new File(Files.createTempDir(), "hostkey.ser").getAbsolutePath()
-            )
-        );
-        return sshd;
     }
 
     /**
