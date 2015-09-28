@@ -29,10 +29,12 @@
  */
 package com.jcabi.ssh;
 
+import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import java.io.File;
 import java.security.PublicKey;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.sshd.SshServer;
 import org.apache.sshd.common.NamedFactory;
 import org.apache.sshd.server.PasswordAuthenticator;
@@ -45,93 +47,104 @@ import org.apache.sshd.server.session.ServerSession;
 import org.mockito.Mockito;
 
 /**
- * Factory creating mock SSH servers.
+ * Builder creating mock SSH servers.
  *
  * @author Piotr Pradzynski (prondzyn@gmail.com)
  * @version $Id$
  * @since 1.6
- * @checkstyle AbstractClassNameCheck (500 lines)
  */
-final class MockSshServerFactory {
+class MockSshServerBuilder {
 
     /**
-     * Utility class constructor.
+     * SSH port.
      */
-    private MockSshServerFactory() {
-        super();
+    private final transient int sshport;
+
+    /**
+     * User auth factories.
+     */
+    private final transient List<NamedFactory<UserAuth>> authfactories;
+
+    /**
+     * Optional password authenticator.
+     */
+    private transient Optional<PasswordAuthenticator> passwordauth;
+
+    /**
+     * Optional public key authenticator.
+     */
+    private transient Optional<PublickeyAuthenticator> publickeyauth;
+
+    /**
+     * Constructor with a SSH port number.
+     * @param port The port number for SSH server
+     */
+    MockSshServerBuilder(final int port) {
+        this.sshport = port;
+        this.authfactories = new ArrayList<NamedFactory<UserAuth>>(2);
+        this.passwordauth = Optional.absent();
+        this.publickeyauth = Optional.absent();
     }
 
     /**
-     * Setup SSH server based on password authentication.
-     *
-     * @param port Port to listen on.
-     * @param login Login for an authentication.
-     * @param password Password for an authentication.
+     * Builds a new instance of SSH server.
      * @return SSH server.
      */
-    public static SshServer passwordAuthenticatedServer(final int port,
-        final String login, final String password) {
-        final SshServer sshd = defaultServer(
-            port,
-            new UserAuthPassword.Factory()
-        );
-        final PasswordAuthenticator auth =
-            Mockito.mock(PasswordAuthenticator.class);
-        Mockito.when(
-            auth.authenticate(
-                Mockito.eq(login),
-                Mockito.eq(password),
-                Mockito.any(ServerSession.class)
-            )
-        ).thenReturn(true);
-        sshd.setPasswordAuthenticator(auth);
-        return sshd;
-    }
-
-    /**
-     * Setup SSH server based on public key authentication.
-     *
-     * @param port Port to listen on.
-     * @return SSH server.
-     */
-    public static SshServer publicKeyAuthenticatedServer(final int port) {
-        final SshServer sshd = defaultServer(
-            port,
-            new UserAuthPublicKey.Factory()
-        );
-        final PublickeyAuthenticator auth =
-            Mockito.mock(PublickeyAuthenticator.class);
-        Mockito.when(
-            auth.authenticate(
-                Mockito.anyString(),
-                Mockito.any(PublicKey.class),
-                Mockito.any(ServerSession.class)
-            )
-        ).thenReturn(true);
-        sshd.setPublickeyAuthenticator(auth);
-        return sshd;
-    }
-
-    /**
-     * Setup default SSH server.
-     *
-     * @param port Port to listen on.
-     * @param authfactory Authentication factory to use.
-     * @return SSH server.
-     */
-    private static SshServer defaultServer(final int port,
-        final NamedFactory<UserAuth> authfactory) {
+    public SshServer build() {
         final SshServer sshd = SshServer.setUpDefaultServer();
-        sshd.setPort(port);
+        sshd.setPort(this.sshport);
         sshd.setKeyPairProvider(
             new SimpleGeneratorHostKeyProvider(
                 new File(Files.createTempDir(), "hostkey.ser").getAbsolutePath()
             )
         );
-        sshd.setUserAuthFactories(
-            Collections.singletonList(authfactory)
-        );
+        sshd.setUserAuthFactories(this.authfactories);
+        sshd.setPasswordAuthenticator(this.passwordauth.orNull());
+        sshd.setPublickeyAuthenticator(this.publickeyauth.orNull());
         return sshd;
+    }
+
+    /**
+     * Setup a password authentication.
+     *
+     * @param login Login for an authentication.
+     * @param password Password for an authentication.
+     * @return This instance of builder.
+     */
+    public MockSshServerBuilder usePasswordAuthentication(
+        final String login, final String password) {
+        this.authfactories.add(new UserAuthPassword.Factory());
+        final PasswordAuthenticator authenticator =
+            Mockito.mock(PasswordAuthenticator.class);
+        Mockito.when(
+            authenticator.authenticate(
+                Mockito.eq(login),
+                Mockito.eq(password),
+                Mockito.any(ServerSession.class)
+            )
+        ).thenReturn(true);
+        this.passwordauth = Optional.of(authenticator);
+        return this;
+    }
+
+    /**
+     * Setup a public key authentication.
+     *
+     * @return This instance of builder.
+     */
+    public MockSshServerBuilder usePublicKeyAuthentication() {
+        this.authfactories.add(new UserAuthPublicKey.Factory());
+        final PublickeyAuthenticator authenticator =
+            Mockito.mock(PublickeyAuthenticator.class);
+        Mockito.when(
+            authenticator.authenticate(
+                Mockito.anyString(),
+                Mockito.any(PublicKey.class),
+                Mockito.any(ServerSession.class)
+            )
+        ).thenReturn(true);
+        this.publickeyauth = Optional.of(authenticator);
+        return this;
     }
 
 }

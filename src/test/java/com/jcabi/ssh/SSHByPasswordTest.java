@@ -74,10 +74,8 @@ public final class SSHByPasswordTest {
     @Test
     public void executesCommand() throws Exception {
         final int port = SSHByPasswordTest.port();
-        final SshServer sshd =
-            MockSshServerFactory.passwordAuthenticatedServer(
-                port, LOGIN, PASSWORD
-            );
+        final SshServer sshd = new MockSshServerBuilder(port)
+            .usePasswordAuthentication(LOGIN, PASSWORD).build();
         sshd.setCommandFactory(new SSHByPasswordTest.EchoCommandCreator());
         sshd.start();
         final String cmd = "some test command";

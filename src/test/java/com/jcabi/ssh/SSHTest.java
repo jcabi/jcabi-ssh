@@ -79,8 +79,8 @@ public final class SSHTest {
     @Test
     public void executeCommandOnServer() throws Exception {
         final int port = SSHTest.port();
-        final SshServer sshd =
-            MockSshServerFactory.publicKeyAuthenticatedServer(port);
+        final SshServer sshd = new MockSshServerBuilder(port)
+            .usePublicKeyAuthentication().build();
         sshd.setCommandFactory(new SSHTest.EchoCommandCreator());
         sshd.start();
         final String cmd = "some test command";
