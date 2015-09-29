@@ -52,24 +52,9 @@ import org.apache.commons.lang3.Validate;
  * @see SSH For SSH channel with authenticaton using private key.
  */
 @ToString
-@EqualsAndHashCode(of = { "addr", "port", "login", "password" })
-public final class SSHByPassword implements Shell {
-
-    /**
-     * IP address of the server.
-     */
-    private final transient String addr;
-
-    /**
-     * Port to use.
-     */
-    private final transient int port;
-
-    /**
-     * User name.
-     */
-    private final transient String login;
-
+@EqualsAndHashCode(callSuper=false)
+public final class SSHByPassword extends SSHCommon {
+   
     /**
      * User password.
      */
@@ -87,29 +72,10 @@ public final class SSHByPassword implements Shell {
     public SSHByPassword(final String adr, final int prt,
         final String user, final String passwd)
         throws UnknownHostException {
-        this.addr = adr;
-        Validate.matchesPattern(
-            this.addr,
-            "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
-            "Invalid IP address of the server `%s`",
-            this.addr
-        );
-        this.port = prt;
-        this.login = user;
-        Validate.notEmpty(this.login, "user name can't be empty");
+        super(adr,prt,user);
         this.password = passwd;
     }
-
-    // @checkstyle ParameterNumberCheck (6 lines)
-    @Override
-    public int exec(final String command, final InputStream stdin,
-        final OutputStream stdout, final OutputStream stderr)
-        throws IOException {
-        return new Execution.Default(
-            command, stdin, stdout, stderr, this.session()
-        ).exec();
-    }
-
+  
     /**
      * Create and return a session, connected.
      * @return JSch session
@@ -123,7 +89,7 @@ public final class SSHByPassword implements Shell {
         randomize = true,
         types = IOException.class
     )
-    private Session session() throws IOException {
+    Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());

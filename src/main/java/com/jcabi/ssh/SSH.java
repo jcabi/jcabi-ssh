@@ -76,34 +76,15 @@ import org.apache.commons.lang3.Validate;
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
  */
 @ToString
-@EqualsAndHashCode(of = { "addr", "port", "login", "key" })
+@EqualsAndHashCode(callSuper=false)
 @SuppressWarnings("PMD.TooManyMethods")
-public final class SSH implements Shell {
+public final class SSH extends SSHCommon {
 
-    /**
-     * Default SSH port.
-     */
-    public static final int PORT = 22;
-
-    /**
-     * IP address of the server.
-     */
-    private final transient String addr;
-
-    /**
-     * Port to use.
-     */
-    private final transient int port;
-
-    /**
-     * User name.
-     */
-    private final transient String login;
 
     /**
      * Private SSH key.
      */
-    private final transient String key;
+    protected final transient String key;
 
     /**
      * Constructor.
@@ -115,7 +96,7 @@ public final class SSH implements Shell {
      */
     public SSH(final String adr, final String user, final URL priv)
         throws IOException {
-        this(adr, SSH.PORT, user, priv);
+        this(adr, SSHCommon.PORT, user, priv);
     }
 
     /**
@@ -128,7 +109,7 @@ public final class SSH implements Shell {
      */
     public SSH(final InetAddress adr, final String user, final URL priv)
         throws IOException {
-        this(adr, SSH.PORT, user, priv);
+        this(adr, SSHCommon.PORT, user, priv);
     }
 
     /**
@@ -141,7 +122,7 @@ public final class SSH implements Shell {
      */
     public SSH(final String adr, final String user, final String priv)
         throws UnknownHostException {
-        this(adr, SSH.PORT, user, priv);
+        this(adr, SSHCommon.PORT, user, priv);
     }
 
     /**
@@ -154,7 +135,7 @@ public final class SSH implements Shell {
      */
     public SSH(final InetAddress adr, final String user, final String priv)
         throws UnknownHostException {
-        this(adr.getCanonicalHostName(), SSH.PORT, user, priv);
+        this(adr.getCanonicalHostName(), SSHCommon.PORT, user, priv);
     }
 
     /**
@@ -198,28 +179,11 @@ public final class SSH implements Shell {
      */
     public SSH(final String adr, final int prt,
         final String user, final String priv) throws UnknownHostException {
-        this.addr = InetAddress.getByName(adr).getHostAddress();
-        Validate.matchesPattern(
-            this.addr,
-            "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
-            "Invalid IP address of the server `%s`",
-            this.addr
-        );
-        this.login = user;
-        Validate.notEmpty(this.login, "user name can't be empty");
+        super(adr,prt,user);
         this.key = priv;
-        this.port = prt;
     }
 
-    // @checkstyle ParameterNumberCheck (5 lines)
-    @Override
-    public int exec(final String command, final InputStream stdin,
-        final OutputStream stdout, final OutputStream stderr)
-        throws IOException {
-        return new Execution.Default(
-            command, stdin, stdout, stderr, this.session()
-        ).exec();
-    }
+    
 
     /**
      * Escape SSH argument.
@@ -243,7 +207,7 @@ public final class SSH implements Shell {
         randomize = true,
         types = IOException.class
     )
-    private Session session() throws IOException {
+    Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
