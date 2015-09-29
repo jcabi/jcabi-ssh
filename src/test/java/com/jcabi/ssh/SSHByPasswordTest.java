@@ -54,18 +54,8 @@ import org.junit.Test;
  * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 public final class SSHByPasswordTest {
-    /**
-     * SSH login.
-     */
-    private static final String LOGIN = "test";
-
-    /**
-     * SSH password.
-     */
-    private static final String PASSWORD = "password";
 
     /**
      * Checks if {@link SSHByPassword} can execute a command on an SSH server.
@@ -73,9 +63,11 @@ public final class SSHByPasswordTest {
      */
     @Test
     public void executesCommand() throws Exception {
+        final String username = "test";
+        final String password = "password";
         final int port = SSHByPasswordTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
-            .usePasswordAuthentication(LOGIN, PASSWORD).build();
+            .usePasswordAuthentication(username, password).build();
         sshd.setCommandFactory(new SSHByPasswordTest.EchoCommandCreator());
         sshd.start();
         final String cmd = "some test command";
@@ -84,8 +76,8 @@ public final class SSHByPasswordTest {
             new SSHByPassword(
                 InetAddress.getLocalHost().getHostAddress(),
                 port,
-                LOGIN,
-                PASSWORD
+                username,
+                password
             )
         );
         final int exit = shell.exec(
