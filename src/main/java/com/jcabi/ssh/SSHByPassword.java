@@ -38,6 +38,7 @@ import com.jcraft.jsch.Session;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
@@ -87,7 +88,7 @@ public final class SSHByPassword implements Shell {
     public SSHByPassword(final String adr, final int prt,
         final String user, final String passwd)
         throws UnknownHostException {
-        this.addr = adr;
+        this.addr = InetAddress.getByName(adr).getHostAddress();
         Validate.matchesPattern(
             this.addr,
             "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
