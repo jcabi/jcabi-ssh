@@ -1,6 +1,6 @@
 ## Puzzles
 
-There are 2 active puzzles (5 total), updated on 2015-12-09T10:50:36Z:
+There are 2 active puzzles (5 total), updated on 2015-12-09T13:13:52Z:
 
 unknown ?
 &nbsp;[21](https://github.com/jcabi/jcabi-ssh/issues/21) ?
