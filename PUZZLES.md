@@ -1,10 +1,10 @@
 ## Puzzles
 
-There are 2 active puzzles (5 total), updated on 2015-12-09T13:13:52Z:
+There are 2 active puzzles (5 total):
 
-unknown ?
-&nbsp;[21](https://github.com/jcabi/jcabi-ssh/issues/21) ?
-&nbsp;&nbsp;**21-74327cdd** src/main/java/com/jcabi/ssh/SSH.java:70-72
-&nbsp;&nbsp;21-5047b140 src/test/java/com/jcabi/ssh/SSHByPasswordTest.java:63-65
-&nbsp;&nbsp;**21-40f93421** src/test/java/com/jcabi/ssh/SSHTest.java:164-167
 
+<del>unknown</del> [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;[<del>21</del>](https://github.com/jcabi/jcabi-ssh/issues/21) [`?`](../master/?)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**21-74327cdd** [`SSH.java:70-72`](../master/src/main/java/com/jcabi/ssh/SSH.java#L70-L72)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<del>21-5047b140</del> [`SSHByPasswordTest.java:63-65`](../master/src/test/java/com/jcabi/ssh/SSHByPasswordTest.java#L63-L65)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**21-40f93421** [`SSHTest.java:164-167`](../master/src/test/java/com/jcabi/ssh/SSHTest.java#L164-L167)<br/>
