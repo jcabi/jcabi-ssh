@@ -109,6 +109,6 @@ abstract class AbstractSSHShell implements Shell {
      * @return JSch session
      * @throws IOException If some IO problem inside
      */
-    abstract Session session()  throws IOException;
+    protected abstract Session session()  throws IOException;
 
 }
