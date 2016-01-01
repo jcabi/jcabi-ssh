@@ -72,7 +72,7 @@ import org.apache.commons.lang3.CharEncoding;
 @ToString
 @EqualsAndHashCode(of = { "key" }, callSuper = true)
 @SuppressWarnings("PMD.TooManyMethods")
-public final class SSH extends AbstractSSHShell implements Shell {
+public final class SSH extends AbstractSSHShell {
 
     /**
      * Default SSH port.
@@ -199,7 +199,7 @@ public final class SSH extends AbstractSSHShell implements Shell {
         randomize = true,
         types = IOException.class
     )
-    public Session session() throws IOException {
+    Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());

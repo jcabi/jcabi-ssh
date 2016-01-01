@@ -50,7 +50,7 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode(of = { "password" }, callSuper = true)
-public final class SSHByPassword extends AbstractSSHShell implements Shell {
+public final class SSHByPassword extends AbstractSSHShell {
 
     /**
      * User password.
@@ -82,7 +82,7 @@ public final class SSHByPassword extends AbstractSSHShell implements Shell {
         randomize = true,
         types = IOException.class
     )
-    public Session session() throws IOException {
+    Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());

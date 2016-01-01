@@ -44,7 +44,7 @@ import org.apache.commons.lang3.Validate;
  * Common module for any ssh shell.
  * @author Jose Volmei Dal Pra Junior (jrdalpra@gmail.com)
  * @version $Id$
- * @since 2.0
+ * @since 1.5.2
  */
 @ToString
 @EqualsAndHashCode(of = { "addr", "port", "login" })
@@ -74,7 +74,7 @@ abstract class AbstractSSHShell implements Shell {
      * @param user User that will be used when connecting.
      * @throws UnknownHostException when host is unkwon.
      */
-    public AbstractSSHShell(
+    AbstractSSHShell(
         final String adr,
         final int prt,
         final String user) throws UnknownHostException {
@@ -109,6 +109,6 @@ abstract class AbstractSSHShell implements Shell {
      * @return JSch session
      * @throws IOException If some IO problem inside
      */
-    protected abstract Session session()  throws IOException;
+    abstract Session session()  throws IOException;
 
 }
