@@ -73,6 +73,7 @@ public final class SSHByPassword extends AbstractSSHShell {
         this.password = passwd;
     }
 
+    // @checkstyle ProtectedMethodInFinalClassCheck (32 lines)
     @Override
     @RetryOnFailure(
         attempts = Tv.SEVEN,
@@ -82,7 +83,7 @@ public final class SSHByPassword extends AbstractSSHShell {
         randomize = true,
         types = IOException.class
     )
-    protected final Session session() throws IOException {
+    protected Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());

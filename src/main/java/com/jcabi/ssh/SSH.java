@@ -190,6 +190,7 @@ public final class SSH extends AbstractSSHShell {
         return String.format("'%s'", arg.replace("'", "'\\''"));
     }
 
+    // @checkstyle ProtectedMethodInFinalClassCheck (45 lines)
     @Override
     @RetryOnFailure(
         attempts = Tv.SEVEN,
@@ -199,7 +200,7 @@ public final class SSH extends AbstractSSHShell {
         randomize = true,
         types = IOException.class
     )
-    protected final Session session() throws IOException {
+    protected Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
