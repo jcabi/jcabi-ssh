@@ -199,7 +199,7 @@ public final class SSH extends AbstractSSHShell {
         randomize = true,
         types = IOException.class
     )
-    protected Session session() throws IOException {
+    protected final Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
