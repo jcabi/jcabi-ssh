@@ -37,8 +37,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -48,7 +46,6 @@ import lombok.ToString;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Single SSH Channel.
@@ -67,38 +64,20 @@ import org.apache.commons.lang3.Validate;
  * <p>It is highly recommended to use classes from {@link Shell} interface,
  * they will simplify operations.</p>
  *
- * @todo #21:30min This class has common data, implementation of exec() and
- *  constructor validations with SSHByPassword class. Common functionality
- *  should be extracted into a separate module.
  * @author Yegor Bugayenko (yegor@teamed.io)
  * @version $Id$
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
  */
 @ToString
-@EqualsAndHashCode(of = { "addr", "port", "login", "key" })
+@EqualsAndHashCode(of = { "key" }, callSuper = true)
 @SuppressWarnings("PMD.TooManyMethods")
-public final class SSH implements Shell {
+public final class SSH extends AbstractSSHShell {
 
     /**
      * Default SSH port.
      */
     public static final int PORT = 22;
-
-    /**
-     * IP address of the server.
-     */
-    private final transient String addr;
-
-    /**
-     * Port to use.
-     */
-    private final transient int port;
-
-    /**
-     * User name.
-     */
-    private final transient String login;
 
     /**
      * Private SSH key.
@@ -198,27 +177,8 @@ public final class SSH implements Shell {
      */
     public SSH(final String adr, final int prt,
         final String user, final String priv) throws UnknownHostException {
-        this.addr = InetAddress.getByName(adr).getHostAddress();
-        Validate.matchesPattern(
-            this.addr,
-            "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
-            "Invalid IP address of the server `%s`",
-            this.addr
-        );
-        this.login = user;
-        Validate.notEmpty(this.login, "user name can't be empty");
+        super(adr, prt, user);
         this.key = priv;
-        this.port = prt;
-    }
-
-    // @checkstyle ParameterNumberCheck (5 lines)
-    @Override
-    public int exec(final String command, final InputStream stdin,
-        final OutputStream stdout, final OutputStream stderr)
-        throws IOException {
-        return new Execution.Default(
-            command, stdin, stdout, stderr, this.session()
-        ).exec();
     }
 
     /**
@@ -230,11 +190,8 @@ public final class SSH implements Shell {
         return String.format("'%s'", arg.replace("'", "'\\''"));
     }
 
-    /**
-     * Create and return a session, connected.
-     * @return JSch session
-     * @throws IOException If some IO problem inside
-     */
+    // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
+    @Override
     @RetryOnFailure(
         attempts = Tv.SEVEN,
         delay = 1,
@@ -243,7 +200,7 @@ public final class SSH implements Shell {
         randomize = true,
         types = IOException.class
     )
-    private Session session() throws IOException {
+    protected Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
@@ -262,14 +219,14 @@ public final class SSH implements Shell {
             Logger.debug(
                 this,
                 "Opening SSH session to %s@%s:%s (%d bytes in RSA key)...",
-                this.login, this.addr, this.port,
+                this.getLogin(), this.getAddr(), this.getPort(),
                 file.length()
             );
             final Session session = jsch.getSession(
-                this.login, this.addr, this.port
+                this.getLogin(), this.getAddr(), this.getPort()
             );
             session.setServerAliveInterval(
-                (int) TimeUnit.SECONDS.toMillis((long) Tv.TEN)
+                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
             );
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();

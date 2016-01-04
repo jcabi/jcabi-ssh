@@ -36,14 +36,10 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 
 /**
  * SSH channel with authentication by password.
@@ -53,23 +49,8 @@ import org.apache.commons.lang3.Validate;
  * @see SSH For SSH channel with authenticaton using private key.
  */
 @ToString
-@EqualsAndHashCode(of = { "addr", "port", "login", "password" })
-public final class SSHByPassword implements Shell {
-
-    /**
-     * IP address of the server.
-     */
-    private final transient String addr;
-
-    /**
-     * Port to use.
-     */
-    private final transient int port;
-
-    /**
-     * User name.
-     */
-    private final transient String login;
+@EqualsAndHashCode(of = { "password" }, callSuper = true)
+public final class SSHByPassword extends AbstractSSHShell {
 
     /**
      * User password.
@@ -86,36 +67,14 @@ public final class SSHByPassword implements Shell {
      * @checkstyle ParameterNumberCheck (6 lines)
      */
     public SSHByPassword(final String adr, final int prt,
-        final String user, final String passwd)
+                    final String user, final String passwd)
         throws UnknownHostException {
-        this.addr = InetAddress.getByName(adr).getHostAddress();
-        Validate.matchesPattern(
-            this.addr,
-            "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
-            "Invalid IP address of the server `%s`",
-            this.addr
-        );
-        this.port = prt;
-        this.login = user;
-        Validate.notEmpty(this.login, "user name can't be empty");
+        super(adr, prt, user);
         this.password = passwd;
     }
 
-    // @checkstyle ParameterNumberCheck (6 lines)
+    // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
     @Override
-    public int exec(final String command, final InputStream stdin,
-        final OutputStream stdout, final OutputStream stderr)
-        throws IOException {
-        return new Execution.Default(
-            command, stdin, stdout, stderr, this.session()
-        ).exec();
-    }
-
-    /**
-     * Create and return a session, connected.
-     * @return JSch session
-     * @throws IOException If some IO problem inside
-     */
     @RetryOnFailure(
         attempts = Tv.SEVEN,
         delay = 1,
@@ -124,7 +83,7 @@ public final class SSHByPassword implements Shell {
         randomize = true,
         types = IOException.class
     )
-    private Session session() throws IOException {
+    protected Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
@@ -132,14 +91,14 @@ public final class SSHByPassword implements Shell {
             Logger.debug(
                 this,
                 "Opening SSH session to %s@%s:%s (auth with password)...",
-                this.login, this.addr, this.port
+                this.getLogin(), this.getAddr(), this.getPort()
             );
             final Session session = jsch.getSession(
-                this.login, this.addr, this.port
+                this.getLogin(), this.getAddr(), this.getPort()
             );
             session.setPassword(this.password);
             session.setServerAliveInterval(
-                (int) TimeUnit.SECONDS.toMillis((long) Tv.TEN)
+                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
             );
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();
