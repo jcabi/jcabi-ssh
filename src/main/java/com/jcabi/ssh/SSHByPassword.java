@@ -73,7 +73,7 @@ public final class SSHByPassword extends AbstractSSHShell {
         this.password = passwd;
     }
 
-    // @checkstyle ProtectedMethodInFinalClassCheck (32 lines)
+    // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
     @Override
     @RetryOnFailure(
         attempts = Tv.SEVEN,

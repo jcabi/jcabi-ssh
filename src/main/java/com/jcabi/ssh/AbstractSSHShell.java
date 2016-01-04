@@ -90,7 +90,7 @@ abstract class AbstractSSHShell implements Shell {
         Validate.notEmpty(user, "user name can't be empty");
     }
 
-    // @checkstyle ParameterNumberCheck (6 lines)
+    // @checkstyle ParameterNumberCheck (2 lines)
     @Override
     public int exec(final String command, final InputStream stdin,
                     final OutputStream stdout, final OutputStream stderr)

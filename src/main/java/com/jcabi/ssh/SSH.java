@@ -190,7 +190,7 @@ public final class SSH extends AbstractSSHShell {
         return String.format("'%s'", arg.replace("'", "'\\''"));
     }
 
-    // @checkstyle ProtectedMethodInFinalClassCheck (45 lines)
+    // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
     @Override
     @RetryOnFailure(
         attempts = Tv.SEVEN,
