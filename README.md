@@ -5,6 +5,7 @@
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-ssh.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-ssh)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-ssh/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
 [![Dependencies](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b)
 
 More details are here: [ssh.jcabi.com](http://ssh.jcabi.com/).
