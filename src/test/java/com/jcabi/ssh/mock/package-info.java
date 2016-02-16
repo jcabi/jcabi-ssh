@@ -27,37 +27,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.ssh.mock;
-
-import java.io.ByteArrayOutputStream;
-import org.apache.sshd.server.Environment;
-import org.apache.sshd.server.ExitCallback;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link MkCommand}.
+ * Unit tests for the mock classes.
+ *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.5.3
  */
-public final class MkCommandTest {
-    /**
-     * Check if {@link MkCommand} can start.
-     * @throws Exception If something goes wrong.
-     */
-    @Test
-    public void mkCommandStarts() throws Exception {
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final String commandText = "test mkcommand";
-        final MkCommand command = new MkCommand(commandText);
-        command.setOutputStream(output);
-        command.setExitCallback(Mockito.mock(ExitCallback.class));
-        command.start(Mockito.mock(Environment.class));
-        MatcherAssert.assertThat(
-            output.toString(), Matchers.equalTo(commandText)
-        );
-    }
-}
+package com.jcabi.ssh.mock;

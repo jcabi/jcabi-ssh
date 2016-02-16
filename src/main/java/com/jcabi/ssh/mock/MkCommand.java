@@ -43,7 +43,7 @@ import org.apache.sshd.server.ExitCallback;
  * @version $Id$
  * @since 1.5.3
  */
-public class MkCommand implements Command {
+public final class MkCommand implements Command {
     /**
      * Command being executed.
      */

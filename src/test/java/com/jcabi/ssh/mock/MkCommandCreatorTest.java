@@ -35,20 +35,20 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link MkCommandCreator}. 
+ * Unit tests for {@link MkCommandCreator}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.5.3
  */
-public class MkCommandCreatorTest {
+public final class MkCommandCreatorTest {
     /**
-     * {@link MkCommandCreator} can create a {@link Command}
+     * {@link MkCommandCreator} can create a {@link Command}.
      * @throws Exception If something goes wrong.
      */
     @Test
     public void createsMkCommand() throws Exception {
         final MkCommandCreator factory = new MkCommandCreator();
-        Command command = factory.createCommand("command text");
+        final Command command = factory.createCommand("command text");
         MatcherAssert.assertThat(command, Matchers.notNullValue());
     }
 }

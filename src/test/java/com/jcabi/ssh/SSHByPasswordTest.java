@@ -31,7 +31,6 @@ package com.jcabi.ssh;
 
 import com.jcabi.log.Logger;
 import com.jcabi.ssh.mock.MkCommandCreator;
-import com.jcabi.ssh.mock.MockSshServerBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;

@@ -38,7 +38,7 @@ import org.apache.sshd.server.CommandFactory;
  * @version $Id$
  * @since 1.5.3
  */
-public class MkCommandCreator implements CommandFactory{
+public final class MkCommandCreator implements CommandFactory {
     @Override
     public Command createCommand(final String command) {
         return new MkCommand(command);
