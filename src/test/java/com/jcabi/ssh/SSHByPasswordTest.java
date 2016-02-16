@@ -30,20 +30,15 @@
 package com.jcabi.ssh;
 
 import com.jcabi.log.Logger;
+import com.jcabi.ssh.mock.MkCommandCreator;
+import com.jcabi.ssh.mock.MockSshServerBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.logging.Level;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.sshd.SshServer;
-import org.apache.sshd.server.Command;
-import org.apache.sshd.server.CommandFactory;
-import org.apache.sshd.server.Environment;
-import org.apache.sshd.server.ExitCallback;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -68,7 +63,7 @@ public final class SSHByPasswordTest {
         final int port = SSHByPasswordTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePasswordAuthentication(username, password).build();
-        sshd.setCommandFactory(new SSHByPasswordTest.EchoCommandCreator());
+        sshd.setCommandFactory(new MkCommandCreator());
         sshd.start();
         final String cmd = "some test command";
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -101,66 +96,5 @@ public final class SSHByPasswordTest {
         final int port = socket.getLocalPort();
         socket.close();
         return port;
-    }
-
-    /**
-     * Factory for echo command.
-     */
-    private static final class EchoCommandCreator implements CommandFactory {
-        @Override
-        public Command createCommand(final String command) {
-            return new SSHByPasswordTest.EchoCommand(command);
-        }
-    }
-
-    /**
-     * Command that displays its name.
-     */
-    private static final class EchoCommand implements Command {
-        /**
-         * Command being executed.
-         */
-        private final transient String command;
-        /**
-         * Exit callback.
-         */
-        private transient ExitCallback callback;
-        /**
-         * Output stream for use by command.
-         */
-        private transient OutputStream output;
-        /**
-         * Constructor.
-         * @param cmd Command to echo.
-         */
-        EchoCommand(final String cmd) {
-            this.command = cmd;
-        }
-        @Override
-        public void setInputStream(final InputStream input) {
-            // do nothing
-        }
-        @Override
-        public void setOutputStream(final OutputStream stream) {
-            this.output = stream;
-        }
-        @Override
-        public void setErrorStream(final OutputStream err) {
-            // do nothing
-        }
-        @Override
-        public void setExitCallback(final ExitCallback cllbck) {
-            this.callback = cllbck;
-        }
-        @Override
-        public void start(final Environment env) throws IOException {
-            IOUtils.write(this.command, this.output);
-            this.output.flush();
-            this.callback.onExit(0);
-        }
-        @Override
-        public void destroy() {
-            // do nothing
-        }
     }
 }

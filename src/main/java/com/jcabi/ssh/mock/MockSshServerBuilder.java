@@ -27,7 +27,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jcabi.ssh;
+package com.jcabi.ssh.mock;
 
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
@@ -53,7 +53,7 @@ import org.mockito.Mockito;
  * @version $Id$
  * @since 1.6
  */
-class MockSshServerBuilder {
+public class MockSshServerBuilder {
 
     /**
      * SSH port.
@@ -79,7 +79,7 @@ class MockSshServerBuilder {
      * Constructor with a SSH port number.
      * @param port The port number for SSH server
      */
-    MockSshServerBuilder(final int port) {
+    public MockSshServerBuilder(final int port) {
         this.sshport = port;
         this.authfactories = new ArrayList<NamedFactory<UserAuth>>(2);
         this.passwordauth = Optional.absent();
