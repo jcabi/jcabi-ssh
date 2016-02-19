@@ -29,26 +29,26 @@
  */
 package com.jcabi.ssh.mock;
 
-import org.apache.sshd.server.Command;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link MkCommandCreator}.
+ * Unit tests for MkCommandCreator.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.6
  */
 public final class MkCommandCreatorTest {
     /**
-     * {@link MkCommandCreator} can create a {@link Command}.
+     * MkCommandCreator can create a Command.
      * @throws Exception If something goes wrong.
      */
     @Test
     public void createsMkCommand() throws Exception {
-        final MkCommandCreator factory = new MkCommandCreator();
-        final Command command = factory.createCommand("command text");
-        MatcherAssert.assertThat(command, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            new MkCommandCreator().createCommand("command text"),
+            Matchers.notNullValue()
+        );
     }
 }

@@ -38,18 +38,18 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link MkCommand}.
+ * Unit tests for MkCommand.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.6
  */
 public final class MkCommandTest {
     /**
-     * Check if {@link MkCommand} can start.
+     * MkCommand can start.
      * @throws Exception If something goes wrong.
      */
     @Test
-    public void mkCommandStarts() throws Exception {
+    public void starts() throws Exception {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final String commandText = "test mkcommand";
         final MkCommand command = new MkCommand(commandText);
