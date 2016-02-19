@@ -41,7 +41,7 @@ import org.mockito.Mockito;
  * Unit tests for {@link MkCommand}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.5.3
+ * @since 1.6
  */
 public final class MkCommandTest {
     /**

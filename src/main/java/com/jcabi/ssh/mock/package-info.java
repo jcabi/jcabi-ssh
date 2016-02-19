@@ -33,6 +33,6 @@
  *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.5.3
+ * @since 1.6
  */
 package com.jcabi.ssh.mock;

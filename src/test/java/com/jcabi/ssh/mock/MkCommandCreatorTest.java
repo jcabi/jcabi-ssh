@@ -38,7 +38,7 @@ import org.junit.Test;
  * Unit tests for {@link MkCommandCreator}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.5.3
+ * @since 1.6
  */
 public final class MkCommandCreatorTest {
     /**
