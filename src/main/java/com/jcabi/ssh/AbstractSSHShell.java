@@ -72,7 +72,7 @@ abstract class AbstractSSHShell implements Shell {
      * @param adr Address that you want to connect to.
      * @param prt Port that you want to reach.
      * @param user User that will be used when connecting.
-     * @throws UnknownHostException when host is unkwon.
+     * @throws UnknownHostException when host is unknown.
      */
     AbstractSSHShell(
         final String adr,

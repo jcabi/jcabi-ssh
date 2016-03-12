@@ -43,6 +43,7 @@ import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.CharEncoding;
@@ -83,6 +84,11 @@ public final class SSH extends AbstractSSHShell {
      * Private SSH key.
      */
     private final transient String key;
+
+    /**
+     * Private SSH key pass phrase.
+     */
+    private transient String passphrase;
 
     /**
      * Constructor.
@@ -182,6 +188,25 @@ public final class SSH extends AbstractSSHShell {
     }
 
     /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param priv Private SSH key
+     * @param passphrs Pass phrase for encrypted priv. key
+     * @throws UnknownHostException when host is unknown.
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    public SSH(final String adr, final int prt,
+        final String user, final String priv,
+        final String passphrs
+    ) throws UnknownHostException {
+        super(adr, prt, user);
+        this.key = priv;
+        this.passphrase = passphrs;
+    }
+
+    /**
      * Escape SSH argument.
      * @param arg Argument to escape
      * @return Escaped
@@ -215,7 +240,16 @@ public final class SSH extends AbstractSSHShell {
                 CharEncoding.UTF_8
             );
             jsch.setHostKeyRepository(new EasyRepo());
-            jsch.addIdentity(file.getAbsolutePath());
+            if (this.passphrase == null) {
+                jsch.addIdentity(file.getAbsolutePath());
+            } else {
+                jsch.addIdentity(
+                    this.getLogin(),
+                    this.key.getBytes(Charsets.UTF_8),
+                    null,
+                    this.passphrase.getBytes(Charsets.UTF_8)
+                );
+            }
             Logger.debug(
                 this,
                 "Opening SSH session to %s@%s:%s (%d bytes in RSA key)...",
@@ -236,5 +270,4 @@ public final class SSH extends AbstractSSHShell {
             throw new IOException(ex);
         }
     }
-
 }
