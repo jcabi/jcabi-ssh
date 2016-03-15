@@ -42,8 +42,10 @@ Fork the repository, make changes, submit a pull request.
 We promise to review your changes same day and apply to
 the `master` branch, if they look correct.
 
-Please run Maven build before submitting a pull request:
+Please run Maven (3.2+) build before submitting a pull request:
 
 ```
 $ mvn clean install -Pqulice
 ```
+
+Make sure you have Java version 7 or higher.
