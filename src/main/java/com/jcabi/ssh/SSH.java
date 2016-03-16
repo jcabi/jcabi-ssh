@@ -69,6 +69,9 @@ import org.apache.commons.lang3.CharEncoding;
  * @version $Id$
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
+ * @todo #30:30min Refactor this class into smaller ones to avoid null
+ *  checking of passphrase. There should probably be separate classes for
+ *  encrypted/unencrypted private key.
  */
 @ToString
 @EqualsAndHashCode(of = { "key" }, callSuper = true)
