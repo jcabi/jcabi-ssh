@@ -186,8 +186,7 @@ public final class SSH extends AbstractSSHShell {
      */
     public SSH(final String adr, final int prt,
         final String user, final String priv) throws UnknownHostException {
-        super(adr, prt, user);
-        this.key = priv;
+        this(adr, prt, user, priv, null);
     }
 
     /**
