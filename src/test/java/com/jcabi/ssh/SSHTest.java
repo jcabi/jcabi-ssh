@@ -76,29 +76,72 @@ public final class SSHTest {
         final int port = SSHTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();
-        sshd.setCommandFactory(new MkCommandCreator());
-        sshd.start();
-        final String cmd = "some test command";
-        final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final Shell shell = new Shell.Verbose(
-            new SSH(
-                InetAddress.getLocalHost().getCanonicalHostName(),
-                port,
-                "test",
-                IOUtils.toString(
-                    this.getClass().getResourceAsStream("private.key")
+        try {
+            sshd.setCommandFactory(new MkCommandCreator());
+            sshd.start();
+            final String cmd = "some test command";
+            final ByteArrayOutputStream output = new ByteArrayOutputStream();
+            final Shell shell = new Shell.Verbose(
+                new SSH(
+                    InetAddress.getLocalHost().getCanonicalHostName(),
+                    port,
+                    "test",
+                    IOUtils.toString(
+                        this.getClass().getResourceAsStream("private.key")
+                    )
                 )
-            )
-        );
-        final int exit = shell.exec(
-            cmd,
-            new NullInputStream(0L),
-            output,
-            Logger.stream(Level.WARNING, true)
-        );
-        sshd.stop();
-        MatcherAssert.assertThat(exit, Matchers.equalTo(0));
-        MatcherAssert.assertThat(output.toString(), Matchers.equalTo(cmd));
+            );
+            final int exit = shell.exec(
+                cmd,
+                new NullInputStream(0L),
+                output,
+                Logger.stream(Level.WARNING, true)
+            );
+            MatcherAssert.assertThat(exit, Matchers.is(0));
+            MatcherAssert.assertThat(output.toString(), Matchers.is(cmd));
+        } finally {
+            sshd.stop();
+        }
+    }
+
+    /**
+     * SSH can execute command on ssh server with encrypted private key.
+     * @throws Exception In case of error.
+     */
+    @Test
+    public void executeCommandOnServerWithPrivateKey() throws Exception {
+        final int port = SSHTest.port();
+        final SshServer sshd = new MockSshServerBuilder(port)
+            .usePublicKeyAuthentication().build();
+        try {
+            sshd.setCommandFactory(new MkCommandCreator());
+            sshd.start();
+            final String cmd = "some other test command";
+            final ByteArrayOutputStream output = new ByteArrayOutputStream();
+            final Shell shell = new Shell.Verbose(
+                new SSH(
+                    InetAddress.getLocalHost().getCanonicalHostName(),
+                    port,
+                    "other test",
+                    IOUtils.toString(
+                        this.getClass().getResourceAsStream(
+                            "encrypted_private.key"
+                        )
+                    ),
+                    "test-passphrase"
+                )
+            );
+            final int exit = shell.exec(
+                cmd,
+                new NullInputStream(0L),
+                output,
+                Logger.stream(Level.WARNING, true)
+            );
+            MatcherAssert.assertThat(exit, Matchers.is(0));
+            MatcherAssert.assertThat(output.toString(), Matchers.is(cmd));
+        } finally {
+            sshd.stop();
+        }
     }
 
     /**
