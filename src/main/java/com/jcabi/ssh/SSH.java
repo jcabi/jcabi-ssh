@@ -183,7 +183,7 @@ public final class SSH extends AbstractSSHShell {
      */
     public SSH(final String adr, final int prt,
         final String user, final String priv) throws UnknownHostException {
-        this(adr, prt, user, priv, null);
+        this(adr, prt, user, priv, "");
     }
 
     /**
@@ -239,7 +239,7 @@ public final class SSH extends AbstractSSHShell {
                 CharEncoding.UTF_8
             );
             jsch.setHostKeyRepository(new EasyRepo());
-            if (this.passphrase == null) {
+            if (this.passphrase.isEmpty()) {
                 jsch.addIdentity(file.getAbsolutePath());
             } else {
                 jsch.addIdentity(
