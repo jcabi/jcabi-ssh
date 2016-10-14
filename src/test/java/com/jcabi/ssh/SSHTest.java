@@ -128,7 +128,8 @@ public final class SSHTest {
                             "encrypted_private.key"
                         )
                     ),
-                    "test-passphrase"
+                    "test-passphrase",
+                    null
                 )
             );
             final int exit = shell.exec(

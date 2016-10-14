@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -92,6 +93,11 @@ public final class SSH extends AbstractSSHShell {
      * Private SSH key pass phrase.
      */
     private transient String passphrase;
+
+    /**
+     * Private SSH session options
+     */
+    private final Map<String, String> additionalSessionOptions;
 
     /**
      * Constructor.
@@ -186,7 +192,7 @@ public final class SSH extends AbstractSSHShell {
      */
     public SSH(final String adr, final int prt,
         final String user, final String priv) throws UnknownHostException {
-        this(adr, prt, user, priv, null);
+        this(adr, prt, user, priv, null, null);
     }
 
     /**
@@ -196,16 +202,18 @@ public final class SSH extends AbstractSSHShell {
      * @param user Login
      * @param priv Private SSH key
      * @param passphrs Pass phrase for encrypted priv. key
+     * @param additionalSessionOptions Additional SSH session options
      * @throws UnknownHostException when host is unknown.
      * @checkstyle ParameterNumberCheck (6 lines)
      */
     public SSH(final String adr, final int prt,
         final String user, final String priv,
-        final String passphrs
+        final String passphrs, final Map<String, String> additionalSessionOptions
     ) throws UnknownHostException {
         super(adr, prt, user);
         this.key = priv;
         this.passphrase = passphrs;
+        this.additionalSessionOptions = additionalSessionOptions;
     }
 
     /**
@@ -230,6 +238,11 @@ public final class SSH extends AbstractSSHShell {
     protected Session session() throws IOException {
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
+            if (this.additionalSessionOptions != null) {
+                for (Map.Entry<String, String> option : additionalSessionOptions.entrySet()) {
+                    JSch.setConfig(option.getKey(), option.getValue());
+                }
+            }
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
             final File file = File.createTempFile("jcabi-ssh", ".key");
