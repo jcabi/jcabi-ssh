@@ -9,11 +9,9 @@ script:
   - mvn clean
   - pdd --source=$(pwd) --file=/dev/null
   - est --dir=est --file=/dev/null
-addons:
-  apt:
-    packages:
-    - libmagic1
-    - libmagic-dev
+before_install:
+  - rvm install 2.2.2
+  - rvm use 2.2.2
 install:
   - gem install pdd
   - gem install est
