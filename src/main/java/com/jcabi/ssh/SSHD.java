@@ -54,7 +54,7 @@ import org.apache.commons.lang3.CharEncoding;
  * <p>If you forget to call {@link #close()}, SSH daemon will be
  * up and running until a shutdown of the JVM.</p>
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.0
  * @checkstyle MultipleStringLiteralsCheck (500 lines)

@@ -48,7 +48,7 @@
  *   &lt;artifactId&gt;jcabi-ssh&lt;/artifactId&gt;
  * &lt;/dependency&gt;</pre>
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.0
  * @see <a href="http://ssh.jcabi.com/">project website</a>

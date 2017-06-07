@@ -65,7 +65,7 @@ import org.apache.commons.lang3.CharEncoding;
  * <p>It is highly recommended to use classes from {@link Shell} interface,
  * they will simplify operations.</p>
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>

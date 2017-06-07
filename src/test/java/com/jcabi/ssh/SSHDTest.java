@@ -41,7 +41,7 @@ import org.junit.rules.TemporaryFolder;
 /**
  * Integration tests for ${@link SSH}.
  *
- * @author Yegor Bugayenko (yegor@teamed.io)
+ * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
