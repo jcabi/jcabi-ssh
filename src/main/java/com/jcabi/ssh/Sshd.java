@@ -129,24 +129,8 @@ public final class Sshd implements Closeable {
             "-o", String.format("AuthorizedKeysFile=%s", keys),
             "-o", "StrictModes=no"
         ).start();
-        new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    new VerboseProcess(Sshd.this.process).stdout();
-                }
-            }
-        ).start();
-        Runtime.getRuntime().addShutdownHook(
-            new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        Sshd.this.close();
-                    }
-                }
-            )
-        );
+        new Thread(() -> new VerboseProcess(this.process).stdout()).start();
+        Runtime.getRuntime().addShutdownHook(new Thread(this::close));
         try {
             TimeUnit.SECONDS.sleep(1L);
         } catch (final InterruptedException ex) {
