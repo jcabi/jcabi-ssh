@@ -46,11 +46,11 @@ import lombok.ToString;
  * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
- * @see SSH For SSH channel with authenticaton using private key.
+ * @see Ssh For SSH channel with authenticaton using private key.
  */
 @ToString
 @EqualsAndHashCode(of = { "password" }, callSuper = true)
-public final class SSHByPassword extends AbstractSSHShell {
+public final class SshByPassword extends AbstractSshShell {
 
     /**
      * User password.
@@ -66,8 +66,8 @@ public final class SSHByPassword extends AbstractSSHShell {
      * @throws UnknownHostException If fails
      * @checkstyle ParameterNumberCheck (6 lines)
      */
-    public SSHByPassword(final String adr, final int prt,
-                    final String user, final String passwd)
+    public SshByPassword(final String adr, final int prt,
+        final String user, final String passwd)
         throws UnknownHostException {
         super(adr, prt, user);
         this.password = passwd;

@@ -35,17 +35,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.io.input.NullInputStream;
-import org.apache.commons.io.output.TeeOutputStream;
-import org.apache.commons.lang3.CharEncoding;
+import org.cactoos.io.DeadInput;
+import org.cactoos.io.TeeOutputStream;
 
 /**
  * Shell.
  *
- * <p>This interface is implemented by {@link SSH} class. In order to use
+ * <p>This interface is implemented by {@link Ssh} class. In order to use
  * it, just make an instance and call
  * {@link #exec(String,InputStream,OutputStream,OutputStream)} exec()}:
  *
@@ -205,7 +205,7 @@ public interface Shell {
          */
         public int exec(final String cmd) throws IOException {
             return this.origin.exec(
-                cmd, new NullInputStream(0L),
+                cmd, new DeadInput().stream(),
                 Logger.stream(Level.INFO, this),
                 Logger.stream(Level.WARNING, this)
             );
@@ -239,10 +239,10 @@ public interface Shell {
         public String exec(final String cmd) throws IOException {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             this.origin.exec(
-                cmd, new NullInputStream(0L),
+                cmd, new DeadInput().stream(),
                 baos, baos
             );
-            return baos.toString(CharEncoding.UTF_8);
+            return baos.toString(StandardCharsets.UTF_8.toString());
         }
     }
 

@@ -32,12 +32,13 @@ package com.jcabi.ssh;
 import com.jcabi.log.VerboseProcess;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
+import org.cactoos.io.LengthOf;
+import org.cactoos.io.ResourceOf;
+import org.cactoos.io.TeeInput;
+import org.cactoos.text.TextOf;
 
 /**
  * Test SSHD daemon (only for Linux).
@@ -61,7 +62,7 @@ import org.apache.commons.lang3.CharEncoding;
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
-public final class SSHD implements Closeable {
+public final class Sshd implements Closeable {
 
     /**
      * Temp directory.
@@ -83,7 +84,7 @@ public final class SSHD implements Closeable {
      * @throws IOException If fails
      * @since 1.5
      */
-    public SSHD() throws IOException {
+    public Sshd() throws IOException {
         this(new File(System.getProperty("java.io.tmpdir")));
     }
 
@@ -92,18 +93,21 @@ public final class SSHD implements Closeable {
      * @param path Directory to work in
      * @throws IOException If fails
      */
-    public SSHD(final File path) throws IOException {
+    @SuppressWarnings("PMD.ConstructorOnlyInitializesOrCallOtherConstructors")
+    public Sshd(final File path) throws IOException {
         this.dir = path;
         final File rsa = new File(this.dir, "host_rsa_key");
-        IOUtils.copy(
-            this.getClass().getResourceAsStream("ssh_host_rsa_key"),
-            new FileOutputStream(rsa)
-        );
+        new LengthOf(
+            new TeeInput(
+                new ResourceOf("com/jcabi/ssh/ssh_host_rsa_key"), rsa
+            )
+        ).value();
         final File keys = new File(this.dir, "authorized");
-        IOUtils.copy(
-            this.getClass().getResourceAsStream("authorized_keys"),
-            new FileOutputStream(keys)
-        );
+        new LengthOf(
+            new TeeInput(
+                new ResourceOf("com/jcabi/ssh/authorized_keys"), keys
+            )
+        ).value();
         new VerboseProcess(
             new ProcessBuilder().command(
                 "chmod", "600",
@@ -111,7 +115,7 @@ public final class SSHD implements Closeable {
                 rsa.getAbsolutePath()
             )
         ).stdout();
-        this.prt = SSHD.reserve();
+        this.prt = Sshd.reserve();
         this.process = new ProcessBuilder().command(
             "/usr/sbin/sshd",
             "-p",
@@ -129,7 +133,7 @@ public final class SSHD implements Closeable {
             new Runnable() {
                 @Override
                 public void run() {
-                    new VerboseProcess(SSHD.this.process).stdout();
+                    new VerboseProcess(Sshd.this.process).stdout();
                 }
             }
         ).start();
@@ -138,7 +142,7 @@ public final class SSHD implements Closeable {
                 new Runnable() {
                     @Override
                     public void run() {
-                        SSHD.this.close();
+                        Sshd.this.close();
                     }
                 }
             )
@@ -168,7 +172,8 @@ public final class SSHD implements Closeable {
      * Get user name to login.
      * @return User name
      */
-    public String login() {
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static String login() {
         return new VerboseProcess(
             new ProcessBuilder().command("id", "-n", "-u")
         ).stdout().trim();
@@ -179,7 +184,8 @@ public final class SSHD implements Closeable {
      * @return Hostname
      * @since 1.1
      */
-    public String host() {
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static String host() {
         return new VerboseProcess(
             new ProcessBuilder().command("hostname")
         ).stdout().trim();
@@ -202,11 +208,9 @@ public final class SSHD implements Closeable {
      * @return Key
      * @throws IOException If fails
      */
-    public String key() throws IOException {
-        return IOUtils.toString(
-            this.getClass().getResourceAsStream("id_rsa"),
-            CharEncoding.UTF_8
-        );
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static String key() throws IOException {
+        return new TextOf(new ResourceOf("com/jcabi/ssh/id_rsa")).asString();
     }
 
     /**
@@ -215,7 +219,7 @@ public final class SSHD implements Closeable {
      * @throws IOException If fails
      */
     public Shell connect() throws IOException {
-        return new SSH(this.host(), this.port(), this.login(), this.key());
+        return new Ssh(Sshd.host(), this.port(), Sshd.login(), Sshd.key());
     }
 
     /**

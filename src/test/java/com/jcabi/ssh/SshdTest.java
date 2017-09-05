@@ -39,14 +39,14 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /**
- * Integration tests for ${@link SSH}.
+ * Integration tests for ${@link Ssh}.
  *
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
-public final class SSHDTest {
+public final class SshdTest {
 
     /**
      * Temp directory.
@@ -69,7 +69,7 @@ public final class SSHDTest {
      */
     @Test
     public void executeCommandOnServer() throws Exception {
-        final SSHD sshd = new SSHD();
+        final Sshd sshd = new Sshd();
         try {
             MatcherAssert.assertThat(
                 new Shell.Plain(
@@ -88,13 +88,13 @@ public final class SSHDTest {
      */
     @Test
     public void executeCommandOnServerWithManualConfig() throws Exception {
-        final SSHD sshd = new SSHD(this.temp.newFolder());
+        final Sshd sshd = new Sshd(this.temp.newFolder());
         try {
             MatcherAssert.assertThat(
                 new Shell.Plain(
                     new Shell.Safe(
-                        new SSH(
-                            sshd.host(), sshd.port(), sshd.login(),
+                        new Ssh(
+                            Sshd.host(), sshd.port(), Sshd.login(),
                             this.getClass().getResource("id_rsa")
                         )
                     )

@@ -32,10 +32,12 @@ package com.jcabi.ssh.mock;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.apache.commons.io.IOUtils;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
+import org.cactoos.io.LengthOf;
+import org.cactoos.io.OutputTo;
+import org.cactoos.io.TeeInput;
 
 /**
  * Mock of a command that displays its name.
@@ -89,8 +91,9 @@ public final class MkCommand implements Command {
 
     @Override
     public void start(final Environment env) throws IOException {
-        IOUtils.write(this.command, this.output);
-        this.output.flush();
+        new LengthOf(
+            new TeeInput(this.command, new OutputTo(this.output))
+        ).value();
         this.callback.onExit(0);
     }
 

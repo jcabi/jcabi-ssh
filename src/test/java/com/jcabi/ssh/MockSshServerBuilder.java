@@ -58,32 +58,32 @@ class MockSshServerBuilder {
     /**
      * SSH port.
      */
-    private final transient int sshport;
+    private final transient int port;
 
     /**
      * User auth factories.
      */
-    private final transient List<NamedFactory<UserAuth>> authfactories;
+    private final transient List<NamedFactory<UserAuth>> factories;
 
     /**
      * Optional password authenticator.
      */
-    private transient Optional<PasswordAuthenticator> passwordauth;
+    private transient Optional<PasswordAuthenticator> pwd;
 
     /**
      * Optional public key authenticator.
      */
-    private transient Optional<PublickeyAuthenticator> publickeyauth;
+    private transient Optional<PublickeyAuthenticator> pkey;
 
     /**
      * Constructor with a SSH port number.
      * @param port The port number for SSH server
      */
     MockSshServerBuilder(final int port) {
-        this.sshport = port;
-        this.authfactories = new ArrayList<NamedFactory<UserAuth>>(2);
-        this.passwordauth = Optional.absent();
-        this.publickeyauth = Optional.absent();
+        this.port = port;
+        this.factories = new ArrayList<NamedFactory<UserAuth>>(2);
+        this.pwd = Optional.absent();
+        this.pkey = Optional.absent();
     }
 
     /**
@@ -92,15 +92,15 @@ class MockSshServerBuilder {
      */
     public SshServer build() {
         final SshServer sshd = SshServer.setUpDefaultServer();
-        sshd.setPort(this.sshport);
+        sshd.setPort(this.port);
         sshd.setKeyPairProvider(
             new SimpleGeneratorHostKeyProvider(
                 new File(Files.createTempDir(), "hostkey.ser").getAbsolutePath()
             )
         );
-        sshd.setUserAuthFactories(this.authfactories);
-        sshd.setPasswordAuthenticator(this.passwordauth.orNull());
-        sshd.setPublickeyAuthenticator(this.publickeyauth.orNull());
+        sshd.setUserAuthFactories(this.factories);
+        sshd.setPasswordAuthenticator(this.pwd.orNull());
+        sshd.setPublickeyAuthenticator(this.pkey.orNull());
         return sshd;
     }
 
@@ -113,17 +113,17 @@ class MockSshServerBuilder {
      */
     public MockSshServerBuilder usePasswordAuthentication(
         final String login, final String password) {
-        this.authfactories.add(new UserAuthPassword.Factory());
-        final PasswordAuthenticator authenticator =
+        this.factories.add(new UserAuthPassword.Factory());
+        final PasswordAuthenticator auth =
             Mockito.mock(PasswordAuthenticator.class);
         Mockito.when(
-            authenticator.authenticate(
+            auth.authenticate(
                 Mockito.eq(login),
                 Mockito.eq(password),
                 Mockito.any(ServerSession.class)
             )
         ).thenReturn(true);
-        this.passwordauth = Optional.of(authenticator);
+        this.pwd = Optional.of(auth);
         return this;
     }
 
@@ -133,17 +133,17 @@ class MockSshServerBuilder {
      * @return This instance of builder.
      */
     public MockSshServerBuilder usePublicKeyAuthentication() {
-        this.authfactories.add(new UserAuthPublicKey.Factory());
-        final PublickeyAuthenticator authenticator =
+        this.factories.add(new UserAuthPublicKey.Factory());
+        final PublickeyAuthenticator auth =
             Mockito.mock(PublickeyAuthenticator.class);
         Mockito.when(
-            authenticator.authenticate(
+            auth.authenticate(
                 Mockito.anyString(),
                 Mockito.any(PublicKey.class),
                 Mockito.any(ServerSession.class)
             )
         ).thenReturn(true);
-        this.publickeyauth = Optional.of(authenticator);
+        this.pkey = Optional.of(auth);
         return this;
     }
 

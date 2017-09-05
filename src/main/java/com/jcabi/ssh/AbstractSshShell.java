@@ -38,7 +38,6 @@ import java.net.UnknownHostException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Common module for any ssh shell.
@@ -50,7 +49,7 @@ import org.apache.commons.lang3.Validate;
 @EqualsAndHashCode(of = { "addr", "port", "login" })
 @Getter
 @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-abstract class AbstractSSHShell implements Shell {
+abstract class AbstractSshShell implements Shell {
 
     /**
      * IP address of the server.
@@ -74,26 +73,19 @@ abstract class AbstractSSHShell implements Shell {
      * @param user User that will be used when connecting.
      * @throws UnknownHostException when host is unknown.
      */
-    AbstractSSHShell(
+    AbstractSshShell(
         final String adr,
         final int prt,
         final String user) throws UnknownHostException {
         this.addr = InetAddress.getByName(adr).getHostAddress();
         this.port = prt;
         this.login = user;
-        Validate.matchesPattern(
-            this.addr,
-            "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
-            "Invalid IP address of the server `%s`",
-            this.addr
-        );
-        Validate.notEmpty(user, "user name can't be empty");
     }
 
     // @checkstyle ParameterNumberCheck (2 lines)
     @Override
     public int exec(final String command, final InputStream stdin,
-                    final OutputStream stdout, final OutputStream stderr)
+        final OutputStream stdout, final OutputStream stderr)
         throws IOException {
         return new Execution.Default(
             command,

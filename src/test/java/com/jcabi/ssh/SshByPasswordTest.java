@@ -36,30 +36,30 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.logging.Level;
-import org.apache.commons.io.input.NullInputStream;
 import org.apache.sshd.SshServer;
+import org.cactoos.io.DeadInputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link SSHByPassword}.
+ * Unit tests for {@link SshByPassword}.
  *
  * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
  */
-public final class SSHByPasswordTest {
+public final class SshByPasswordTest {
 
     /**
-     * Checks if {@link SSHByPassword} can execute a command on an SSH server.
+     * Checks if {@link SshByPassword} can execute a command on an SSH server.
      * @throws Exception If fails
      */
     @Test
     public void executesCommand() throws Exception {
         final String username = "test";
         final String password = "password";
-        final int port = SSHByPasswordTest.port();
+        final int port = SshByPasswordTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePasswordAuthentication(username, password).build();
         sshd.setCommandFactory(new MkCommandCreator());
@@ -67,7 +67,7 @@ public final class SSHByPasswordTest {
         final String cmd = "some test command";
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final Shell shell = new Shell.Verbose(
-            new SSHByPassword(
+            new SshByPassword(
                 InetAddress.getLocalHost().getHostAddress(),
                 port,
                 username,
@@ -76,7 +76,7 @@ public final class SSHByPasswordTest {
         );
         final int exit = shell.exec(
             cmd,
-            new NullInputStream(0L),
+            new DeadInputStream(),
             output,
             Logger.stream(Level.WARNING, true)
         );

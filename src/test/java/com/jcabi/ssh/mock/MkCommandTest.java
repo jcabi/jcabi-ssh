@@ -51,13 +51,13 @@ public final class MkCommandTest {
     @Test
     public void starts() throws Exception {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
-        final String commandText = "test mkcommand";
-        final MkCommand command = new MkCommand(commandText);
+        final String text = "test mkcommand";
+        final MkCommand command = new MkCommand(text);
         command.setOutputStream(output);
         command.setExitCallback(Mockito.mock(ExitCallback.class));
         command.start(Mockito.mock(Environment.class));
         MatcherAssert.assertThat(
-            output.toString(), Matchers.equalTo(commandText)
+            output.toString(), Matchers.equalTo(text)
         );
     }
 }

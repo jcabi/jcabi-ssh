@@ -104,11 +104,6 @@ interface Execution {
             this.session = sess;
         }
 
-        /**
-         * Execute {@link #command} in {@link #session}.
-         * @return Exit code
-         * @throws IOException If fails
-         */
         @Override
         public int exec() throws IOException {
             try {

@@ -40,13 +40,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.CharEncoding;
+import org.cactoos.io.LengthOf;
+import org.cactoos.io.TeeInput;
+import org.cactoos.text.TextOf;
 
 /**
  * Single SSH Channel.
@@ -77,12 +77,17 @@ import org.apache.commons.lang3.CharEncoding;
 @ToString
 @EqualsAndHashCode(of = { "key" }, callSuper = true)
 @SuppressWarnings("PMD.TooManyMethods")
-public final class SSH extends AbstractSSHShell {
+public final class Ssh extends AbstractSshShell {
 
     /**
      * Default SSH port.
      */
     public static final int PORT = 22;
+
+    /**
+     * Encoding.
+     */
+    private static final String UTF_8 = "UTF-8";
 
     /**
      * Private SSH key.
@@ -102,9 +107,9 @@ public final class SSH extends AbstractSSHShell {
      * @throws IOException If fails
      * @since 1.4
      */
-    public SSH(final String adr, final String user, final URL priv)
+    public Ssh(final String adr, final String user, final URL priv)
         throws IOException {
-        this(adr, SSH.PORT, user, priv);
+        this(adr, Ssh.PORT, user, priv);
     }
 
     /**
@@ -115,9 +120,9 @@ public final class SSH extends AbstractSSHShell {
      * @throws IOException If fails
      * @since 1.4
      */
-    public SSH(final InetAddress adr, final String user, final URL priv)
+    public Ssh(final InetAddress adr, final String user, final URL priv)
         throws IOException {
-        this(adr, SSH.PORT, user, priv);
+        this(adr, Ssh.PORT, user, priv);
     }
 
     /**
@@ -128,9 +133,9 @@ public final class SSH extends AbstractSSHShell {
      * @throws UnknownHostException If fails
      * @since 1.4
      */
-    public SSH(final String adr, final String user, final String priv)
+    public Ssh(final String adr, final String user, final String priv)
         throws UnknownHostException {
-        this(adr, SSH.PORT, user, priv);
+        this(adr, Ssh.PORT, user, priv);
     }
 
     /**
@@ -141,9 +146,9 @@ public final class SSH extends AbstractSSHShell {
      * @throws UnknownHostException If fails
      * @since 1.4
      */
-    public SSH(final InetAddress adr, final String user, final String priv)
+    public Ssh(final InetAddress adr, final String user, final String priv)
         throws UnknownHostException {
-        this(adr.getCanonicalHostName(), SSH.PORT, user, priv);
+        this(adr.getCanonicalHostName(), Ssh.PORT, user, priv);
     }
 
     /**
@@ -153,12 +158,12 @@ public final class SSH extends AbstractSSHShell {
      * @param user Login
      * @param priv Private SSH key
      * @throws IOException If fails
-     * @checkstyle ParameterNumberCheck (6 lines)
      * @since 1.4
+     * @checkstyle ParameterNumberCheck (6 lines)
      */
-    public SSH(final String adr, final int prt,
+    public Ssh(final String adr, final int prt,
         final String user, final URL priv) throws IOException {
-        this(adr, prt, user, IOUtils.toString(priv));
+        this(adr, prt, user, new TextOf(priv).asString());
     }
 
     /**
@@ -168,12 +173,15 @@ public final class SSH extends AbstractSSHShell {
      * @param user Login
      * @param priv Private SSH key
      * @throws IOException If fails
-     * @checkstyle ParameterNumberCheck (6 lines)
      * @since 1.4
+     * @checkstyle ParameterNumberCheck (6 lines)
      */
-    public SSH(final InetAddress adr, final int prt,
+    public Ssh(final InetAddress adr, final int prt,
         final String user, final URL priv) throws IOException {
-        this(adr.getCanonicalHostName(), prt, user, IOUtils.toString(priv));
+        this(
+            adr.getCanonicalHostName(), prt, user,
+            new TextOf(priv).asString()
+        );
     }
 
     /**
@@ -185,7 +193,7 @@ public final class SSH extends AbstractSSHShell {
      * @throws UnknownHostException If fails
      * @checkstyle ParameterNumberCheck (6 lines)
      */
-    public SSH(final String adr, final int prt,
+    public Ssh(final String adr, final int prt,
         final String user, final String priv) throws UnknownHostException {
         this(adr, prt, user, priv, null);
     }
@@ -200,7 +208,7 @@ public final class SSH extends AbstractSSHShell {
      * @throws UnknownHostException when host is unknown.
      * @checkstyle ParameterNumberCheck (6 lines)
      */
-    public SSH(final String adr, final int prt,
+    public Ssh(final String adr, final int prt,
         final String user, final String priv,
         final String passphrs
     ) throws UnknownHostException {
@@ -214,6 +222,7 @@ public final class SSH extends AbstractSSHShell {
      * @param arg Argument to escape
      * @return Escaped
      */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String escape(final String arg) {
         return String.format("'%s'", arg.replace("'", "'\\''"));
     }
@@ -234,23 +243,24 @@ public final class SSH extends AbstractSSHShell {
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
             final File file = File.createTempFile("jcabi-ssh", ".key");
-            FileUtils.forceDeleteOnExit(file);
-            FileUtils.write(
-                file,
-                this.key.replaceAll("\r", "")
-                    .replaceAll("\n\\s+|\n{2,}", "\n")
-                    .trim(),
-                CharEncoding.UTF_8
-            );
+            file.deleteOnExit();
+            new LengthOf(
+                new TeeInput(
+                    this.key.replaceAll("\r", "")
+                        .replaceAll("\n\\s+|\n{2,}", "\n")
+                        .trim(),
+                    file
+                )
+            ).value();
             jsch.setHostKeyRepository(new EasyRepo());
             if (this.passphrase == null) {
                 jsch.addIdentity(file.getAbsolutePath());
             } else {
                 jsch.addIdentity(
                     this.getLogin(),
-                    this.key.getBytes(Charsets.UTF_8),
+                    this.key.getBytes(Ssh.UTF_8),
                     null,
-                    this.passphrase.getBytes(Charsets.UTF_8)
+                    this.passphrase.getBytes(Ssh.UTF_8)
                 );
             }
             Logger.debug(
@@ -267,7 +277,7 @@ public final class SSH extends AbstractSSHShell {
             );
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();
-            FileUtils.deleteQuietly(file);
+            Files.deleteIfExists(file.toPath());
             return session;
         } catch (final JSchException ex) {
             throw new IOException(ex);

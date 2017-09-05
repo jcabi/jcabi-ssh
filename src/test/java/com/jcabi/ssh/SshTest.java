@@ -36,15 +36,16 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.logging.Level;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.NullInputStream;
 import org.apache.sshd.SshServer;
+import org.cactoos.io.DeadInputStream;
+import org.cactoos.io.ResourceOf;
+import org.cactoos.text.TextOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Tests for ${@link SSH}.
+ * Tests for ${@link Ssh}.
  *
  * @author Krzysztof Krason (Krzysztof.Krason@gmail.com)
  * @author Yegor Bugayenko (yegor256@gmail.com)
@@ -52,7 +53,7 @@ import org.junit.Test;
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
-public final class SSHTest {
+public final class SshTest {
 
     /**
      * SSH can escape an argument.
@@ -62,7 +63,7 @@ public final class SSHTest {
     @Test
     public void escapesArgument() throws Exception {
         MatcherAssert.assertThat(
-            SSH.escape("hi,\n '$1'"),
+            Ssh.escape("hi,\n '$1'"),
             Matchers.equalTo("'hi,\n '\\''$1'\\'''")
         );
     }
@@ -73,7 +74,7 @@ public final class SSHTest {
      */
     @Test
     public void executeCommandOnServer() throws Exception {
-        final int port = SSHTest.port();
+        final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();
         try {
@@ -82,18 +83,18 @@ public final class SSHTest {
             final String cmd = "some test command";
             final ByteArrayOutputStream output = new ByteArrayOutputStream();
             final Shell shell = new Shell.Verbose(
-                new SSH(
+                new Ssh(
                     InetAddress.getLocalHost().getCanonicalHostName(),
                     port,
                     "test",
-                    IOUtils.toString(
-                        this.getClass().getResourceAsStream("private.key")
-                    )
+                    new TextOf(
+                        new ResourceOf("com/jcabi/ssh/private.key")
+                    ).asString()
                 )
             );
             final int exit = shell.exec(
                 cmd,
-                new NullInputStream(0L),
+                new DeadInputStream(),
                 output,
                 Logger.stream(Level.WARNING, true)
             );
@@ -110,7 +111,7 @@ public final class SSHTest {
      */
     @Test
     public void executeCommandOnServerWithPrivateKey() throws Exception {
-        final int port = SSHTest.port();
+        final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();
         try {
@@ -119,21 +120,19 @@ public final class SSHTest {
             final String cmd = "some other test command";
             final ByteArrayOutputStream output = new ByteArrayOutputStream();
             final Shell shell = new Shell.Verbose(
-                new SSH(
+                new Ssh(
                     InetAddress.getLocalHost().getCanonicalHostName(),
                     port,
                     "other test",
-                    IOUtils.toString(
-                        this.getClass().getResourceAsStream(
-                            "encrypted_private.key"
-                        )
-                    ),
+                    new TextOf(
+                        new ResourceOf("com/jcabi/ssh/encrypted_private.key")
+                    ).asString(),
                     "test-passphrase"
                 )
             );
             final int exit = shell.exec(
                 cmd,
-                new NullInputStream(0L),
+                new DeadInputStream(),
                 output,
                 Logger.stream(Level.WARNING, true)
             );

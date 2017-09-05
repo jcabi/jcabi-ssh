@@ -60,7 +60,7 @@ final class JschLogger implements com.jcraft.jsch.Logger {
         } else {
             jul = Level.INFO;
         }
-        Logger.log(jul, SSH.class, msg);
+        Logger.log(jul, Ssh.class, msg);
     }
 
 }

@@ -32,8 +32,9 @@ package com.jcabi.ssh;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.Session;
 import java.io.ByteArrayOutputStream;
-import org.apache.commons.io.input.NullInputStream;
-import org.junit.Assert;
+import org.cactoos.io.DeadInputStream;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -62,16 +63,18 @@ public final class ExecutionTest {
         Mockito.when(session.openChannel(Mockito.anyString()))
             .thenReturn(channel);
         Mockito.when(channel.isClosed()).thenReturn(Boolean.TRUE);
-        Mockito.when(channel.getExitStatus()).thenReturn(EXIT_CODE);
-        Assert.assertEquals(
-            EXIT_CODE,
+        Mockito.when(channel.getExitStatus()).thenReturn(
+            ExecutionTest.EXIT_CODE
+        );
+        MatcherAssert.assertThat(
             new Execution.Default(
                 "hello",
-                new NullInputStream(0L),
+                new DeadInputStream(),
                 new ByteArrayOutputStream(),
                 new ByteArrayOutputStream(),
                 session
-            ).exec()
+            ).exec(),
+            Matchers.equalTo(ExecutionTest.EXIT_CODE)
         );
     }
 }
