@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.logging.Level;
-import org.apache.sshd.SshServer;
+import org.apache.sshd.server.SshServer;
 import org.cactoos.io.DeadInputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;

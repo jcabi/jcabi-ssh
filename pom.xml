@@ -89,12 +89,12 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.51</version>
+      <version>0.1.54</version>
     </dependency>
     <dependency>
       <groupId>org.apache.sshd</groupId>
       <artifactId>sshd-core</artifactId>
-      <version>0.11.0</version>
+      <version>1.6.0</version>
       <optional>true</optional>
     </dependency>
   </dependencies>

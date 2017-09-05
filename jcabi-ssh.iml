@@ -21,9 +21,8 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.cactoos:cactoos:0.16" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.guava:guava:20.0" level="project" />
-    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.51" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.sshd:sshd-core:0.11.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.mina:mina-core:2.0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.54" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.sshd:sshd-core:1.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-library:1.3" level="project" />
