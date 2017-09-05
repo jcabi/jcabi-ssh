@@ -2,7 +2,8 @@ architect:
 - yegor256
 - dmarkov
 install:
-- sudo gem install pdd
+  - sudo gem install pdd
+  - sudo gem install xcop
 assets:
   secring.gpg: zerocracy/home#assets/secring.gpg
   settings.xml: zerocracy/home#assets/jcabi/settings.xml
