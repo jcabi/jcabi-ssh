@@ -21,6 +21,9 @@ Shell shell = new SSH("example.com", 22, "username", "key...");
 String stdout = new Shell.Plain(shell).exec("echo 'Hello, world!'");
 ```
 
+The `key` here is your private SSH key,
+usually the one you have in `~/.ssh/id_rsa`.
+
 There is also a convenient `SSHD` class, a runner of ssh daemon,
 for unit testing:
 
@@ -28,7 +31,7 @@ for unit testing:
 try (SSHD sshd = new SSHD()) {
   String uptime = new Shell.Plain(
     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
- ).exec("uptime");
+  ).exec("uptime");
 }
 ```
 
