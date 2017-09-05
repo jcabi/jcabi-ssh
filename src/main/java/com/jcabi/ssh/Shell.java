@@ -78,6 +78,75 @@ public interface Shell {
         OutputStream stdout, OutputStream stderr) throws IOException;
 
     /**
+     * Fake shell for unit testing.
+     *
+     * <p>It doesn't do anything, but imitates the behavior of a real
+     * shell, returning the code and the output provided in the ctor.</p>
+     *
+     * @since 1.6
+     */
+    @Immutable
+    @ToString
+    @EqualsAndHashCode(of = "code")
+    final class Fake implements Shell {
+        /**
+         * Exit code.
+         */
+        private final int code;
+        /**
+         * Stdout to return.
+         */
+        private final byte[] stdout;
+        /**
+         * Stderr to return.
+         */
+        private final byte[] stderr;
+        /**
+         * Ctor.
+         */
+        public Fake() {
+            this(0, "", "");
+        }
+        /**
+         * Ctor.
+         * @param exit Exit code to return
+         * @param out Stdout to return
+         * @param err Stderr to return
+         */
+        public Fake(final int exit, final String out, final String err) {
+            this(exit, out.getBytes(), err.getBytes());
+        }
+        /**
+         * Ctor.
+         * @param exit Exit code to return
+         * @param out Stdout to return
+         * @param err Stderr to return
+         */
+        public Fake(final int exit, final byte[] out, final byte[] err) {
+            this.code = exit;
+            this.stdout = out;
+            this.stderr = err;
+        }
+        // @checkstyle ParameterNumberCheck (5 line)
+        @Override
+        public int exec(final String command, final InputStream stdin,
+            final OutputStream sout, final OutputStream serr)
+            throws IOException {
+            while (true) {
+                // @checkstyle MagicNumber (1 line)
+                if (stdin.read(new byte[2048]) < 0) {
+                    break;
+                }
+            }
+            sout.write(this.stdout);
+            sout.close();
+            serr.write(this.stderr);
+            serr.close();
+            return this.code;
+        }
+    }
+
+    /**
      * Safe run (throws if exit code is not zero).
      */
     @Immutable

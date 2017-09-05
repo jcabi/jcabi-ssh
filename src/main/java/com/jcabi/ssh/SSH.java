@@ -53,7 +53,8 @@ import org.apache.commons.lang3.CharEncoding;
  *
  * <p>This class implements {@link Shell} interface. In order to use
  * it, just make an instance and call
- * {@link #exec(String,InputStream,OutputStream,OutputStream)} exec()}:
+ * {@link #exec(String, java.io.InputStream,
+ * java.io.OutputStream, java.io.OutputStream)} exec()}:
  *
  * <pre> String hello = new Shell.Plain(
  *   new SSH(
@@ -91,7 +92,7 @@ public final class SSH extends AbstractSSHShell {
     /**
      * Private SSH key pass phrase.
      */
-    private transient String passphrase;
+    private final transient String passphrase;
 
     /**
      * Constructor.
