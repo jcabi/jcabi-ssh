@@ -16,8 +16,8 @@ It is a convenient SSH client for Java:
 
 ```java
 import com.jcabi.ssh.Shell;
-import com.jcabi.ssh.SSH;
-Shell shell = new SSH("example.com", 22, "username", "key...");
+import com.jcabi.ssh.Ssh;
+Shell shell = new Ssh("example.com", 22, "username", "key...");
 String stdout = new Shell.Plain(shell).exec("echo 'Hello, world!'");
 ```
 
@@ -28,9 +28,9 @@ There is also a convenient `SSHD` class, a runner of ssh daemon,
 for unit testing:
 
 ```java
-try (SSHD sshd = new SSHD()) {
+try (Sshd sshd = new Sshd()) {
   String uptime = new Shell.Plain(
-    SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
+    Ssh(sshd.host(), sshd.login(), sshd.port(), sshd.key())
   ).exec("uptime");
 }
 ```
