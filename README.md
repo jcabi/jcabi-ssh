@@ -35,6 +35,9 @@ try (Sshd sshd = new Sshd()) {
 }
 ```
 
+Version 1.6 works under Java 1.8+. If your Java version is ealier, use
+version 1.5.2.
+
 ## Questions?
 
 If you have any questions about the framework, or something doesn't work as expected,
