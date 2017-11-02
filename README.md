@@ -9,6 +9,8 @@
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/com.jcabi/jcabi-ssh/badge.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
 [![Dependencies](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b)
 
+[![jpeek report](http://i.jpeek.org/com.jcabi/jcabi-ssh/badge.svg)](http://i.jpeek.org/com.jcabi/jcabi-ssh/)
+
 More details are here: [ssh.jcabi.com](http://ssh.jcabi.com/).
 Also, read this blog post: [Simple Java SSH Client](http://www.yegor256.com/2014/09/02/java-ssh-client.html).
 
