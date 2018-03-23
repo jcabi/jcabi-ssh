@@ -1,7 +1,9 @@
 <img src="http://img.jcabi.com/logo-square.svg" width="64px" height="64px" />
 
+[![Donate via Zerocracy](https://www.0crat.com/contrib-badge/C9V6HBZQS.svg)](https://www.0crat.com/contrib/C9V6HBZQS)
+
 [![EO principles respected here](http://www.elegantobjects.org/badge.svg)](http://www.elegantobjects.org)
-[![Managed by Zerocracy](https://www.0crat.com/badge/C3RUBL5H9.svg)](https://www.0crat.com/p/C3RUBL5H9)
+[![Managed by Zerocracy](https://www.0crat.com/badge/C9V6HBZQS.svg)](https://www.0crat.com/p/C9V6HBZQS)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-ssh)](http://www.rultor.com/p/jcabi/jcabi-ssh)
 
 [![Build Status](https://travis-ci.org/jcabi/jcabi-ssh.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-ssh)
