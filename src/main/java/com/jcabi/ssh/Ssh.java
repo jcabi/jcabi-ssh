@@ -238,12 +238,11 @@ public final class Ssh extends AbstractSshShell {
         types = IOException.class
     )
     protected Session session() throws IOException {
+        final File file = File.createTempFile("jcabi-ssh", ".key");
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
-            final File file = File.createTempFile("jcabi-ssh", ".key");
-            file.deleteOnExit();
             new LengthOf(
                 new TeeInput(
                     this.key.replaceAll("\r", "")
@@ -277,10 +276,11 @@ public final class Ssh extends AbstractSshShell {
             );
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();
-            Files.deleteIfExists(file.toPath());
             return session;
         } catch (final JSchException ex) {
             throw new IOException(ex);
+        } finally {
+            Files.deleteIfExists(file.toPath());
         }
     }
 }
