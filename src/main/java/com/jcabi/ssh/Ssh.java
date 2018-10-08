@@ -243,7 +243,6 @@ public final class Ssh extends AbstractSshShell {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
-            file.setReadOnly();
             new LengthOf(
                 new TeeInput(
                     this.key.replaceAll("\r", "")
@@ -252,6 +251,7 @@ public final class Ssh extends AbstractSshShell {
                     file
                 )
             ).value();
+            file.setReadOnly();
             jsch.setHostKeyRepository(new EasyRepo());
             if (this.passphrase == null) {
                 jsch.addIdentity(file.getAbsolutePath());
