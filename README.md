@@ -2,7 +2,7 @@
 
 [![Donate via Zerocracy](https://www.0crat.com/contrib-badge/C9V6HBZQS.svg)](https://www.0crat.com/contrib/C9V6HBZQS)
 
-[![EO principles respected here](http://www.elegantobjects.org/badge.svg)](http://www.elegantobjects.org)
+[![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/C9V6HBZQS.svg)](https://www.0crat.com/p/C9V6HBZQS)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-ssh)](http://www.rultor.com/p/jcabi/jcabi-ssh)
 
