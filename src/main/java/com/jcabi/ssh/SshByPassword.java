@@ -56,6 +56,12 @@ public final class SshByPassword extends AbstractSshShell {
      * User password.
      */
     private final transient String password;
+    /**
+     * session timeOut.
+     */
+    private transient int serverAliveInterval = Tv.TEN;
+
+    private Session session = null;
 
     /**
      * Constructor.
@@ -72,6 +78,59 @@ public final class SshByPassword extends AbstractSshShell {
         super(adr, prt, user);
         this.password = passwd;
     }
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param passwd Password
+     * @param disconnectAfter disconnect session or not
+     * @throws UnknownHostException If fails
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    public SshByPassword(final String adr, final int prt,
+        final String user, final String passwd,final boolean disconnectAfter)
+        throws UnknownHostException {
+        super(adr, prt, user);
+        this.password = passwd;
+        this.disconnectAfter = disconnectAfter;
+    }
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param passwd Password
+     * @param serverAliveInterval (second)
+     * @throws UnknownHostException If fails
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    public SshByPassword(final String adr, final int prt,
+        final String user, final String passwd,final int serverAliveInterval)
+        throws UnknownHostException {
+        super(adr, prt, user);
+        this.password = passwd;
+        this.serverAliveInterval = serverAliveInterval;
+    }
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param passwd Password
+     * @param serverAliveInterval (second)
+     * @param disconnectAfter disconnect session or not
+     * @throws UnknownHostException If fails
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    public SshByPassword(final String adr, final int prt,
+        final String user, final String passwd,final int serverAliveInterval,boolean disconnectAfter)
+        throws UnknownHostException {
+        super(adr, prt, user);
+        this.password = passwd;
+        this.serverAliveInterval = serverAliveInterval;
+        this.disconnectAfter = disconnectAfter;
+    }
 
     // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
     @Override
@@ -84,24 +143,28 @@ public final class SshByPassword extends AbstractSshShell {
         types = IOException.class
     )
     protected Session session() throws IOException {
+        if (this.session!=null && this.session.isConnected()){
+            return this.session;
+        }
         try {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
             Logger.debug(
-                this,
-                "Opening SSH session to %s@%s:%s (auth with password)...",
-                this.getLogin(), this.getAddr(), this.getPort()
+                    this,
+                    "Opening SSH session to %s@%s:%s (auth with password)...",
+                    this.getLogin(), this.getAddr(), this.getPort()
             );
             final Session session = jsch.getSession(
-                this.getLogin(), this.getAddr(), this.getPort()
+                    this.getLogin(), this.getAddr(), this.getPort()
             );
             session.setPassword(this.password);
             session.setServerAliveInterval(
-                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
+                    (int) TimeUnit.SECONDS.toMillis(this.serverAliveInterval)
             );
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();
+            this.session = session;
             return session;
         } catch (final JSchException ex) {
             throw new IOException(ex);

@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2014-2017, jcabi.com
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met: 1) Redistributions of source code must retain the above
@@ -13,7 +13,7 @@
  * the names of its contributors may be used to endorse or promote
  * products derived from this software without specific prior written
  * permission.
- *
+ * <p>
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
  * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
@@ -33,27 +33,41 @@ import com.jcabi.log.Logger;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Execution of a single command.
+ *
  * @author Georgy Vlasov (wlasowegor@gmail.com)
  * @version $Id$
  * @since 1.4
  */
 interface Execution {
     /**
-     * Executes some command.
+     * Executes some command and disconnect
+     *
      * @return Return code of the command.
      * @throws IOException If fails
      */
     int exec() throws IOException;
 
     /**
+     * Executes some command.
+     *
+     * @param disconnectAfter Whether to disconnect session After executes some command
+     * @return Return code of the command.
+     * @throws IOException
+     */
+    int exec(boolean disconnectAfter) throws IOException;
+
+    /**
      * Execution of a command in an SSH session.
+     *
      * @author Georgy Vlasov (wlasowegor@gmail.com)
      * @version $Id$
      * @since 1.4
@@ -62,8 +76,7 @@ interface Execution {
         /**
          * Command.
          */
-        private final transient String command;
-
+        private transient String command;
         /**
          * Stdin.
          */
@@ -87,16 +100,17 @@ interface Execution {
         /**
          * Uses an SSH session to execute a single command and disconnect
          * immediately.
-         * @param cmd Command
+         *
+         * @param cmd   Command
          * @param input Stdin (will be closed)
-         * @param out Stdout (will be closed)
-         * @param err Stderr (will be closed)
-         * @param sess SSH session (will be disconnected)
+         * @param out   Stdout (will be closed)
+         * @param err   Stderr (will be closed)
+         * @param sess  SSH session (will be disconnected)
          * @checkstyle ParameterNumberCheck (6 lines)
          */
         Default(final String cmd, final InputStream input,
-            final OutputStream out, final OutputStream err,
-            final Session sess) {
+                final OutputStream out, final OutputStream err,
+                final Session sess) {
             this.command = cmd;
             this.stdin = input;
             this.stdout = out;
@@ -106,26 +120,44 @@ interface Execution {
 
         @Override
         public int exec() throws IOException {
-            try {
-                final ChannelExec channel = ChannelExec.class.cast(
+            return this.exec(true);
+        }
+
+        private int execCommand() throws JSchException, IOException {
+            final ChannelExec channel = ChannelExec.class.cast(
                     this.session.openChannel("exec")
-                );
-                channel.setErrStream(this.stderr, false);
-                channel.setOutputStream(this.stdout, false);
-                channel.setInputStream(this.stdin, false);
-                channel.setCommand(this.command);
-                channel.connect();
-                Logger.info(this, "$ %s", this.command);
-                return this.exec(channel);
-            } catch (final JSchException ex) {
-                throw new IOException(ex);
-            } finally {
-                this.session.disconnect();
+            );
+            channel.setErrStream(this.stderr, false);
+            channel.setOutputStream(this.stdout, false);
+            channel.setInputStream(this.stdin, false);
+            channel.setCommand(this.command);
+            channel.connect();
+            Logger.info(this, "$ %s", this.command);
+            return this.exec(channel);
+        }
+
+        @Override
+        public int exec(boolean disconnectAfter) throws IOException {
+            if (disconnectAfter) {
+                try {
+                    return this.execCommand();
+                } catch (final JSchException ex) {
+                    throw new IOException(ex);
+                } finally {
+                    this.session.disconnect();
+                }
+            } else {
+                try {
+                    return this.execCommand();
+                } catch (final JSchException ex) {
+                    throw new IOException(ex);
+                }
             }
         }
 
         /**
          * Exec this channel and return its exit code.
+         *
          * @param channel The channel to exec
          * @return Exit code (zero in case of success)
          * @throws IOException If fails
@@ -140,6 +172,7 @@ interface Execution {
 
         /**
          * Wait until it's done and return its code.
+         *
          * @param exec The channel
          * @return The exit code
          * @throws IOException If some IO problem inside

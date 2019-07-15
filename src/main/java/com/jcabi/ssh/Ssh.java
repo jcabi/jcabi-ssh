@@ -98,6 +98,10 @@ public final class Ssh extends AbstractSshShell {
      * Private SSH key pass phrase.
      */
     private final transient String passphrase;
+    /**
+     * connect timeout
+     */
+    private transient int serverAliveInterval = Tv.TEN;
 
     /**
      * Constructor.
@@ -216,6 +220,25 @@ public final class Ssh extends AbstractSshShell {
         this.key = priv;
         this.passphrase = passphrs;
     }
+    /**
+     * Constructor.
+     * @param adr IP address
+     * @param prt Port of server
+     * @param user Login
+     * @param priv Private SSH key
+     * @param passphrs Pass phrase for encrypted priv. key
+     * @throws UnknownHostException when host is unknown.
+     * @checkstyle ParameterNumberCheck (6 lines)
+     */
+    public Ssh(final String adr, final int prt,
+        final String user, final String priv,
+        final String passphrs ,final int serverAliveInterval
+    ) throws UnknownHostException {
+        super(adr, prt, user);
+        this.key = priv;
+        this.passphrase = passphrs;
+        this.serverAliveInterval = serverAliveInterval;
+    }
 
     /**
      * Escape SSH argument.
@@ -272,7 +295,7 @@ public final class Ssh extends AbstractSshShell {
                 this.getLogin(), this.getAddr(), this.getPort()
             );
             session.setServerAliveInterval(
-                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
+                (int) TimeUnit.SECONDS.toMillis(this.serverAliveInterval)
             );
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();
