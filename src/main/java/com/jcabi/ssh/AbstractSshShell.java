@@ -49,8 +49,8 @@ import lombok.ToString;
 @EqualsAndHashCode(of = { "addr", "port", "login" })
 @Getter
 @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-abstract class AbstractSshShell implements Shell {
-
+public abstract class AbstractSshShell implements Shell {
+    boolean disconnectAfter = true;
     /**
      * IP address of the server.
      */
@@ -81,6 +81,24 @@ abstract class AbstractSshShell implements Shell {
         this.port = prt;
         this.login = user;
     }
+    /**
+     * Constructor.
+     * @param adr Address that you want to connect to.
+     * @param prt Port that you want to reach.
+     * @param user User that will be used when connecting.
+     * @param disconnectAfter disconnect session or not
+     * @throws UnknownHostException when host is unknown.
+     */
+    AbstractSshShell(
+        final String adr,
+        final int prt,
+        final String user,
+        final boolean disconnectAfter) throws UnknownHostException {
+        this.addr = InetAddress.getByName(adr).getHostAddress();
+        this.port = prt;
+        this.login = user;
+        this.disconnectAfter = disconnectAfter;
+    }
 
     // @checkstyle ParameterNumberCheck (2 lines)
     @Override
@@ -93,7 +111,7 @@ abstract class AbstractSshShell implements Shell {
             stdout,
             stderr,
             this.session()
-        ).exec();
+        ).exec(this.disconnectAfter);
     }
 
     /**
