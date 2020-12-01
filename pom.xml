@@ -79,7 +79,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
     <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
-      <version>0.16</version>
+      <version>0.48</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
