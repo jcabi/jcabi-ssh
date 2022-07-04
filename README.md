@@ -1,20 +1,16 @@
-<img src="http://img.jcabi.com/logo-square.svg" width="64px" height="64px" />
-
-[![Donate via Zerocracy](https://www.0crat.com/contrib-badge/C9V6HBZQS.svg)](https://www.0crat.com/contrib/C9V6HBZQS)
+<img alt="logo" src="http://img.jcabi.com/logo-square.svg" width="64px" height="64px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![Managed by Zerocracy](https://www.0crat.com/badge/C9V6HBZQS.svg)](https://www.0crat.com/p/C9V6HBZQS)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-ssh)](http://www.rultor.com/p/jcabi/jcabi-ssh)
 
-[![Build Status](https://travis-ci.org/jcabi/jcabi-ssh.svg?branch=master)](https://travis-ci.org/jcabi/jcabi-ssh)
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-ssh)](http://www.0pdd.com/p?name=jcabi/jcabi-ssh)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-ssh.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
 [![Dependencies](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b)
 
-[![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-ssh/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-ssh/)
-
 More details are here: [ssh.jcabi.com](http://ssh.jcabi.com/).
+
 Also, read this blog post: [Simple Java SSH Client](http://www.yegor256.com/2014/09/02/java-ssh-client.html).
 
 It is a convenient SSH client for Java:

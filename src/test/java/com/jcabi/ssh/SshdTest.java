@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,44 +29,31 @@
  */
 package com.jcabi.ssh;
 
+import java.nio.file.Path;
 import org.apache.commons.lang3.SystemUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * Integration tests for ${@link Ssh}.
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 public final class SshdTest {
 
     /**
-     * Temp directory.
-     * @checkstyle VisibilityModifierCheck (5 lines)
-     */
-    @Rule
-    public final transient TemporaryFolder temp = new TemporaryFolder();
-
-    /**
      * Check that it's not Windows.
      */
-    @Before
+    @BeforeEach
     public void notWindows() {
-        Assume.assumeFalse(SystemUtils.IS_OS_WINDOWS);
+        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
     }
 
-    /**
-     * SSH can execute command on a real SSH server.
-     * @throws Exception In case of error.
-     */
     @Test
     public void executeCommandOnServer() throws Exception {
         final Sshd sshd = new Sshd();
@@ -82,13 +69,10 @@ public final class SshdTest {
         }
     }
 
-    /**
-     * SSH can execute command on a real SSH server.
-     * @throws Exception In case of error.
-     */
     @Test
-    public void executeCommandOnServerWithManualConfig() throws Exception {
-        final Sshd sshd = new Sshd(this.temp.newFolder());
+    public void executeCommandOnServerWithManualConfig(
+        @TempDir final Path temp) throws Exception {
+        final Sshd sshd = new Sshd(temp.toFile());
         try {
             MatcherAssert.assertThat(
                 new Shell.Plain(

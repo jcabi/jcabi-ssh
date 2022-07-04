@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,8 +55,6 @@ import org.cactoos.text.TextOf;
  * <p>If you forget to call {@link #close()}, SSH daemon will be
  * up and running until a shutdown of the JVM.</p>
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.0
  * @checkstyle MultipleStringLiteralsCheck (500 lines)
  * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,20 +34,14 @@ import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
  * Unit tests for MkCommand.
- * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
  * @since 1.6
  */
 public final class MkCommandTest {
-    /**
-     * MkCommand can start.
-     * @throws Exception If something goes wrong.
-     */
     @Test
     public void starts() throws Exception {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();

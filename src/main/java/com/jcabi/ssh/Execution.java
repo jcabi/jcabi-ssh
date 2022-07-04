@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,6 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Execution of a single command.
- * @author Georgy Vlasov (wlasowegor@gmail.com)
- * @version $Id$
  * @since 1.4
  */
 interface Execution {
@@ -54,8 +52,6 @@ interface Execution {
 
     /**
      * Execution of a command in an SSH session.
-     * @author Georgy Vlasov (wlasowegor@gmail.com)
-     * @version $Id$
      * @since 1.4
      */
     final class Default implements Execution {

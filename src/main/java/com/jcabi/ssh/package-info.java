@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,8 +48,6 @@
  *   &lt;artifactId&gt;jcabi-ssh&lt;/artifactId&gt;
  * &lt;/dependency&gt;</pre>
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.0
  * @see <a href="http://ssh.jcabi.com/">project website</a>
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>

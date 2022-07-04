@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,21 +40,15 @@ import org.apache.sshd.server.SshServer;
 import org.cactoos.io.DeadInputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link SshByPassword}.
  *
- * @author Georgy Vlasov (wlasowegor@gmail.com)
- * @version $Id$
  * @since 1.4
  */
 public final class SshByPasswordTest {
 
-    /**
-     * Checks if {@link SshByPassword} can execute a command on an SSH server.
-     * @throws Exception If fails
-     */
     @Test
     public void executesCommand() throws Exception {
         final String username = "test";

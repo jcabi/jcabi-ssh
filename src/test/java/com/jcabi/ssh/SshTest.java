@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,36 +42,24 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ${@link Ssh}.
  *
- * @author Krzysztof Krason (Krzysztof.Krason@gmail.com)
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.0
  * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 public final class SshTest {
 
-    /**
-     * SSH can escape an argument.
-     * @throws Exception In case of error.
-     * @since 1.0.1
-     */
     @Test
-    public void escapesArgument() throws Exception {
+    public void escapesArgument() {
         MatcherAssert.assertThat(
             Ssh.escape("hi,\n '$1'"),
             Matchers.equalTo("'hi,\n '\\''$1'\\'''")
         );
     }
 
-    /**
-     * SSH can execute command on ssh server.
-     * @throws Exception In case of error.
-     */
     @Test
     public void executeCommandOnServer() throws Exception {
         final int port = SshTest.port();
@@ -105,10 +93,6 @@ public final class SshTest {
         }
     }
 
-    /**
-     * SSH can execute command on ssh server with encrypted private key.
-     * @throws Exception In case of error.
-     */
     @Test
     public void executeCommandOnServerWithPrivateKey() throws Exception {
         final int port = SshTest.port();

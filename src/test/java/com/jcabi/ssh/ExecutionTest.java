@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,13 +35,11 @@ import java.io.ByteArrayOutputStream;
 import org.cactoos.io.DeadInputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link Execution}.
- * @author Georgy Vlasov (wlasowegor@gmail.com)
- * @version $Id$
  * @since 1.4
  */
 public final class ExecutionTest {
@@ -51,11 +49,6 @@ public final class ExecutionTest {
      */
     public static final int EXIT_CODE = 127;
 
-    /**
-     * Tests that {@link Execution} executes a command and returns a correct
-     * exit code.
-     * @throws Exception If fails
-     */
     @Test
     public void executesCommand() throws Exception {
         final Session session = Mockito.mock(Session.class);

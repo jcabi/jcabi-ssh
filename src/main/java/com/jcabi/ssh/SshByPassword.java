@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,6 @@ import lombok.ToString;
 
 /**
  * SSH channel with authentication by password.
- * @author Georgy Vlasov (wlasowegor@gmail.com)
- * @version $Id$
  * @since 1.4
  * @see Ssh For SSH channel with authenticaton using private key.
  */

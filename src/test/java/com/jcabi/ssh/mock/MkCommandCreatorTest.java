@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,21 +31,15 @@ package com.jcabi.ssh.mock;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for MkCommandCreator.
- * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
  * @since 1.6
  */
 public final class MkCommandCreatorTest {
-    /**
-     * MkCommandCreator can create a Command.
-     * @throws Exception If something goes wrong.
-     */
     @Test
-    public void createsMkCommand() throws Exception {
+    public void createsMkCommand() {
         MatcherAssert.assertThat(
             new MkCommandCreator().createCommand("command text"),
             Matchers.notNullValue()

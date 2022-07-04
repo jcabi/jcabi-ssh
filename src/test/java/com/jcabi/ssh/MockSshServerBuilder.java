@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,8 +30,8 @@
 package com.jcabi.ssh;
 
 import com.google.common.base.Optional;
-import com.google.common.io.Files;
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,6 @@ import org.mockito.Mockito;
 /**
  * Builder creating mock SSH servers.
  *
- * @author Piotr Pradzynski (prondzyn@gmail.com)
- * @version $Id$
  * @since 1.6
  */
 class MockSshServerBuilder {
@@ -89,13 +87,14 @@ class MockSshServerBuilder {
     /**
      * Builds a new instance of SSH server.
      * @return SSH server.
+     * @throws IOException If fails
      */
-    public SshServer build() {
+    public SshServer build() throws IOException {
         final SshServer sshd = SshServer.setUpDefaultServer();
         sshd.setPort(this.port);
         sshd.setKeyPairProvider(
             new SimpleGeneratorHostKeyProvider(
-                new File(Files.createTempDir(), "hostkey.ser")
+                Files.createTempDirectory("ssh").resolve("hostkey.ser")
             )
         );
         sshd.setUserAuthFactories(this.factories);

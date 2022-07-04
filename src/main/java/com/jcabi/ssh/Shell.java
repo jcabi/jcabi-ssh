@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2014-2017, jcabi.com
+/*
+ * Copyright (c) 2014-2022, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,8 +56,6 @@ import org.cactoos.io.TeeOutputStream;
  *   )
  * ).exec("echo 'Hello, world!'");</pre>
  *
- * @author Yegor Bugayenko (yegor256@gmail.com)
- * @version $Id$
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
  */
@@ -93,20 +91,24 @@ public interface Shell {
          * Exit code.
          */
         private final int code;
+
         /**
          * Stdout to return.
          */
         private final byte[] stdout;
+
         /**
          * Stderr to return.
          */
         private final byte[] stderr;
+
         /**
          * Ctor.
          */
         public Fake() {
             this(0, "", "");
         }
+
         /**
          * Ctor.
          * @param exit Exit code to return
@@ -116,6 +118,7 @@ public interface Shell {
         public Fake(final int exit, final String out, final String err) {
             this(exit, out.getBytes(), err.getBytes());
         }
+
         /**
          * Ctor.
          * @param exit Exit code to return
@@ -127,6 +130,7 @@ public interface Shell {
             this.stdout = out;
             this.stderr = err;
         }
+
         // @checkstyle ParameterNumberCheck (5 line)
         @Override
         public int exec(final String command, final InputStream stdin,
@@ -148,6 +152,8 @@ public interface Shell {
 
     /**
      * Safe run (throws if exit code is not zero).
+     *
+     * @since 0.1
      */
     @Immutable
     @ToString
@@ -157,6 +163,7 @@ public interface Shell {
          * Original.
          */
         private final transient Shell origin;
+
         /**
          * Ctor.
          * @param shell Original shell
@@ -164,6 +171,7 @@ public interface Shell {
         public Safe(final Shell shell) {
             this.origin = shell;
         }
+
         // @checkstyle ParameterNumberCheck (5 line)
         @Override
         public int exec(final String command, final InputStream stdin,
@@ -181,6 +189,8 @@ public interface Shell {
 
     /**
      * Without input and output.
+     *
+     * @since 0.1
      */
     @Immutable
     @ToString
@@ -190,6 +200,7 @@ public interface Shell {
          * Original.
          */
         private final transient Shell origin;
+
         /**
          * Ctor.
          * @param shell Original shell
@@ -197,6 +208,7 @@ public interface Shell {
         public Empty(final Shell shell) {
             this.origin = shell;
         }
+
         /**
          * Just exec.
          * @param cmd Command
@@ -214,6 +226,8 @@ public interface Shell {
 
     /**
      * With output only.
+     *
+     * @since 0.1
      */
     @Immutable
     @ToString
@@ -223,6 +237,7 @@ public interface Shell {
          * Original.
          */
         private final transient Shell origin;
+
         /**
          * Ctor.
          * @param shell Original shell
@@ -230,6 +245,7 @@ public interface Shell {
         public Plain(final Shell shell) {
             this.origin = shell;
         }
+
         /**
          * Just exec.
          * @param cmd Command
@@ -248,6 +264,8 @@ public interface Shell {
 
     /**
      * Verbose run.
+     *
+     * @since 0.1
      */
     @Immutable
     @ToString
@@ -257,6 +275,7 @@ public interface Shell {
          * Original.
          */
         private final transient Shell orgn;
+
         /**
          * Ctor.
          * @param shell Original shell
@@ -264,6 +283,7 @@ public interface Shell {
         public Verbose(final Shell shell) {
             this.orgn = shell;
         }
+
         // @checkstyle ParameterNumberCheck (5 line)
         @Override
         public int exec(final String command, final InputStream stdin,
