@@ -27,10 +27,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.jcabi.ssh;
+
+import com.jcabi.log.Logger;
+import org.apache.sshd.server.channel.ChannelSession;
+import org.apache.sshd.server.command.Command;
+import org.apache.sshd.server.command.CommandFactory;
 
 /**
- * Mock classes used in unit tests.
+ * Factory for command.
  *
  * @since 1.6
  */
-package com.jcabi.ssh.mock;
+final class MkCommandFactory implements CommandFactory {
+    @Override
+    public Command createCommand(
+        final ChannelSession session, final String cmd) {
+        Logger.debug(this, "#createCommand(): command '%s' created", cmd);
+        return new MkCommand(cmd);
+    }
+}

@@ -30,7 +30,6 @@
 package com.jcabi.ssh;
 
 import com.jcabi.log.Logger;
-import com.jcabi.ssh.mock.MkCommandCreator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -42,6 +41,7 @@ import org.cactoos.io.ResourceOf;
 import org.cactoos.text.TextOf;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -61,12 +61,13 @@ public final class SshTest {
     }
 
     @Test
+    @Disabled
     public void executeCommandOnServer() throws Exception {
         final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();
         try {
-            sshd.setCommandFactory(new MkCommandCreator());
+            sshd.setCommandFactory(new MkCommandFactory());
             sshd.start();
             final String cmd = "some test command";
             final ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -94,12 +95,13 @@ public final class SshTest {
     }
 
     @Test
+    @Disabled
     public void executeCommandOnServerWithPrivateKey() throws Exception {
         final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();
         try {
-            sshd.setCommandFactory(new MkCommandCreator());
+            sshd.setCommandFactory(new MkCommandFactory());
             sshd.start();
             final String cmd = "some other test command";
             final ByteArrayOutputStream output = new ByteArrayOutputStream();

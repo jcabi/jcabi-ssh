@@ -111,7 +111,7 @@ interface Execution {
                 channel.setInputStream(this.stdin, false);
                 channel.setCommand(this.command);
                 channel.connect();
-                Logger.info(this, "$ %s", this.command);
+                Logger.info(this, "+ %s", this.command);
                 return this.exec(channel);
             } catch (final JSchException ex) {
                 throw new IOException(ex);
@@ -155,6 +155,7 @@ interface Execution {
                     Thread.currentThread().interrupt();
                     throw new IOException(ex);
                 }
+                Logger.debug(this, "Waiting for the session to close...");
             }
             return exec.getExitStatus();
         }

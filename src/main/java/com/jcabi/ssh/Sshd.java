@@ -35,10 +35,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.concurrent.TimeUnit;
-import org.cactoos.io.LengthOf;
 import org.cactoos.io.ResourceOf;
 import org.cactoos.io.TeeInput;
+import org.cactoos.scalar.LengthOf;
+import org.cactoos.scalar.Unchecked;
 import org.cactoos.text.TextOf;
+import org.cactoos.text.UncheckedText;
 
 /**
  * Test SSHD daemon (only for Linux).
@@ -95,15 +97,19 @@ public final class Sshd implements Closeable {
     public Sshd(final File path) throws IOException {
         this.dir = path;
         final File rsa = new File(this.dir, "host_rsa_key");
-        new LengthOf(
-            new TeeInput(
-                new ResourceOf("com/jcabi/ssh/ssh_host_rsa_key"), rsa
+        new Unchecked<>(
+            new LengthOf(
+                new TeeInput(
+                    new ResourceOf("com/jcabi/ssh/ssh_host_rsa_key"), rsa
+                )
             )
         ).value();
         final File keys = new File(this.dir, "authorized");
-        new LengthOf(
-            new TeeInput(
-                new ResourceOf("com/jcabi/ssh/authorized_keys"), keys
+        new Unchecked<>(
+            new LengthOf(
+                new TeeInput(
+                    new ResourceOf("com/jcabi/ssh/authorized_keys"), keys
+                )
             )
         ).value();
         new VerboseProcess(
@@ -192,7 +198,9 @@ public final class Sshd implements Closeable {
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     public static String key() throws IOException {
-        return new TextOf(new ResourceOf("com/jcabi/ssh/id_rsa")).asString();
+        return new UncheckedText(
+            new TextOf(new ResourceOf("com/jcabi/ssh/id_rsa"))
+        ).asString();
     }
 
     /**

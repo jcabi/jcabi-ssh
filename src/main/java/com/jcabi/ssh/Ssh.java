@@ -40,13 +40,16 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.cactoos.io.LengthOf;
 import org.cactoos.io.TeeInput;
+import org.cactoos.scalar.LengthOf;
+import org.cactoos.scalar.Unchecked;
 import org.cactoos.text.TextOf;
+import org.cactoos.text.UncheckedText;
 
 /**
  * Single SSH Channel.
@@ -68,12 +71,13 @@ import org.cactoos.text.TextOf;
  *
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
+ * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  * @todo #30:30min Refactor this class into smaller ones to avoid null
  *  checking of passphrase. There should probably be separate classes for
  *  encrypted/unencrypted private key.
  */
 @ToString
-@EqualsAndHashCode(of = { "key" }, callSuper = true)
+@EqualsAndHashCode(of = "key", callSuper = true)
 @SuppressWarnings("PMD.TooManyMethods")
 public final class Ssh extends AbstractSshShell {
 
@@ -81,11 +85,6 @@ public final class Ssh extends AbstractSshShell {
      * Default SSH port.
      */
     public static final int PORT = 22;
-
-    /**
-     * Encoding.
-     */
-    private static final String UTF_8 = "UTF-8";
 
     /**
      * Private SSH key.
@@ -161,7 +160,7 @@ public final class Ssh extends AbstractSshShell {
      */
     public Ssh(final String adr, final int prt,
         final String user, final URL priv) throws IOException {
-        this(adr, prt, user, new TextOf(priv).asString());
+        this(adr, prt, user, new UncheckedText(new TextOf(priv)).asString());
     }
 
     /**
@@ -178,7 +177,7 @@ public final class Ssh extends AbstractSshShell {
         final String user, final URL priv) throws IOException {
         this(
             adr.getCanonicalHostName(), prt, user,
-            new TextOf(priv).asString()
+            new UncheckedText(new TextOf(priv)).asString()
         );
     }
 
@@ -232,7 +231,6 @@ public final class Ssh extends AbstractSshShell {
         delay = 1,
         unit = TimeUnit.MINUTES,
         verbose = false,
-        randomize = true,
         types = IOException.class
     )
     protected Session session() throws IOException {
@@ -241,12 +239,14 @@ public final class Ssh extends AbstractSshShell {
             JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
-            new LengthOf(
-                new TeeInput(
-                    this.key.replaceAll("\r", "")
-                        .replaceAll("\n\\s+|\n{2,}", "\n")
-                        .trim(),
-                    file
+            new Unchecked<>(
+                new LengthOf(
+                    new TeeInput(
+                        this.key.replaceAll("\r", "")
+                            .replaceAll("\n\\s+|\n{2,}", "\n")
+                            .trim(),
+                        file
+                    )
                 )
             ).value();
             jsch.setHostKeyRepository(new EasyRepo());
@@ -255,9 +255,9 @@ public final class Ssh extends AbstractSshShell {
             } else {
                 jsch.addIdentity(
                     this.getLogin(),
-                    this.key.getBytes(Ssh.UTF_8),
+                    this.key.getBytes(StandardCharsets.UTF_8),
                     null,
-                    this.passphrase.getBytes(Ssh.UTF_8)
+                    this.passphrase.getBytes(StandardCharsets.UTF_8)
                 );
             }
             Logger.debug(
@@ -269,11 +269,15 @@ public final class Ssh extends AbstractSshShell {
             final Session session = jsch.getSession(
                 this.getLogin(), this.getAddr(), this.getPort()
             );
-            session.setServerAliveInterval(
-                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
-            );
+            session.setTimeout((int) TimeUnit.MINUTES.toMillis(1L));
+            session.setServerAliveInterval((int) TimeUnit.SECONDS.toMillis(1L));
             session.setServerAliveCountMax(Tv.MILLION);
             session.connect();
+            Logger.debug(
+                this,
+                "SSH session opened to %s@%s:%s",
+                this.getLogin(), this.getAddr(), this.getPort()
+            );
             return session;
         } catch (final JSchException ex) {
             throw new IOException(ex);

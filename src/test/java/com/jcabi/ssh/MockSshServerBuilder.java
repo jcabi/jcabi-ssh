@@ -32,12 +32,12 @@ package com.jcabi.ssh;
 import com.google.common.base.Optional;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.sshd.common.NamedFactory;
 import org.apache.sshd.server.SshServer;
-import org.apache.sshd.server.auth.UserAuth;
+import org.apache.sshd.server.auth.UserAuthFactory;
 import org.apache.sshd.server.auth.password.PasswordAuthenticator;
 import org.apache.sshd.server.auth.password.UserAuthPasswordFactory;
 import org.apache.sshd.server.auth.pubkey.PublickeyAuthenticator;
@@ -61,7 +61,7 @@ class MockSshServerBuilder {
     /**
      * User auth factories.
      */
-    private final transient List<NamedFactory<UserAuth>> factories;
+    private final transient List<UserAuthFactory> factories;
 
     /**
      * Optional password authenticator.
@@ -75,10 +75,10 @@ class MockSshServerBuilder {
 
     /**
      * Constructor with a SSH port number.
-     * @param port The port number for SSH server
+     * @param prt The port number for SSH server
      */
-    MockSshServerBuilder(final int port) {
-        this.port = port;
+    MockSshServerBuilder(final int prt) {
+        this.port = prt;
         this.factories = new ArrayList<>(2);
         this.pwd = Optional.absent();
         this.pkey = Optional.absent();
@@ -92,9 +92,11 @@ class MockSshServerBuilder {
     public SshServer build() throws IOException {
         final SshServer sshd = SshServer.setUpDefaultServer();
         sshd.setPort(this.port);
+        final Path temp = Files.createTempDirectory("ssh");
+        temp.toFile().deleteOnExit();
         sshd.setKeyPairProvider(
             new SimpleGeneratorHostKeyProvider(
-                Files.createTempDirectory("ssh").resolve("hostkey.ser")
+                temp.resolve("hostkey.ser")
             )
         );
         sshd.setUserAuthFactories(this.factories);
