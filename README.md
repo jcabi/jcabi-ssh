@@ -43,11 +43,6 @@ try (Sshd sshd = new Sshd()) {
 Version 1.6 works under Java 1.8+. If your Java version is ealier, use
 version 1.5.2.
 
-## Questions?
-
-If you have any questions about the framework, or something doesn't work as expected,
-please [submit an issue here](https://github.com/jcabi/jcabi-ssh/issues/new).
-
 ## How to contribute?
 
 Fork the repository, make changes, submit a pull request.
@@ -60,4 +55,4 @@ Please run Maven (3.2+) build before submitting a pull request:
 $ mvn clean install -Pqulice
 ```
 
-Make sure you have Java version 7 or higher.
+Make sure you have Maven 3.3+ and Java 8+.
