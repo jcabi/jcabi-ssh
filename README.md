@@ -8,7 +8,10 @@
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-ssh)](http://www.0pdd.com/p?name=jcabi/jcabi-ssh)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-ssh.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
-[![Dependencies](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b/badge.svg?style=flat)](https://www.versioneye.com/user/projects/561aa32ba193340f2f00118b)
+
+[![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-ssh)](https://hitsofcode.com/view/github/jcabi/jcabi-ssh)
+![Lines of code](https://img.shields.io/tokei/lines/github/jcabi/jcabi-ssh)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/jcabi/jcabi-ssh/blob/master/LICENSE.txt)
 
 More details are here: [ssh.jcabi.com](http://ssh.jcabi.com/).
 

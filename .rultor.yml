@@ -12,6 +12,8 @@ merge:
     pdd --source=$(pwd) --verbose --file=/dev/null
     mvn clean install -Pqulice --errors --settings ../settings.xml
 release:
+  sensitive:
+    - settings.xml
   script: |-
     mvn versions:set "-DnewVersion=${tag}"
     git commit -am "${tag}"
