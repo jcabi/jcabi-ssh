@@ -8,6 +8,7 @@
 [![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-ssh)](http://www.0pdd.com/p?name=jcabi/jcabi-ssh)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh)
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-ssh.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
+[![codecov](https://codecov.io/gh/jcabi/jcabi-ssh/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-ssh)
 
 [![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-ssh)](https://hitsofcode.com/view/github/jcabi/jcabi-ssh)
 ![Lines of code](https://img.shields.io/tokei/lines/github/jcabi/jcabi-ssh)
