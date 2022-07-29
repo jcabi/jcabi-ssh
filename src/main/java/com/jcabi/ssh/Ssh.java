@@ -42,6 +42,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -236,7 +237,6 @@ public final class Ssh extends AbstractSshShell {
     protected Session session() throws IOException {
         final File file = File.createTempFile("jcabi-ssh", ".key");
         try {
-            JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
             new Unchecked<>(
@@ -266,23 +266,36 @@ public final class Ssh extends AbstractSshShell {
                 this.getLogin(), this.getAddr(), this.getPort(),
                 file.length()
             );
-            final Session session = jsch.getSession(
-                this.getLogin(), this.getAddr(), this.getPort()
-            );
-            session.setTimeout((int) TimeUnit.MINUTES.toMillis(1L));
-            session.setServerAliveInterval((int) TimeUnit.SECONDS.toMillis(1L));
-            session.setServerAliveCountMax(Tv.MILLION);
-            session.connect();
-            Logger.debug(
-                this,
-                "SSH session opened to %s@%s:%s",
-                this.getLogin(), this.getAddr(), this.getPort()
-            );
-            return session;
+            return this.session(jsch);
         } catch (final JSchException ex) {
             throw new IOException(ex);
         } finally {
             Files.deleteIfExists(file.toPath());
         }
+    }
+
+    /**
+     * Make session.
+     * @param sch The JSch
+     * @return The session
+     * @throws JSchException If fails
+     */
+    private Session session(final JSch sch) throws JSchException {
+        final Session session = sch.getSession(
+            this.getLogin(), this.getAddr(), this.getPort()
+        );
+        final Properties config = new Properties();
+        config.put("StrictHostKeyChecking", "no");
+        session.setConfig(config);
+        session.setTimeout((int) TimeUnit.MINUTES.toMillis(1L));
+        session.setServerAliveInterval((int) TimeUnit.SECONDS.toMillis(1L));
+        session.setServerAliveCountMax(Tv.MILLION);
+        session.connect();
+        Logger.debug(
+            this,
+            "SSH session opened to %s@%s:%s",
+            this.getLogin(), this.getAddr(), this.getPort()
+        );
+        return session;
     }
 }
