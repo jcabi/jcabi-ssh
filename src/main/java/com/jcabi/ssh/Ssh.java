@@ -290,7 +290,7 @@ public final class Ssh extends AbstractSshShell {
         session.setTimeout((int) TimeUnit.MINUTES.toMillis(1L));
         session.setServerAliveInterval((int) TimeUnit.SECONDS.toMillis(1L));
         session.setServerAliveCountMax(Tv.MILLION);
-        session.connect();
+        session.connect((int) TimeUnit.MINUTES.toMillis(1L));
         Logger.debug(
             this,
             "SSH session opened to %s@%s:%s",
