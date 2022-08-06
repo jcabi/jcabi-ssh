@@ -137,7 +137,6 @@ public interface Shell {
             final OutputStream sout, final OutputStream serr)
             throws IOException {
             while (true) {
-                // @checkstyle MagicNumber (1 line)
                 if (stdin.read(new byte[2048]) < 0) {
                     break;
                 }

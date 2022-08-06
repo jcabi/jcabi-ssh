@@ -144,6 +144,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
+            <version>0.21.1</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>findbugs:.*</exclude>
