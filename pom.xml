@@ -131,6 +131,14 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
+            <configuration>
+              <systemProperties>
+                <failsafe.host>${failsafe.ssh.host}</failsafe.host>
+                <failsafe.port>${failsafe.ssh.port}</failsafe.port>
+                <failsafe.login>${failsafe.ssh.login}</failsafe.login>
+                <failsafe.key>${failsafe.ssh.key}</failsafe.key>
+              </systemProperties>
+            </configuration>
           </execution>
         </executions>
       </plugin>

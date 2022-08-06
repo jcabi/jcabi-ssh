@@ -72,7 +72,6 @@ import org.cactoos.text.UncheckedText;
  *
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
- * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  * @todo #30:30min Refactor this class into smaller ones to avoid null
  *  checking of passphrase. There should probably be separate classes for
  *  encrypted/unencrypted private key.

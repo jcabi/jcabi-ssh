@@ -58,8 +58,6 @@ import org.cactoos.text.UncheckedText;
  * up and running until a shutdown of the JVM.</p>
  *
  * @since 1.0
- * @checkstyle MultipleStringLiteralsCheck (500 lines)
- * @checkstyle ClassDataAbstractionCouplingCheck (500 lines)
  */
 @SuppressWarnings("PMD.DoNotUseThreads")
 public final class Sshd implements Closeable {

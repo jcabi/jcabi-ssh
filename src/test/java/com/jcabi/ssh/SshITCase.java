@@ -29,64 +29,66 @@
  */
 package com.jcabi.ssh;
 
-import java.nio.file.Path;
-import org.apache.commons.lang3.SystemUtils;
+import com.jcabi.log.Logger;
+import java.io.ByteArrayOutputStream;
+import java.util.logging.Level;
+import org.cactoos.io.DeadInputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 /**
- * Integration tests for ${@link Ssh}.
+ * Integration test for ${@link Ssh}, which connects to
+ * a real SSHD server over the Internet.
  *
  * @since 1.0
  */
-public final class SshdTest {
+public final class SshITCase {
 
     /**
-     * Check that it's not Windows.
+     * Host to connect to.
      */
-    @BeforeEach
-    public void notWindows() {
-        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
-    }
+    private static final String HOST = System.getProperty("failsafe.host", "");
+
+    /**
+     * Port to connect to.
+     */
+    private static final String PORT = System.getProperty("failsafe.port", "");
+
+    /**
+     * Username to use.
+     */
+    private static final String LOGIN = System.getProperty("failsafe.login", "");
+
+    /**
+     * Private key to use for connection.
+     */
+    private static final String KEY = System.getProperty("failsafe.key", "");
 
     @Test
-    public void executeCommandOnServer() throws Exception {
-        final Sshd sshd = new Sshd();
-        try {
-            MatcherAssert.assertThat(
-                new Shell.Plain(
-                    new Shell.Safe(sshd.connect())
-                ).exec("echo one"),
-                Matchers.startsWith("one")
-            );
-        } finally {
-            sshd.close();
-        }
-    }
-
-    @Test
-    public void executeCommandOnServerWithManualConfig(
-        @TempDir final Path temp) throws Exception {
-        final Sshd sshd = new Sshd(temp.toFile());
-        try {
-            MatcherAssert.assertThat(
-                new Shell.Plain(
-                    new Shell.Safe(
-                        new Ssh(
-                            Sshd.host(), sshd.port(), Sshd.login(),
-                            this.getClass().getResource("id_rsa")
-                        )
-                    )
-                ).exec("echo 'how are you'"),
-                Matchers.startsWith("how are")
-            );
-        } finally {
-            sshd.close();
-        }
+    public void executesCommandOnServer() throws Exception {
+        Assumptions.assumeFalse(SshITCase.HOST.isEmpty());
+        final Shell shell = new Shell.Verbose(
+            new Ssh(
+                SshITCase.HOST,
+                Integer.parseInt(SshITCase.PORT),
+                SshITCase.LOGIN,
+                SshITCase.KEY
+            )
+        );
+        final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+        final int exit = shell.exec(
+            "whoami",
+            new DeadInputStream(),
+            stdout,
+            Logger.stream(Level.WARNING, true)
+        );
+        MatcherAssert.assertThat(exit, Matchers.is(0));
+        MatcherAssert.assertThat(
+            stdout.toString(),
+            Matchers.startsWith(SshITCase.LOGIN)
+        );
     }
 
 }

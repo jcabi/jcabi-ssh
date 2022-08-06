@@ -47,7 +47,6 @@ import org.junit.jupiter.api.Test;
  * Tests for ${@link Ssh}.
  *
  * @since 1.0
- * @checkstyle ClassDataAbstractionCoupling (500 lines)
  */
 public final class SshTest {
 
