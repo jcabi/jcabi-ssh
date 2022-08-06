@@ -102,7 +102,7 @@ final class Execution {
             channel.setOutputStream(this.stdout, false);
             channel.setInputStream(this.stdin, false);
             channel.setCommand(this.command);
-            channel.setPty(false);
+            channel.setPty(true);
             channel.connect();
             Logger.info(this, "+ %s", this.command);
             return this.exec(channel);

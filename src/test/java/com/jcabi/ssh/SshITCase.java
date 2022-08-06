@@ -36,10 +36,10 @@ import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.cactoos.io.DeadInputStream;
+import org.cactoos.io.TeeOutputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -79,15 +79,14 @@ public final class SshITCase {
     }
 
     @Test
-    @Disabled
     public void dropsConnectionForNohup() throws Exception {
         final long start = System.currentTimeMillis();
         MatcherAssert.assertThat(
             SshITCase.exec(
                 SshITCase.shell(),
-                "nohup echo 'hello' > /dev/null 2>&1; sleep 5 &"
+                "( nohup echo 1 > /dev/null 2>&1; sleep 5 ) & echo 'done'"
             ),
-            Matchers.equalTo("")
+            Matchers.startsWith("done")
         );
         MatcherAssert.assertThat(
             System.currentTimeMillis() - start,
@@ -124,8 +123,8 @@ public final class SshITCase {
         final int exit = shell.exec(
             cmd,
             new DeadInputStream(),
-            stdout,
-            Logger.stream(Level.WARNING, true)
+            new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
+            Logger.stream(Level.WARNING, Ssh.class)
         );
         MatcherAssert.assertThat(exit, Matchers.is(0));
         return stdout.toString();

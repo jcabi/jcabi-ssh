@@ -47,7 +47,7 @@ import lombok.ToString;
  * @see Ssh For SSH channel with authenticaton using private key.
  */
 @ToString
-@EqualsAndHashCode(of = { "password" }, callSuper = true)
+@EqualsAndHashCode(of = "password", callSuper = true)
 public final class SshByPassword extends AbstractSshShell {
 
     /**
@@ -78,7 +78,6 @@ public final class SshByPassword extends AbstractSshShell {
         delay = 1,
         unit = TimeUnit.MINUTES,
         verbose = false,
-        randomize = true,
         types = IOException.class
     )
     protected Session session() throws IOException {
