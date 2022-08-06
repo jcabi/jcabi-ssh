@@ -95,8 +95,6 @@ final class Execution {
      */
     public int exec() throws IOException {
         try {
-            this.session.setInputStream(this.stdin);
-            this.session.connect((int) TimeUnit.SECONDS.toMillis(10L));
             final ChannelExec channel = ChannelExec.class.cast(
                 this.session.openChannel("exec")
             );
@@ -104,7 +102,7 @@ final class Execution {
             channel.setOutputStream(this.stdout, false);
             channel.setInputStream(this.stdin, false);
             channel.setCommand(this.command);
-            channel.setPty(true);
+            channel.setPty(false);
             channel.connect((int) TimeUnit.SECONDS.toMillis(10L));
             Logger.info(this, "+ %s", this.command);
             return this.exec(channel);
@@ -131,14 +129,14 @@ final class Execution {
 
     /**
      * Wait until it's done and return its code.
-     * @param exec The channel
+     * @param channel The channel
      * @return The exit code
      * @throws IOException If some IO problem inside
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
-    private int code(final ChannelExec exec) throws IOException {
+    private int code(final ChannelExec channel) throws IOException {
         final long start = System.currentTimeMillis();
-        while (!exec.isClosed()) {
+        while (!channel.isClosed()) {
             try {
                 this.session.sendKeepAliveMsg();
                 // @checkstyle IllegalCatch (1 line)
@@ -163,16 +161,15 @@ final class Execution {
             try {
                 Logger.debug(
                     this,
-                    "Waiting for SSH session to %s:%d to close, already %[ms]s, stdin.available=%d...",
-                    exec.getSession().getHost(),
-                    exec.getSession().getPort(),
-                    System.currentTimeMillis() - start,
-                    this.stdin.available()
+                    "Waiting for SSH session to %s:%d to close, already %[ms]s...",
+                    channel.getSession().getHost(),
+                    channel.getSession().getPort(),
+                    System.currentTimeMillis() - start
                 );
             } catch (final JSchException ex) {
                 throw new IOException(ex);
             }
         }
-        return exec.getExitStatus();
+        return channel.getExitStatus();
     }
 }
