@@ -31,11 +31,15 @@ package com.jcabi.ssh;
 
 import com.jcabi.log.Logger;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.cactoos.io.DeadInputStream;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -68,8 +72,37 @@ public final class SshITCase {
 
     @Test
     public void executesCommandOnServer() throws Exception {
+        MatcherAssert.assertThat(
+            SshITCase.exec(SshITCase.shell(), "whoami"),
+            Matchers.startsWith(SshITCase.LOGIN)
+        );
+    }
+
+    @Test
+    @Disabled
+    public void dropsConnectionForNohup() throws Exception {
+        final long start = System.currentTimeMillis();
+        MatcherAssert.assertThat(
+            SshITCase.exec(
+                SshITCase.shell(),
+                "( nohup echo 'hello' > /dev/null; sleep 15; exit 1 ) &"
+            ),
+            Matchers.equalTo("")
+        );
+        MatcherAssert.assertThat(
+            System.currentTimeMillis() - start,
+            Matchers.lessThan(TimeUnit.SECONDS.toMillis(10L))
+        );
+    }
+
+    /**
+     * Make a shell.
+     * @return The shell
+     * @throws UnknownHostException If not found
+     */
+    private static Shell shell() throws UnknownHostException {
         Assumptions.assumeFalse(SshITCase.HOST.isEmpty());
-        final Shell shell = new Shell.Verbose(
+        return new Shell.Verbose(
             new Ssh(
                 SshITCase.HOST,
                 Integer.parseInt(SshITCase.PORT),
@@ -77,18 +110,25 @@ public final class SshITCase {
                 SshITCase.KEY
             )
         );
+    }
+
+    /**
+     * Exec this command at this shell and return stdout.
+     * @param shell The shell
+     * @param cmd The command
+     * @return Stdout
+     * @throws IOException If fails
+     */
+    private static String exec(final Shell shell, final String cmd) throws IOException {
         final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
         final int exit = shell.exec(
-            "whoami",
+            cmd,
             new DeadInputStream(),
             stdout,
             Logger.stream(Level.WARNING, true)
         );
         MatcherAssert.assertThat(exit, Matchers.is(0));
-        MatcherAssert.assertThat(
-            stdout.toString(),
-            Matchers.startsWith(SshITCase.LOGIN)
-        );
+        return stdout.toString();
     }
 
 }
