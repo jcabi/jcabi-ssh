@@ -115,7 +115,7 @@ public final class SshITCase {
         final long start = System.currentTimeMillis();
         SshITCase.exec(
             SshITCase.shell(),
-            "( nohup echo 1 > /dev/null 2>&1; sleep 5 ) &"
+            "nohup sleep 5 > /dev/null 2>&1 &"
         );
         MatcherAssert.assertThat(
             System.currentTimeMillis() - start,
@@ -128,7 +128,7 @@ public final class SshITCase {
         final long start = System.currentTimeMillis();
         SshITCase.exec(
             SshITCase.shell(),
-            "echo 'Hello' ; sleep 5 & ps ; echo 'Bye'"
+            "echo 'Hello' ; sleep 5 >/dev/null 2>&1 & echo 'Bye'"
         );
         MatcherAssert.assertThat(
             System.currentTimeMillis() - start,

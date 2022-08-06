@@ -158,16 +158,18 @@ final class Execution {
                     ex
                 );
             }
-            try {
-                Logger.debug(
-                    this,
-                    "Waiting for SSH session to %s:%d to close, already %[ms]s...",
-                    channel.getSession().getHost(),
-                    channel.getSession().getPort(),
-                    System.currentTimeMillis() - start
-                );
-            } catch (final JSchException ex) {
-                throw new IOException(ex);
+            if (Logger.isDebugEnabled(this)) {
+                try {
+                    Logger.debug(
+                        this,
+                        "Waiting for SSH session to %s:%d to close, already %[ms]s...",
+                        channel.getSession().getHost(),
+                        channel.getSession().getPort(),
+                        System.currentTimeMillis() - start
+                    );
+                } catch (final JSchException ex) {
+                    throw new IOException(ex);
+                }
             }
         }
         return channel.getExitStatus();
