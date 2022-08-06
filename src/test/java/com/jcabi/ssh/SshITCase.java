@@ -123,6 +123,19 @@ public final class SshITCase {
         );
     }
 
+    @Test
+    public void dropsConnectionWithoutNohup() throws Exception {
+        final long start = System.currentTimeMillis();
+        SshITCase.exec(
+            SshITCase.shell(),
+            "echo 'Hello' ; sleep 5 & ps ; echo 'Bye'"
+        );
+        MatcherAssert.assertThat(
+            System.currentTimeMillis() - start,
+            Matchers.lessThan(TimeUnit.SECONDS.toMillis(3L))
+        );
+    }
+
     /**
      * Make a shell.
      * @return The shell

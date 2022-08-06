@@ -44,7 +44,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -59,8 +58,7 @@ import org.cactoos.text.UncheckedText;
  *
  * <p>This class implements {@link Shell} interface. In order to use
  * it, just make an instance and call
- * {@link #exec(String, java.io.InputStream,
- * java.io.OutputStream, java.io.OutputStream)} exec()}:
+ * {@link #exec(String, InputStream, OutputStream, OutputStream)} method:
  *
  * <pre> String hello = new Shell.Plain(
  *   new SSH(
@@ -290,9 +288,7 @@ public final class Ssh extends AbstractSshShell {
         final Session session = sch.getSession(
             this.getLogin(), this.getAddr(), this.getPort()
         );
-        final Properties config = new Properties();
-        config.put("StrictHostKeyChecking", "no");
-        session.setConfig(config);
+        session.setConfig("StrictHostKeyChecking", "no");
         session.setTimeout((int) TimeUnit.MINUTES.toMillis(1L));
         session.setServerAliveInterval((int) TimeUnit.SECONDS.toMillis(1L));
         session.setServerAliveCountMax(Tv.MILLION);

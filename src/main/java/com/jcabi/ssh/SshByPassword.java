@@ -82,7 +82,6 @@ public final class SshByPassword extends AbstractSshShell {
     )
     protected Session session() throws IOException {
         try {
-            JSch.setConfig("StrictHostKeyChecking", "no");
             JSch.setLogger(new JschLogger());
             final JSch jsch = new JSch();
             Logger.debug(
@@ -93,6 +92,7 @@ public final class SshByPassword extends AbstractSshShell {
             final Session session = jsch.getSession(
                 this.getLogin(), this.getAddr(), this.getPort()
             );
+            session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword(this.password);
             session.setServerAliveInterval(
                 (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
