@@ -103,7 +103,7 @@ final class Execution {
             channel.setInputStream(this.stdin, false);
             channel.setCommand(this.command);
             channel.setPty(true);
-            channel.connect();
+            channel.connect((int) TimeUnit.SECONDS.toMillis(10L));
             Logger.info(this, "+ %s", this.command);
             return this.exec(channel);
         } catch (final JSchException ex) {
