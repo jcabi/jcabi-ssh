@@ -30,6 +30,7 @@
 package com.jcabi.ssh;
 
 import com.jcabi.log.Logger;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -79,14 +80,42 @@ public final class SshITCase {
     }
 
     @Test
+    public void executesBrokenCommandOnServer() throws Exception {
+        MatcherAssert.assertThat(
+            SshITCase.shell().exec(
+                "this-command-doesnt-exist",
+                new DeadInputStream(),
+                Logger.stream(Level.INFO, Ssh.class),
+                Logger.stream(Level.WARNING, Ssh.class)
+            ),
+            Matchers.not(Matchers.equalTo(0))
+        );
+    }
+
+    @Test
+    public void consumesInputStream() throws Exception {
+        final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+        MatcherAssert.assertThat(
+            SshITCase.shell().exec(
+                "cat",
+                new ByteArrayInputStream("Hello, world!".getBytes()),
+                new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
+                Logger.stream(Level.WARNING, Ssh.class)
+            ),
+            Matchers.equalTo(0)
+        );
+        MatcherAssert.assertThat(
+            stdout.toString(),
+            Matchers.startsWith("Hello")
+        );
+    }
+
+    @Test
     public void dropsConnectionForNohup() throws Exception {
         final long start = System.currentTimeMillis();
-        MatcherAssert.assertThat(
-            SshITCase.exec(
-                SshITCase.shell(),
-                "( nohup echo 1 > /dev/null 2>&1; sleep 5 ) & echo 'done'"
-            ),
-            Matchers.startsWith("done")
+        SshITCase.exec(
+            SshITCase.shell(),
+            "( nohup echo 1 > /dev/null 2>&1; sleep 5 ) &"
         );
         MatcherAssert.assertThat(
             System.currentTimeMillis() - start,
