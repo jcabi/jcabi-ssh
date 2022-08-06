@@ -37,6 +37,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -69,6 +71,11 @@ import org.cactoos.text.UncheckedText;
  *
  * <p>It is highly recommended to use classes from {@link Shell} interface,
  * they will simplify operations.</p>
+ *
+ * <p>Instances of this class are NOT reusable. Once you do
+ * {@link Ssh#exec(String, InputStream, OutputStream, OutputStream)},
+ * the connection is lost. You have to create a new {@link Ssh} object, if
+ * you need to execute a new command.</p>
  *
  * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
