@@ -95,6 +95,8 @@ final class Execution {
      */
     public int exec() throws IOException {
         try {
+            this.session.setInputStream(this.stdin);
+            this.session.connect((int) TimeUnit.SECONDS.toMillis(10L));
             final ChannelExec channel = ChannelExec.class.cast(
                 this.session.openChannel("exec")
             );
@@ -135,21 +137,40 @@ final class Execution {
      */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private int code(final ChannelExec exec) throws IOException {
+        final long start = System.currentTimeMillis();
         while (!exec.isClosed()) {
             try {
                 this.session.sendKeepAliveMsg();
                 // @checkstyle IllegalCatch (1 line)
             } catch (final Exception ex) {
-                throw new IOException(ex);
+                throw new IOException(
+                    "Failed to sendKeepAliveMsg() to the SSH session",
+                    ex
+                );
             }
             try {
                 TimeUnit.SECONDS.sleep(1L);
             } catch (final InterruptedException ex) {
                 Thread.currentThread().interrupt();
+                throw new IOException(
+                    String.format(
+                        "Interrupted after %[ms]s of waiting",
+                        System.currentTimeMillis() - start
+                    ),
+                    ex
+                );
+            }
+            try {
+                Logger.debug(
+                    this,
+                    "Waiting for SSH session to %s:%d to close, already %[ms]s...",
+                    exec.getSession().getHost(),
+                    exec.getSession().getPort(),
+                    System.currentTimeMillis() - start
+                );
+            } catch (final JSchException ex) {
                 throw new IOException(ex);
             }
-            exec.getOutputStream().flush();
-            Logger.debug(this, "Waiting for the session to close...");
         }
         return exec.getExitStatus();
     }
