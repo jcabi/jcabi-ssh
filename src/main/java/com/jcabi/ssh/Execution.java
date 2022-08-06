@@ -163,10 +163,11 @@ final class Execution {
             try {
                 Logger.debug(
                     this,
-                    "Waiting for SSH session to %s:%d to close, already %[ms]s...",
+                    "Waiting for SSH session to %s:%d to close, already %[ms]s, stdin.available=%d...",
                     exec.getSession().getHost(),
                     exec.getSession().getPort(),
-                    System.currentTimeMillis() - start
+                    System.currentTimeMillis() - start,
+                    this.stdin.available()
                 );
             } catch (final JSchException ex) {
                 throw new IOException(ex);
