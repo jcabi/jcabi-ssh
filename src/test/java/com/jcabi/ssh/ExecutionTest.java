@@ -60,7 +60,7 @@ public final class ExecutionTest {
             ExecutionTest.EXIT_CODE
         );
         MatcherAssert.assertThat(
-            new Execution.Default(
+            new Execution(
                 "hello",
                 new DeadInputStream(),
                 new ByteArrayOutputStream(),

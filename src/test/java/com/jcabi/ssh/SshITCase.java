@@ -85,13 +85,13 @@ public final class SshITCase {
         MatcherAssert.assertThat(
             SshITCase.exec(
                 SshITCase.shell(),
-                "( nohup echo 'hello' > /dev/null; sleep 15; exit 1 ) &"
+                "nohup echo 'hello' > /dev/null 2>&1; sleep 5 &"
             ),
             Matchers.equalTo("")
         );
         MatcherAssert.assertThat(
             System.currentTimeMillis() - start,
-            Matchers.lessThan(TimeUnit.SECONDS.toMillis(10L))
+            Matchers.lessThan(TimeUnit.SECONDS.toMillis(3L))
         );
     }
 

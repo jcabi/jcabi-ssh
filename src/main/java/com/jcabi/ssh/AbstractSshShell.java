@@ -85,7 +85,7 @@ abstract class AbstractSshShell implements Shell {
     public int exec(final String command, final InputStream stdin,
         final OutputStream stdout, final OutputStream stderr)
         throws IOException {
-        return new Execution.Default(
+        return new Execution(
             command,
             stdin,
             stdout,
