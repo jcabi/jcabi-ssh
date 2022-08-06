@@ -145,166 +145,165 @@
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>             <strong class="jxr_keyword">final</strong> OutputStream sout, <strong class="jxr_keyword">final</strong> OutputStream serr)
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>             <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>             <strong class="jxr_keyword">while</strong> (<strong class="jxr_keyword">true</strong>) {
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>                 <em class="jxr_comment">// @checkstyle MagicNumber (1 line)</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>                 <strong class="jxr_keyword">if</strong> (stdin.read(<strong class="jxr_keyword">new</strong> byte[2048]) &lt; 0) {
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>                 }
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>             }
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>             sout.write(<strong class="jxr_keyword">this</strong>.stdout);
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>             sout.close();
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>             serr.write(<strong class="jxr_keyword">this</strong>.stderr);
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>             serr.close();
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.code;
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         }
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>     }
-<a class="jxr_linenumber" name="L152" href="#L152">152</a> 
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">     * Safe run (throws if exit code is not zero).</em>
-<a class="jxr_linenumber" name="L155" href="#L155">155</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L156" href="#L156">156</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
-<a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>     @Immutable
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>     @ToString
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>     @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Safe</a> <strong class="jxr_keyword">implements</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> {
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">         * Original.</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> origin;
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> 
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">         * Ctor.</em>
-<a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
-<a class="jxr_linenumber" name="L170" href="#L170">170</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Safe</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>             <strong class="jxr_keyword">this</strong>.origin = shell;
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         }
-<a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>         <em class="jxr_comment">// @checkstyle ParameterNumberCheck (5 line)</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>         @Override
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> exec(<strong class="jxr_keyword">final</strong> String command, <strong class="jxr_keyword">final</strong> InputStream stdin,
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">final</strong> OutputStream stdout, <strong class="jxr_keyword">final</strong> OutputStream stderr)
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> exit = <strong class="jxr_keyword">this</strong>.origin.exec(command, stdin, stdout, stderr);
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>             <strong class="jxr_keyword">if</strong> (exit != 0) {
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>                     String.format(<span class="jxr_string">"non-zero exit code #%d: %s"</span>, exit, command)
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 );
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>             }
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>             <strong class="jxr_keyword">return</strong> exit;
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         }
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>     }
-<a class="jxr_linenumber" name="L189" href="#L189">189</a> 
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     * Without input and output.</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L193" href="#L193">193</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>     @Immutable
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>     @ToString
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>     @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Empty</a> {
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">         * Original.</em>
-<a class="jxr_linenumber" name="L201" href="#L201">201</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> origin;
-<a class="jxr_linenumber" name="L203" href="#L203">203</a> 
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L205" href="#L205">205</a> <em class="jxr_javadoccomment">         * Ctor.</em>
-<a class="jxr_linenumber" name="L206" href="#L206">206</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
-<a class="jxr_linenumber" name="L207" href="#L207">207</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Empty</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>             <strong class="jxr_keyword">this</strong>.origin = shell;
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>         }
-<a class="jxr_linenumber" name="L211" href="#L211">211</a> 
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">         * Just exec.</em>
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">         * @param cmd Command</em>
-<a class="jxr_linenumber" name="L215" href="#L215">215</a> <em class="jxr_javadoccomment">         * @return Exit code</em>
-<a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
-<a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> exec(<strong class="jxr_keyword">final</strong> String cmd) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.origin.exec(
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>                 cmd, <strong class="jxr_keyword">new</strong> DeadInput().stream(),
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>                 Logger.stream(Level.INFO, <strong class="jxr_keyword">this</strong>),
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>                 Logger.stream(Level.WARNING, <strong class="jxr_keyword">this</strong>)
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>             );
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>         }
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     }
-<a class="jxr_linenumber" name="L226" href="#L226">226</a> 
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L228" href="#L228">228</a> <em class="jxr_javadoccomment">     * With output only.</em>
-<a class="jxr_linenumber" name="L229" href="#L229">229</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L230" href="#L230">230</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
-<a class="jxr_linenumber" name="L231" href="#L231">231</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>     @Immutable
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>     @ToString
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>     @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Plain</a> {
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L237" href="#L237">237</a> <em class="jxr_javadoccomment">         * Original.</em>
-<a class="jxr_linenumber" name="L238" href="#L238">238</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> origin;
-<a class="jxr_linenumber" name="L240" href="#L240">240</a> 
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">         * Ctor.</em>
-<a class="jxr_linenumber" name="L243" href="#L243">243</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
-<a class="jxr_linenumber" name="L244" href="#L244">244</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Plain</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>             <strong class="jxr_keyword">this</strong>.origin = shell;
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>         }
-<a class="jxr_linenumber" name="L248" href="#L248">248</a> 
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L250" href="#L250">250</a> <em class="jxr_javadoccomment">         * Just exec.</em>
-<a class="jxr_linenumber" name="L251" href="#L251">251</a> <em class="jxr_javadoccomment">         * @param cmd Command</em>
-<a class="jxr_linenumber" name="L252" href="#L252">252</a> <em class="jxr_javadoccomment">         * @return Stdout</em>
-<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
-<a class="jxr_linenumber" name="L254" href="#L254">254</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>         <strong class="jxr_keyword">public</strong> String exec(<strong class="jxr_keyword">final</strong> String cmd) <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L256" href="#L256">256</a>             <strong class="jxr_keyword">final</strong> ByteArrayOutputStream baos = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">this</strong>.origin.exec(
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 cmd, <strong class="jxr_keyword">new</strong> DeadInput().stream(),
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>                 baos, baos
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>             );
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>             <strong class="jxr_keyword">return</strong> baos.toString(StandardCharsets.UTF_8.toString());
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         }
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>     }
-<a class="jxr_linenumber" name="L264" href="#L264">264</a> 
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">     * Verbose run.</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>     @Immutable
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>     @ToString
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>     @EqualsAndHashCode(of = <span class="jxr_string">"orgn"</span>)
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Verbose</a> <strong class="jxr_keyword">implements</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> {
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">         * Original.</em>
-<a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> orgn;
-<a class="jxr_linenumber" name="L278" href="#L278">278</a> 
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L280" href="#L280">280</a> <em class="jxr_javadoccomment">         * Ctor.</em>
-<a class="jxr_linenumber" name="L281" href="#L281">281</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
-<a class="jxr_linenumber" name="L282" href="#L282">282</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Verbose</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>             <strong class="jxr_keyword">this</strong>.orgn = shell;
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         }
-<a class="jxr_linenumber" name="L286" href="#L286">286</a> 
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>         <em class="jxr_comment">// @checkstyle ParameterNumberCheck (5 line)</em>
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>         @Override
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> exec(<strong class="jxr_keyword">final</strong> String command, <strong class="jxr_keyword">final</strong> InputStream stdin,
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>             <strong class="jxr_keyword">final</strong> OutputStream stdout, <strong class="jxr_keyword">final</strong> OutputStream stderr)
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>             <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.orgn.exec(
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 command, stdin,
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 <strong class="jxr_keyword">new</strong> TeeOutputStream(stdout, Logger.stream(Level.INFO, <strong class="jxr_keyword">this</strong>)),
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>                 <strong class="jxr_keyword">new</strong> TeeOutputStream(stderr, Logger.stream(Level.WARNING, <strong class="jxr_keyword">this</strong>))
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>             );
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         }
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>     }
-<a class="jxr_linenumber" name="L299" href="#L299">299</a> }
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>                 <strong class="jxr_keyword">if</strong> (stdin.read(<strong class="jxr_keyword">new</strong> byte[2048]) &lt; 0) {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 }
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>             }
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>             sout.write(<strong class="jxr_keyword">this</strong>.stdout);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             sout.close();
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>             serr.write(<strong class="jxr_keyword">this</strong>.stderr);
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             serr.close();
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.code;
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         }
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     }
+<a class="jxr_linenumber" name="L151" href="#L151">151</a> 
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     * Safe run (throws if exit code is not zero).</em>
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L155" href="#L155">155</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>     @Immutable
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>     @ToString
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>     @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Safe</a> <strong class="jxr_keyword">implements</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> {
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">         * Original.</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> origin;
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> 
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">         * Ctor.</em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Safe</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">this</strong>.origin = shell;
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         }
+<a class="jxr_linenumber" name="L173" href="#L173">173</a> 
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         <em class="jxr_comment">// @checkstyle ParameterNumberCheck (5 line)</em>
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         @Override
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> exec(<strong class="jxr_keyword">final</strong> String command, <strong class="jxr_keyword">final</strong> InputStream stdin,
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">final</strong> OutputStream stdout, <strong class="jxr_keyword">final</strong> OutputStream stderr)
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> exit = <strong class="jxr_keyword">this</strong>.origin.exec(command, stdin, stdout, stderr);
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">if</strong> (exit != 0) {
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>                     String.format(<span class="jxr_string">"non-zero exit code #%d: %s"</span>, exit, command)
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 );
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>             }
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>             <strong class="jxr_keyword">return</strong> exit;
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     }
+<a class="jxr_linenumber" name="L188" href="#L188">188</a> 
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">     * Without input and output.</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     @Immutable
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>     @ToString
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>     @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Empty</a> {
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">         * Original.</em>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> origin;
+<a class="jxr_linenumber" name="L202" href="#L202">202</a> 
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> <em class="jxr_javadoccomment">         * Ctor.</em>
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Empty</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>             <strong class="jxr_keyword">this</strong>.origin = shell;
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         }
+<a class="jxr_linenumber" name="L210" href="#L210">210</a> 
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> <em class="jxr_javadoccomment">         * Just exec.</em>
+<a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">         * @param cmd Command</em>
+<a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">         * @return Exit code</em>
+<a class="jxr_linenumber" name="L215" href="#L215">215</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
+<a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> exec(<strong class="jxr_keyword">final</strong> String cmd) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.origin.exec(
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>                 cmd, <strong class="jxr_keyword">new</strong> DeadInput().stream(),
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>                 Logger.stream(Level.INFO, <strong class="jxr_keyword">this</strong>),
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>                 Logger.stream(Level.WARNING, <strong class="jxr_keyword">this</strong>)
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>             );
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         }
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>     }
+<a class="jxr_linenumber" name="L225" href="#L225">225</a> 
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L227" href="#L227">227</a> <em class="jxr_javadoccomment">     * With output only.</em>
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L229" href="#L229">229</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
+<a class="jxr_linenumber" name="L230" href="#L230">230</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>     @Immutable
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     @ToString
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>     @EqualsAndHashCode(of = <span class="jxr_string">"origin"</span>)
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Plain</a> {
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L236" href="#L236">236</a> <em class="jxr_javadoccomment">         * Original.</em>
+<a class="jxr_linenumber" name="L237" href="#L237">237</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> origin;
+<a class="jxr_linenumber" name="L239" href="#L239">239</a> 
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L241" href="#L241">241</a> <em class="jxr_javadoccomment">         * Ctor.</em>
+<a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
+<a class="jxr_linenumber" name="L243" href="#L243">243</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Plain</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>             <strong class="jxr_keyword">this</strong>.origin = shell;
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>         }
+<a class="jxr_linenumber" name="L247" href="#L247">247</a> 
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L249" href="#L249">249</a> <em class="jxr_javadoccomment">         * Just exec.</em>
+<a class="jxr_linenumber" name="L250" href="#L250">250</a> <em class="jxr_javadoccomment">         * @param cmd Command</em>
+<a class="jxr_linenumber" name="L251" href="#L251">251</a> <em class="jxr_javadoccomment">         * @return Stdout</em>
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> <em class="jxr_javadoccomment">         * @throws IOException If fails</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>         <strong class="jxr_keyword">public</strong> String exec(<strong class="jxr_keyword">final</strong> String cmd) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>             <strong class="jxr_keyword">final</strong> ByteArrayOutputStream baos = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
+<a class="jxr_linenumber" name="L256" href="#L256">256</a>             <strong class="jxr_keyword">this</strong>.origin.exec(
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>                 cmd, <strong class="jxr_keyword">new</strong> DeadInput().stream(),
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>                 baos, baos
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>             );
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>             <strong class="jxr_keyword">return</strong> baos.toString(StandardCharsets.UTF_8.toString());
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         }
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     }
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> 
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> <em class="jxr_javadoccomment">     * Verbose run.</em>
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">     * @since 0.1</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>     @Immutable
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>     @ToString
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>     @EqualsAndHashCode(of = <span class="jxr_string">"orgn"</span>)
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">class</strong> <a href="../../../com/jcabi/ssh/Shell.html">Verbose</a> <strong class="jxr_keyword">implements</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> {
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> <em class="jxr_javadoccomment">         * Original.</em>
+<a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">transient</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> orgn;
+<a class="jxr_linenumber" name="L277" href="#L277">277</a> 
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> <em class="jxr_javadoccomment">         * Ctor.</em>
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> <em class="jxr_javadoccomment">         * @param shell Original shell</em>
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>         <strong class="jxr_keyword">public</strong> <a href="../../../com/jcabi/ssh/Shell.html">Verbose</a>(<strong class="jxr_keyword">final</strong> <a href="../../../com/jcabi/ssh/Shell.html">Shell</a> shell) {
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>             <strong class="jxr_keyword">this</strong>.orgn = shell;
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         }
+<a class="jxr_linenumber" name="L285" href="#L285">285</a> 
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         <em class="jxr_comment">// @checkstyle ParameterNumberCheck (5 line)</em>
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         @Override
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> exec(<strong class="jxr_keyword">final</strong> String command, <strong class="jxr_keyword">final</strong> InputStream stdin,
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>             <strong class="jxr_keyword">final</strong> OutputStream stdout, <strong class="jxr_keyword">final</strong> OutputStream stderr)
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>             <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.orgn.exec(
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>                 command, stdin,
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>                 <strong class="jxr_keyword">new</strong> TeeOutputStream(stdout, Logger.stream(Level.INFO, <strong class="jxr_keyword">this</strong>)),
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>                 <strong class="jxr_keyword">new</strong> TeeOutputStream(stderr, Logger.stream(Level.WARNING, <strong class="jxr_keyword">this</strong>))
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>             );
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         }
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>     }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2012&#x2013;2022 <a href="https://www.jcabi.com">jcabi.com</a>. All rights reserved.</div>
