@@ -98,7 +98,7 @@ public final class SshByPassword extends AbstractSshShell {
                 (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
             );
             session.setServerAliveCountMax(Tv.MILLION);
-            session.connect();
+            session.connect((int) TimeUnit.SECONDS.toMillis(10L));
             return session;
         } catch (final JSchException ex) {
             throw new IOException(ex);
