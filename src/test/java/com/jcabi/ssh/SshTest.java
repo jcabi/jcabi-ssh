@@ -48,10 +48,10 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.0
  */
-public final class SshTest {
+final class SshTest {
 
     @Test
-    public void escapesArgument() {
+    void escapesArgument() {
         MatcherAssert.assertThat(
             Ssh.escape("hi,\n '$1'"),
             Matchers.equalTo("'hi,\n '\\''$1'\\'''")
@@ -59,7 +59,7 @@ public final class SshTest {
     }
 
     @Test
-    public void executeCommandOnServer() throws Exception {
+    void executeCommandOnServer() throws Exception {
         final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();
@@ -92,7 +92,7 @@ public final class SshTest {
     }
 
     @Test
-    public void executeCommandOnServerWithPrivateKey() throws Exception {
+    void executeCommandOnServerWithPrivateKey() throws Exception {
         final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
             .usePublicKeyAuthentication().build();

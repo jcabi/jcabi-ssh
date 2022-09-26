@@ -29,64 +29,41 @@
  */
 package com.jcabi.ssh;
 
-import java.nio.file.Path;
-import org.apache.commons.lang3.SystemUtils;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 /**
- * Integration tests for ${@link Ssh}.
+ * Integration test for ${@link Ssh}, which connects to
+ * a real SSHD server over the Internet.
  *
  * @since 1.0
  */
-public final class SshdTest {
+@Testcontainers(disabledWithoutDocker = true)
+final class SshByPasswordITCase extends SshITCaseTemplate {
 
     /**
-     * Check that it's not Windows.
+     * Docker container.
      */
-    @BeforeEach
-    public void notWindows() {
-        Assumptions.assumeFalse(SystemUtils.IS_OS_WINDOWS);
-    }
+    @Container
+    private final GenericContainer<?> sshd = new GenericContainer<>(
+        DockerImageName.parse("linuxserver/openssh-server")
+    )
+        .withEnv("USER_NAME", "jeff")
+        .withEnv("USER_PASSWORD", "secret")
+        .withEnv("PASSWORD_ACCESS", "true")
+        .withExposedPorts(2222);
 
-    @Test
-    public void executeCommandOnServer() throws Exception {
-        final Sshd sshd = new Sshd();
-        try {
-            MatcherAssert.assertThat(
-                new Shell.Plain(
-                    new Shell.Safe(sshd.connect())
-                ).exec("echo one"),
-                Matchers.startsWith("one")
-            );
-        } finally {
-            sshd.close();
-        }
+    @Override
+    public Shell shell() throws Exception {
+        return new Shell.Verbose(
+            new SshByPassword(
+                this.sshd.getHost(),
+                this.sshd.getMappedPort(2222),
+                this.sshd.getEnvMap().get("USER_NAME"),
+                this.sshd.getEnvMap().get("USER_PASSWORD")
+            )
+        );
     }
-
-    @Test
-    public void executeCommandOnServerWithManualConfig(
-        @TempDir final Path temp) throws Exception {
-        final Sshd sshd = new Sshd(temp.toFile());
-        try {
-            MatcherAssert.assertThat(
-                new Shell.Plain(
-                    new Shell.Safe(
-                        new Ssh(
-                            Sshd.host(), sshd.port(), Sshd.login(),
-                            this.getClass().getResource("id_rsa")
-                        )
-                    )
-                ).exec("echo 'how are you'"),
-                Matchers.startsWith("how are")
-            );
-        } finally {
-            sshd.close();
-        }
-    }
-
 }
