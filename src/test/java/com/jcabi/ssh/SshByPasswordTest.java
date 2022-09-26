@@ -46,10 +46,10 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.4
  */
-public final class SshByPasswordTest {
+final class SshByPasswordTest {
 
     @Test
-    public void executesCommand() throws Exception {
+    void executesCommand() throws Exception {
         final String username = "test";
         final String password = "password";
         final int port = SshByPasswordTest.port();

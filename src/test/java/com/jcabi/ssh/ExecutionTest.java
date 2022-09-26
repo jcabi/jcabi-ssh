@@ -42,7 +42,7 @@ import org.mockito.Mockito;
  * Unit tests for {@link Execution}.
  * @since 1.4
  */
-public final class ExecutionTest {
+final class ExecutionTest {
 
     /**
      * Exit code expected from a command.
@@ -50,7 +50,7 @@ public final class ExecutionTest {
     public static final int EXIT_CODE = 127;
 
     @Test
-    public void executesCommand() throws Exception {
+    void executesCommand() throws Exception {
         final Session session = Mockito.mock(Session.class);
         final ChannelExec channel = Mockito.mock(ChannelExec.class);
         Mockito.when(session.openChannel(Mockito.anyString()))

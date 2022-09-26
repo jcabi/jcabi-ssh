@@ -29,19 +29,16 @@
  */
 package com.jcabi.ssh;
 
-import com.jcabi.log.Logger;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import org.cactoos.io.DeadInputStream;
-import org.cactoos.io.TeeOutputStream;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Test;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.KeyPair;
+import java.nio.file.Path;
+import org.cactoos.text.TextOf;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.io.TempDir;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 /**
  * Integration test for ${@link Ssh}, which connects to
@@ -49,127 +46,51 @@ import org.junit.jupiter.api.Test;
  *
  * @since 1.0
  */
-public final class SshITCase {
+@Testcontainers(disabledWithoutDocker = true)
+final class SshITCase extends SshITCaseTemplate {
 
     /**
-     * Host to connect to.
+     * Directory to store key pair.
      */
-    private static final String HOST = System.getProperty("failsafe.host", "");
+    @TempDir
+    private static Path keys;
 
     /**
-     * Port to connect to.
+     * Docker container.
      */
-    private static final String PORT = System.getProperty("failsafe.port", "");
+    @Container
+    private final GenericContainer<?> sshd = new GenericContainer<>(
+        DockerImageName.parse("linuxserver/openssh-server")
+    )
+        .withEnv("USER_NAME", "jeff")
+        .withEnv("PASSWORD_ACCESS", "false")
+        .withEnv("PUBLIC_KEY", new TextOf(keys.resolve("rsa.pub")).toString())
+        .withExposedPorts(2222);
 
-    /**
-     * Username to use.
-     */
-    private static final String LOGIN = System.getProperty("failsafe.login", "");
-
-    /**
-     * Private key to use for connection.
-     */
-    private static final String KEY = System.getProperty("failsafe.key", "");
-
-    @Test
-    public void executesCommandOnServer() throws Exception {
-        MatcherAssert.assertThat(
-            SshITCase.exec(SshITCase.shell(), "whoami"),
-            Matchers.startsWith(SshITCase.LOGIN)
-        );
-    }
-
-    @Test
-    public void executesBrokenCommandOnServer() throws Exception {
-        MatcherAssert.assertThat(
-            SshITCase.shell().exec(
-                "this-command-doesnt-exist",
-                new DeadInputStream(),
-                Logger.stream(Level.INFO, Ssh.class),
-                Logger.stream(Level.WARNING, Ssh.class)
-            ),
-            Matchers.not(Matchers.equalTo(0))
-        );
-    }
-
-    @Test
-    public void consumesInputStream() throws Exception {
-        final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-        MatcherAssert.assertThat(
-            SshITCase.shell().exec(
-                "cat",
-                new ByteArrayInputStream("Hello, world!".getBytes()),
-                new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
-                Logger.stream(Level.WARNING, Ssh.class)
-            ),
-            Matchers.equalTo(0)
-        );
-        MatcherAssert.assertThat(
-            stdout.toString(),
-            Matchers.startsWith("Hello")
-        );
-    }
-
-    @Test
-    public void dropsConnectionForNohup() throws Exception {
-        final long start = System.currentTimeMillis();
-        SshITCase.exec(
-            SshITCase.shell(),
-            "nohup sleep 5 > /dev/null 2>&1 &"
-        );
-        MatcherAssert.assertThat(
-            System.currentTimeMillis() - start,
-            Matchers.lessThan(TimeUnit.SECONDS.toMillis(3L))
-        );
-    }
-
-    @Test
-    public void dropsConnectionWithoutNohup() throws Exception {
-        final long start = System.currentTimeMillis();
-        SshITCase.exec(
-            SshITCase.shell(),
-            "echo 'Hello' ; sleep 5 >/dev/null 2>&1 & echo 'Bye'"
-        );
-        MatcherAssert.assertThat(
-            System.currentTimeMillis() - start,
-            Matchers.lessThan(TimeUnit.SECONDS.toMillis(3L))
-        );
-    }
-
-    /**
-     * Make a shell.
-     * @return The shell
-     * @throws UnknownHostException If not found
-     */
-    private static Shell shell() throws UnknownHostException {
-        Assumptions.assumeFalse(SshITCase.HOST.isEmpty());
+    @Override
+    public Shell shell() throws Exception {
         return new Shell.Verbose(
             new Ssh(
-                SshITCase.HOST,
-                Integer.parseInt(SshITCase.PORT),
-                SshITCase.LOGIN,
-                SshITCase.KEY
+                this.sshd.getHost(),
+                this.sshd.getMappedPort(2222),
+                this.sshd.getEnvMap().get("USER_NAME"),
+                new TextOf(keys.resolve("rsa")).toString(),
+                null
             )
         );
     }
 
     /**
-     * Exec this command at this shell and return stdout.
-     * @param shell The shell
-     * @param cmd The command
-     * @return Stdout
-     * @throws IOException If fails
+     * Generate key pair.
+     * @throws Exception If fails.
      */
-    private static String exec(final Shell shell, final String cmd) throws IOException {
-        final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-        final int exit = shell.exec(
-            cmd,
-            new DeadInputStream(),
-            new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
-            Logger.stream(Level.WARNING, Ssh.class)
-        );
-        MatcherAssert.assertThat(exit, Matchers.is(0));
-        return stdout.toString();
+    @BeforeAll
+    static void setUp() throws Exception {
+        final KeyPair kpair = KeyPair.genKeyPair(new JSch(), KeyPair.RSA);
+        final Path rsa = keys.resolve("rsa");
+        final String filename = rsa.toAbsolutePath().toString();
+        kpair.writePrivateKey(filename, null);
+        kpair.writePublicKey(String.format("%s.pub", filename), "");
+        kpair.dispose();
     }
-
 }

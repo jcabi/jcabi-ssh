@@ -33,7 +33,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
   <parent>
     <groupId>com.jcabi</groupId>
     <artifactId>jcabi</artifactId>
-    <version>1.33.0</version>
+    <version>1.34.1</version>
   </parent>
   <artifactId>jcabi-ssh</artifactId>
   <version>2.0-SNAPSHOT</version>
@@ -76,11 +76,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <version>0.21.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.12.0</version>
-    </dependency>
-    <dependency>
       <groupId>org.cactoos</groupId>
       <artifactId>cactoos</artifactId>
       <version>0.52.0</version>
@@ -92,9 +87,9 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.jcraft</groupId>
+      <groupId>com.github.mwiede</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.1.55</version>
+      <version>0.2.4</version>
     </dependency>
     <dependency>
       <groupId>org.apache.sshd</groupId>
@@ -120,6 +115,29 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
       <version>1.2.17</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.16.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>1.16.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -131,14 +149,6 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
-            <configuration>
-              <systemProperties>
-                <failsafe.host>${failsafe.ssh.host}</failsafe.host>
-                <failsafe.port>${failsafe.ssh.port}</failsafe.port>
-                <failsafe.login>${failsafe.ssh.login}</failsafe.login>
-                <failsafe.key>${failsafe.ssh.key}</failsafe.key>
-              </systemProperties>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -152,7 +162,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
           <plugin>
             <groupId>com.qulice</groupId>
             <artifactId>qulice-maven-plugin</artifactId>
-            <version>0.21.1</version>
+            <version>0.22.0</version>
             <configuration>
               <excludes combine.children="append">
                 <exclude>findbugs:.*</exclude>
