@@ -33,7 +33,7 @@
                                                                     </ul>
                                                     </li>
                                                                                                                         <li >
-                            <span>                        <a href="apidocs-1.8.1/index.html" title="JavaDoc 1.8.1">JavaDoc 1.8.1</a>
+                            <span>                        <a href="apidocs-1.9.0/index.html" title="JavaDoc 1.9.0">JavaDoc 1.9.0</a>
         </span>
                                                                                                                                                                 <ul>
                                                                     </ul>
@@ -146,13 +146,13 @@
                             </div>
                             <ul class="badges">
                                 <li>
-                                    <strong itemprop="version">1.8.1</strong>
+                                    <strong itemprop="version">1.9.0</strong>
                                 </li>
                                 <li>
                                     
-                                    <time itemprop="datePublished" datetime="2022-08-06T05:01:23Z">
+                                    <time itemprop="datePublished" datetime="2022-09-26T04:30:53Z">
                                         
-                                        06-Aug-2022
+                                        26-Sep-2022
                                     </time>
                                 </li>
                                 <li class="menu-button">menu</li>
@@ -172,19 +172,19 @@
 import com.jcabi.ssh.SSH;
 Shell shell = new SSH(&quot;example.com&quot;, 22, &quot;username&quot;, &quot;key...&quot;);
 String stdout = new Shell.Plain(shell).exec(&quot;echo 'Hello, world!'&quot;);</pre></div>
-<p>There is also a convenient <a href="/apidocs-1.8.1/com/jcabi/ssh/SSHD.html"><code>SSHD</code></a> class, a runner of ssh daemon, for unit testing:</p>
+<p>There is also a convenient <a href="/apidocs-1.9.0/com/jcabi/ssh/SSHD.html"><code>SSHD</code></a> class, a runner of ssh daemon, for unit testing:</p>
 <div class="source">
 <pre>try (SSHD sshd = new SSHD()) {
   String uptime = new Shell.Plain(
     SSH(sshd.host(), sshd.login(), sshd.port(), sshd.key())
  ).exec(&quot;uptime&quot;);
 }</pre></div>
-<p>The only dependency you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-ssh/1.8.1/jcabi-ssh-1.8.1.jar"><code>jcabi-ssh-1.8.1.jar</code></a> and add it to the classpath):</p>
+<p>The only dependency you need is (you can also download <a class="externalLink" href="http://repo1.maven.org/maven2/com/jcabi/jcabi-ssh/1.9.0/jcabi-ssh-1.9.0.jar"><code>jcabi-ssh-1.9.0.jar</code></a> and add it to the classpath):</p>
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;com.jcabi&lt;/groupId&gt;
   &lt;artifactId&gt;jcabi-ssh&lt;/artifactId&gt;
-  &lt;version&gt;1.8.1&lt;/version&gt;
+  &lt;version&gt;1.9.0&lt;/version&gt;
 &lt;/dependency&gt;</pre></div><section>
 <h3><a name="Cutting_Edge_Version"></a>Cutting Edge Version</h3>
 <p>If you want to use current version of the product, you can do it with this configuration in your <code>pom.xml</code>:</p>
