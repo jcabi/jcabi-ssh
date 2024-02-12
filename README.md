@@ -1,7 +1,6 @@
 <img alt="logo" src="http://img.jcabi.com/logo-square.svg" width="64px" height="64px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![Managed by Zerocracy](https://www.0crat.com/badge/C9V6HBZQS.svg)](https://www.0crat.com/p/C9V6HBZQS)
 [![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-ssh)](http://www.rultor.com/p/jcabi/jcabi-ssh)
 
 [![mvn](https://github.com/jcabi/jcabi-ssh/actions/workflows/mvn.yml/badge.svg)](https://github.com/jcabi/jcabi-ssh/actions/workflows/mvn.yml)
@@ -10,7 +9,6 @@
 [![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-ssh.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
 [![codecov](https://codecov.io/gh/jcabi/jcabi-ssh/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-ssh)
 [![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-ssh)](https://hitsofcode.com/view/github/jcabi/jcabi-ssh)
-![Lines of code](https://img.shields.io/tokei/lines/github/jcabi/jcabi-ssh)
 [![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-ssh/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-ssh/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/jcabi/jcabi-ssh/blob/master/LICENSE.txt)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2f21909785c54690a355b9c6568795a9)](https://www.codacy.com/gh/jcabi/jcabi-ssh/dashboard)
