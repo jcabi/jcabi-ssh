@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2022, jcabi.com
+ * Copyright (c) 2014-2024, jcabi.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,6 @@
 package com.jcabi.ssh;
 
 import com.jcabi.aspects.RetryOnFailure;
-import com.jcabi.aspects.Tv;
 import com.jcabi.log.Logger;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -74,7 +73,7 @@ public final class SshByPassword extends AbstractSshShell {
     // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
     @Override
     @RetryOnFailure(
-        attempts = Tv.SEVEN,
+        attempts = 7,
         delay = 1,
         unit = TimeUnit.MINUTES,
         verbose = false,
@@ -95,9 +94,9 @@ public final class SshByPassword extends AbstractSshShell {
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword(this.password);
             session.setServerAliveInterval(
-                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
+                (int) TimeUnit.SECONDS.toMillis(10)
             );
-            session.setServerAliveCountMax(Tv.MILLION);
+            session.setServerAliveCountMax(1_000_000);
             session.connect((int) TimeUnit.SECONDS.toMillis(10L));
             return session;
         } catch (final JSchException ex) {
