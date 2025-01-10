@@ -56,8 +56,8 @@ import org.cactoos.io.TeeOutputStream;
  *   )
  * ).exec("echo 'Hello, world!'");</pre>
  *
- * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
+ * @since 1.0
  */
 @Immutable
 public interface Shell {
