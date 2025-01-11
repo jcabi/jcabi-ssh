@@ -74,8 +74,8 @@ import org.cactoos.text.UncheckedText;
  * the connection is lost. You have to create a new {@link Ssh} object, if
  * you need to execute a new command.</p>
  *
- * @since 1.0
  * @see <a href="http://www.yegor256.com/2014/09/02/java-ssh-client.html">article by Yegor Bugayenko</a>
+ * @since 1.0
  * @todo #30:30min Refactor this class into smaller ones to avoid null
  *  checking of passphrase. There should probably be separate classes for
  *  encrypted/unencrypted private key.
