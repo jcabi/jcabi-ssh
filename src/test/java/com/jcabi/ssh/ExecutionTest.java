@@ -60,7 +60,8 @@ final class ExecutionTest {
             ExecutionTest.EXIT_CODE
         );
         MatcherAssert.assertThat(
-            new Execution(
+            "should equal to exit code 127",
+                new Execution(
                 "hello",
                 new DeadInputStream(),
                 new ByteArrayOutputStream(),
