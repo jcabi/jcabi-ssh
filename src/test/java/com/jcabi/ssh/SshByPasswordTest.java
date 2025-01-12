@@ -74,8 +74,8 @@ final class SshByPasswordTest {
             Logger.stream(Level.WARNING, true)
         );
         sshd.stop();
-        MatcherAssert.assertThat(exit, Matchers.equalTo(0));
-        MatcherAssert.assertThat(output.toString(), Matchers.equalTo(cmd));
+        MatcherAssert.assertThat("should equal to 0", exit, Matchers.equalTo(0));
+        MatcherAssert.assertThat("should equal to cmd", output.toString(), Matchers.equalTo(cmd));
     }
 
     /**
@@ -84,9 +84,10 @@ final class SshByPasswordTest {
      * @throws IOException In case of error.
      */
     private static int port() throws IOException {
-        final ServerSocket socket = new ServerSocket(0);
-        final int port = socket.getLocalPort();
-        socket.close();
+        final int port;
+        try (ServerSocket socket = new ServerSocket(0)) {
+            port = socket.getLocalPort();
+        }
         return port;
     }
 }
