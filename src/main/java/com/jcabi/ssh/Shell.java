@@ -127,8 +127,8 @@ public interface Shell {
          */
         public Fake(final int exit, final byte[] out, final byte[] err) {
             this.code = exit;
-            this.stdout = out;
-            this.stderr = err;
+            this.stdout = copyArray(out);
+            this.stderr = copyArray(err);
         }
 
         // @checkstyle ParameterNumberCheck (5 line)
@@ -146,6 +146,14 @@ public interface Shell {
             serr.write(this.stderr);
             serr.close();
             return this.code;
+        }
+
+        private static byte[] copyArray(final byte[] array) {
+            byte[] res = new byte[0];
+            if (array == null) {
+                res = array.clone();
+            }
+            return res;
         }
     }
 
