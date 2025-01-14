@@ -47,6 +47,7 @@ import org.junit.jupiter.api.Test;
  * @since 1.0
  * @checkstyle JavadocMethodCheck (1000 lines)
  */
+@SuppressWarnings("PMD.JUnitTestClassShouldBeFinal")
 abstract class SshITCaseTemplate {
 
     /**
