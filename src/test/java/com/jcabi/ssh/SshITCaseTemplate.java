@@ -47,6 +47,7 @@ import org.junit.jupiter.api.Test;
  * @since 1.0
  * @checkstyle JavadocMethodCheck (1000 lines)
  */
+@SuppressWarnings("PMD.JUnitTestClassShouldBeFinal")
 abstract class SshITCaseTemplate {
 
     /**
@@ -59,6 +60,7 @@ abstract class SshITCaseTemplate {
     @Test
     void executesCommandOnServer() throws Exception {
         MatcherAssert.assertThat(
+            "should starts with 'jeff'",
             new Shell.Plain(
                 this.shell()
             ).exec("whoami"),
@@ -69,6 +71,7 @@ abstract class SshITCaseTemplate {
     @Test
     void executesBrokenCommandOnServer() throws Exception {
         MatcherAssert.assertThat(
+            "should not equal to 0",
             this.shell().exec(
                 "this-command-doesnt-exist",
                 new DeadInputStream(),
@@ -83,6 +86,7 @@ abstract class SshITCaseTemplate {
     void consumesInputStream() throws Exception {
         final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
         MatcherAssert.assertThat(
+            "should equal to 0",
             this.shell().exec(
                 "cat",
                 new ByteArrayInputStream("Hello, world!".getBytes()),
@@ -92,6 +96,7 @@ abstract class SshITCaseTemplate {
             Matchers.equalTo(0)
         );
         MatcherAssert.assertThat(
+            "should starts with 'Hello'",
             stdout.toString(),
             Matchers.startsWith("Hello")
         );
@@ -104,6 +109,7 @@ abstract class SshITCaseTemplate {
             "nohup sleep 5 > /dev/null 2>&1 &"
         );
         MatcherAssert.assertThat(
+            "should less than 3 seconds",
             System.currentTimeMillis() - start,
             Matchers.lessThan(TimeUnit.SECONDS.toMillis(3L))
         );
@@ -116,6 +122,7 @@ abstract class SshITCaseTemplate {
             "echo 'Hello' ; sleep 5 >/dev/null 2>&1 & echo 'Bye'"
         );
         MatcherAssert.assertThat(
+            "should less than 3 seconds",
             System.currentTimeMillis() - start,
             Matchers.lessThan(TimeUnit.SECONDS.toMillis(3L))
         );
@@ -135,7 +142,7 @@ abstract class SshITCaseTemplate {
             new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
             Logger.stream(Level.WARNING, Ssh.class)
         );
-        MatcherAssert.assertThat(exit, Matchers.is(0));
+        MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
         return stdout.toString();
     }
 

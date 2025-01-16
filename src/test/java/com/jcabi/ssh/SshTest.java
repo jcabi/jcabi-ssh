@@ -53,6 +53,7 @@ final class SshTest {
     @Test
     void escapesArgument() {
         MatcherAssert.assertThat(
+            "should equal to ''hi,\n '\\''$1'\\'''",
             Ssh.escape("hi,\n '$1'"),
             Matchers.equalTo("'hi,\n '\\''$1'\\'''")
         );
@@ -84,8 +85,8 @@ final class SshTest {
                 output,
                 Logger.stream(Level.WARNING, true)
             );
-            MatcherAssert.assertThat(exit, Matchers.is(0));
-            MatcherAssert.assertThat(output.toString(), Matchers.is(cmd));
+            MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
+            MatcherAssert.assertThat("should equal to cmd", output.toString(), Matchers.is(cmd));
         } finally {
             sshd.stop();
         }
@@ -118,8 +119,8 @@ final class SshTest {
                 output,
                 Logger.stream(Level.WARNING, true)
             );
-            MatcherAssert.assertThat(exit, Matchers.is(0));
-            MatcherAssert.assertThat(output.toString(), Matchers.is(cmd));
+            MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
+            MatcherAssert.assertThat("should equal to cmd", output.toString(), Matchers.is(cmd));
         } finally {
             sshd.stop(true);
         }
@@ -131,9 +132,10 @@ final class SshTest {
      * @throws IOException In case of error.
      */
     private static int port() throws IOException {
-        final ServerSocket socket = new ServerSocket(0);
-        final int port = socket.getLocalPort();
-        socket.close();
+        final int port;
+        try (ServerSocket socket = new ServerSocket(0)) {
+            port = socket.getLocalPort();
+        }
         return port;
     }
 }

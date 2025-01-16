@@ -42,8 +42,8 @@ import lombok.ToString;
 
 /**
  * SSH channel with authentication by password.
- * @since 1.4
  * @see Ssh For SSH channel with authenticaton using private key.
+ * @since 1.4
  */
 @ToString
 @EqualsAndHashCode(of = "password", callSuper = true)
