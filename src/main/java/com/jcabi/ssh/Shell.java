@@ -52,7 +52,7 @@ import org.cactoos.io.TeeOutputStream;
  * <pre> String hello = new Shell.Plain(
  *   new SSH(
  *     "ssh.example.com", 22,
- *     "yegor", "-----BEGIN RSA PRIVATE KEY-----..."
+ *     "yegor", "-----BEGIN RSА PRIVATE KEY-----..."
  *   )
  * ).exec("echo 'Hello, world!'");</pre>
  *
