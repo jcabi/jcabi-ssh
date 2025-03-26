@@ -11,6 +11,7 @@
 [![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-ssh)](https://hitsofcode.com/view/github/jcabi/jcabi-ssh)
 [![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-ssh/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-ssh/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/jcabi/jcabi-ssh/blob/master/LICENSE.txt)
+[![libs.tech recommends](https://libs.tech/project/23238769/badge.svg)](https://libs.tech/project/23238769/jcabi-ssh)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2f21909785c54690a355b9c6568795a9)](https://www.codacy.com/gh/jcabi/jcabi-ssh/dashboard)
 
 More details are here: [ssh.jcabi.com](http://ssh.jcabi.com/).
