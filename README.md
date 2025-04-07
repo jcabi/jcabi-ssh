@@ -1,12 +1,12 @@
 <img alt="logo" src="https://www.jcabi.com/logo-square.svg" width="64px" height="64px" />
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
-[![DevOps By Rultor.com](http://www.rultor.com/b/jcabi/jcabi-ssh)](http://www.rultor.com/p/jcabi/jcabi-ssh)
+[![DevOps By Rultor.com](https://www.rultor.com/b/jcabi/jcabi-ssh)](https://www.rultor.com/p/jcabi/jcabi-ssh)
 
 [![mvn](https://github.com/jcabi/jcabi-ssh/actions/workflows/mvn.yml/badge.svg)](https://github.com/jcabi/jcabi-ssh/actions/workflows/mvn.yml)
-[![PDD status](http://www.0pdd.com/svg?name=jcabi/jcabi-ssh)](http://www.0pdd.com/p?name=jcabi/jcabi-ssh)
+[![PDD status](https://www.0pdd.com/svg?name=jcabi/jcabi-ssh)](https://www.0pdd.com/p?name=jcabi/jcabi-ssh)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jcabi/jcabi-ssh)
-[![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-ssh.svg)](http://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
+[![Javadoc](https://javadoc.io/badge/com.jcabi/jcabi-ssh.svg)](https://www.javadoc.io/doc/com.jcabi/jcabi-ssh)
 [![codecov](https://codecov.io/gh/jcabi/jcabi-ssh/branch/master/graph/badge.svg)](https://codecov.io/gh/jcabi/jcabi-ssh)
 [![Hits-of-Code](https://hitsofcode.com/github/jcabi/jcabi-ssh)](https://hitsofcode.com/view/github/jcabi/jcabi-ssh)
 [![jpeek report](https://i.jpeek.org/com.jcabi/jcabi-ssh/badge.svg)](https://i.jpeek.org/com.jcabi/jcabi-ssh/)
