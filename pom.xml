@@ -83,13 +83,13 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.4.6-jre</version>
+      <version>33.4.8-jre</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.github.mwiede</groupId>
       <artifactId>jsch</artifactId>
-      <version>0.2.23</version>
+      <version>0.2.26</version>
     </dependency>
     <dependency>
       <groupId>org.apache.sshd</groupId>
@@ -129,13 +129,13 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
-      <version>1.20.4</version>
+      <version>1.21.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.20.4</version>
+      <version>1.21.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
