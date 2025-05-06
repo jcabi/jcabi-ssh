@@ -1,6 +1,6 @@
-*.iml
 .DS_Store
 .idea/
+*.iml
 /.classpath
 /.project
 /.settings/
