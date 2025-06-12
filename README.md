@@ -40,7 +40,7 @@ try (Sshd sshd = new Sshd()) {
 }
 ```
 
-Version 1.6 works under Java 1.8+. If your Java version is ealier, use
+Version 1.6 works under Java 1.8+. If your Java version is earlier, use
 version 1.5.2.
 
 ## How to contribute?
