@@ -71,9 +71,7 @@ class MockSshServerBuilder {
         temp.toFile().deleteOnExit();
         sshd.setKeyPairProvider(
             new SimpleGeneratorHostKeyProvider(
-                // typos: disable
                 temp.resolve("hostkey.ser")
-                // typos: enable
             )
         );
         sshd.setUserAuthFactories(this.factories);
