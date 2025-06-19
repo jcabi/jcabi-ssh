@@ -1,4 +1,4 @@
-
+#
 [![Logo](https://www.jcabi.com/logo-square.svg)](https://www.jcabi.com/logo-square.svg)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
