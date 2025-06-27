@@ -17,7 +17,7 @@ import lombok.ToString;
 
 /**
  * SSH channel with authentication by password.
- * @see Ssh For SSH channel with authenticaton using private key.
+ * @see Ssh For SSH channel with authentication using private key.
  * @since 1.4
  */
 @ToString

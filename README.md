@@ -1,4 +1,6 @@
-<img alt="logo" src="https://www.jcabi.com/logo-square.svg" width="64px" height="64px" />
+#
+
+[![Logo](https://www.jcabi.com/logo-square.svg)](https://www.jcabi.com/logo-square.svg)
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](https://www.rultor.com/b/jcabi/jcabi-ssh)](https://www.rultor.com/p/jcabi/jcabi-ssh)
@@ -40,7 +42,7 @@ try (Sshd sshd = new Sshd()) {
 }
 ```
 
-Version 1.6 works under Java 1.8+. If your Java version is ealier, use
+Version 1.6 works under Java 1.8+. If your Java version is earlier, use
 version 1.5.2.
 
 ## How to contribute?
@@ -51,8 +53,8 @@ the `master` branch, if they look correct.
 
 Please run Maven (3.2+) build before submitting a pull request:
 
-```
-$ mvn clean install -Pqulice
+```shell
+mvn clean install -Pqulice
 ```
 
 Make sure you have Maven 3.3+ and Java 8+.
