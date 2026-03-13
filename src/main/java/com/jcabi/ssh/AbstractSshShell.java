@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -20,8 +19,6 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode(of = { "addr", "port", "login" })
-@Getter
-@SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 abstract class AbstractSshShell implements Shell {
 
     /**
@@ -67,6 +64,30 @@ abstract class AbstractSshShell implements Shell {
             stderr,
             this.session()
         ).exec();
+    }
+
+    /**
+     * Returns the IP address of the server.
+     * @return The address
+     */
+    protected String getAddr() {
+        return this.addr;
+    }
+
+    /**
+     * Returns the port to use.
+     * @return The port
+     */
+    protected int getPort() {
+        return this.port;
+    }
+
+    /**
+     * Returns the user name.
+     * @return The login
+     */
+    protected String getLogin() {
+        return this.login;
     }
 
     /**
