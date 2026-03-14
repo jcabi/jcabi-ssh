@@ -7,6 +7,7 @@ package com.jcabi.ssh;
 import com.jcabi.log.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.cactoos.io.DeadInputStream;
@@ -58,13 +59,14 @@ abstract class SshITCaseTemplate {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void consumesInputStream() throws Exception {
         final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
         MatcherAssert.assertThat(
             "should equal to 0",
             this.shell().exec(
                 "cat",
-                new ByteArrayInputStream("Hello, world!".getBytes()),
+                new ByteArrayInputStream("Hello, world!".getBytes(StandardCharsets.UTF_8)),
                 new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
                 Logger.stream(Level.WARNING, Ssh.class)
             ),
@@ -72,12 +74,13 @@ abstract class SshITCaseTemplate {
         );
         MatcherAssert.assertThat(
             "should starts with 'Hello'",
-            stdout.toString(),
+            stdout.toString(StandardCharsets.UTF_8),
             Matchers.startsWith("Hello")
         );
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void dropsConnectionForNohup() throws Exception {
         final long start = System.currentTimeMillis();
         this.exec(
@@ -91,6 +94,7 @@ abstract class SshITCaseTemplate {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     void dropsConnectionWithoutNohup() throws Exception {
         final long start = System.currentTimeMillis();
         this.exec(
@@ -109,6 +113,7 @@ abstract class SshITCaseTemplate {
      * @return Stdout
      * @throws Exception If fails
      */
+    @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private String exec(final String cmd) throws Exception {
         final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
         final int exit = this.shell().exec(
@@ -118,7 +123,7 @@ abstract class SshITCaseTemplate {
             Logger.stream(Level.WARNING, Ssh.class)
         );
         MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
-        return stdout.toString();
+        return stdout.toString(StandardCharsets.UTF_8);
     }
 
 }

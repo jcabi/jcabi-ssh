@@ -22,7 +22,7 @@ final class ExecutionTest {
     /**
      * Exit code expected from a command.
      */
-    public static final int EXIT_CODE = 127;
+    private static final int EXIT_CODE = 127;
 
     @Test
     void executesCommand() throws Exception {
@@ -31,9 +31,7 @@ final class ExecutionTest {
         Mockito.when(session.openChannel(Mockito.anyString()))
             .thenReturn(channel);
         Mockito.when(channel.isClosed()).thenReturn(Boolean.TRUE);
-        Mockito.when(channel.getExitStatus()).thenReturn(
-            ExecutionTest.EXIT_CODE
-        );
+        Mockito.when(channel.getExitStatus()).thenReturn(ExecutionTest.EXIT_CODE);
         MatcherAssert.assertThat(
             "should equal to exit code 127",
                 new Execution(

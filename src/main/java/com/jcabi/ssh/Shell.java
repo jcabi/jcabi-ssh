@@ -35,6 +35,7 @@ import org.cactoos.io.TeeOutputStream;
  * @since 1.0
  */
 @Immutable
+@FunctionalInterface
 public interface Shell {
 
     /**
@@ -91,7 +92,11 @@ public interface Shell {
          * @param err Stderr to return
          */
         public Fake(final int exit, final String out, final String err) {
-            this(exit, out.getBytes(), err.getBytes());
+            this(
+                exit,
+                out.getBytes(StandardCharsets.UTF_8),
+                err.getBytes(StandardCharsets.UTF_8)
+            );
         }
 
         /**

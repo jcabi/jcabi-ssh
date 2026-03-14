@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import org.apache.sshd.server.SshServer;
 import org.cactoos.io.DeadInputStream;
@@ -35,6 +36,7 @@ final class SshTest {
     }
 
     @Test
+    @SuppressWarnings({"PMD.UnitTestContainsTooManyAsserts", "PMD.UnnecessaryLocalRule"})
     void executeCommandOnServer() throws Exception {
         final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
@@ -61,13 +63,18 @@ final class SshTest {
                 Logger.stream(Level.WARNING, true)
             );
             MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
-            MatcherAssert.assertThat("should equal to cmd", output.toString(), Matchers.is(cmd));
+            MatcherAssert.assertThat(
+                "should equal to cmd",
+                output.toString(StandardCharsets.UTF_8),
+                Matchers.is(cmd)
+            );
         } finally {
             sshd.stop();
         }
     }
 
     @Test
+    @SuppressWarnings({"PMD.UnitTestContainsTooManyAsserts", "PMD.UnnecessaryLocalRule"})
     void executeCommandOnServerWithPrivateKey() throws Exception {
         final int port = SshTest.port();
         final SshServer sshd = new MockSshServerBuilder(port)
@@ -95,7 +102,11 @@ final class SshTest {
                 Logger.stream(Level.WARNING, true)
             );
             MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
-            MatcherAssert.assertThat("should equal to cmd", output.toString(), Matchers.is(cmd));
+            MatcherAssert.assertThat(
+                "should equal to cmd",
+                output.toString(StandardCharsets.UTF_8),
+                Matchers.is(cmd)
+            );
         } finally {
             sshd.stop(true);
         }

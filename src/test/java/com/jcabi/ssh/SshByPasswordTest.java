@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import org.apache.sshd.server.SshServer;
 import org.cactoos.io.DeadInputStream;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 final class SshByPasswordTest {
 
     @Test
+    @SuppressWarnings({"PMD.UnitTestContainsTooManyAsserts", "PMD.UnnecessaryLocalRule"})
     void executesCommand() throws Exception {
         final String username = "test";
         final String password = "password";
@@ -50,7 +52,11 @@ final class SshByPasswordTest {
         );
         sshd.stop();
         MatcherAssert.assertThat("should equal to 0", exit, Matchers.equalTo(0));
-        MatcherAssert.assertThat("should equal to cmd", output.toString(), Matchers.equalTo(cmd));
+        MatcherAssert.assertThat(
+            "should equal to cmd",
+            output.toString(StandardCharsets.UTF_8),
+            Matchers.equalTo(cmd)
+        );
     }
 
     /**

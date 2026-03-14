@@ -34,6 +34,7 @@ final class SshITCase extends SshITCaseTemplate {
      * Docker container.
      */
     @Container
+    @SuppressWarnings("PMD.AvoidDirectAccessToStaticFields")
     private final GenericContainer<?> sshd = new GenericContainer<>(
         DockerImageName.parse("linuxserver/openssh-server")
     )
@@ -43,6 +44,7 @@ final class SshITCase extends SshITCaseTemplate {
         .withExposedPorts(2222);
 
     @Override
+    @SuppressWarnings("PMD.AvoidDirectAccessToStaticFields")
     public Shell shell() throws Exception {
         return new Shell.Verbose(
             new Ssh(
@@ -62,7 +64,7 @@ final class SshITCase extends SshITCaseTemplate {
     @BeforeAll
     static void setUp() throws Exception {
         final KeyPair kpair = KeyPair.genKeyPair(new JSch(), KeyPair.RSA);
-        final Path rsa = keys.resolve("rsa");
+        final Path rsa = SshITCase.keys.resolve("rsa");
         final String filename = rsa.toAbsolutePath().toString();
         kpair.writePrivateKey(filename, null);
         kpair.writePublicKey(String.format("%s.pub", filename), "");

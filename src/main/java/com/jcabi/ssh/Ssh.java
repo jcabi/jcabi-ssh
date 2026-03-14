@@ -57,7 +57,6 @@ import org.cactoos.text.UncheckedText;
  */
 @ToString
 @EqualsAndHashCode(of = "key", callSuper = true)
-@SuppressWarnings("PMD.TooManyMethods")
 public final class Ssh extends AbstractSshShell {
 
     /**
