@@ -47,6 +47,7 @@ abstract class AbstractSshShell implements Shell {
         final String adr,
         final int prt,
         final String user) throws UnknownHostException {
+        // @checkstyle ConstructorsCodeFreeCheck (1 line)
         this.addr = InetAddress.getByName(adr).getHostAddress();
         this.port = prt;
         this.login = user;
@@ -95,6 +96,5 @@ abstract class AbstractSshShell implements Shell {
      * @return JSch session
      * @throws IOException If some IO problem inside
      */
-    protected abstract Session session()  throws IOException;
-
+    protected abstract Session session() throws IOException;
 }

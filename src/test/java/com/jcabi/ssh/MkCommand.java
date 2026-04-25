@@ -83,5 +83,4 @@ final class MkCommand implements Command {
         Logger.debug(this, "#destroy(): finishing '%s'", this.command);
         session.close();
     }
-
 }

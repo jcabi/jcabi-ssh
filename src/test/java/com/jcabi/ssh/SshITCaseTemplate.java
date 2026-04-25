@@ -31,6 +31,7 @@ abstract class SshITCaseTemplate {
      * @return The shell
      * @throws Exception If fails
      */
+    @SuppressWarnings("PMD.PublicMemberInNonPublicType")
     public abstract Shell shell() throws Exception;
 
     @Test
@@ -125,5 +126,4 @@ abstract class SshITCaseTemplate {
         MatcherAssert.assertThat("should be 0", exit, Matchers.is(0));
         return stdout.toString(StandardCharsets.UTF_8);
     }
-
 }
