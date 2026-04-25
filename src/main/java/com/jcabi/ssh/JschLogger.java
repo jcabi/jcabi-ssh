@@ -35,5 +35,4 @@ final class JschLogger implements com.jcraft.jsch.Logger {
         }
         Logger.log(jul, Ssh.class, msg);
     }
-
 }

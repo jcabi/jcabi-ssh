@@ -54,5 +54,4 @@ final class EasyRepo implements HostKeyRepository {
     public HostKey[] getHostKey(final String host, final String type) {
         return new HostKey[0];
     }
-
 }

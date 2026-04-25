@@ -68,6 +68,7 @@ final class Execution {
      * @return Return code of the command.
      * @throws IOException If fails
      */
+    @SuppressWarnings("PMD.PublicMemberInNonPublicType")
     public int exec() throws IOException {
         try {
             final ChannelExec channel = ChannelExec.class.cast(

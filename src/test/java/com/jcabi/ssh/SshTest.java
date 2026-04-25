@@ -28,6 +28,7 @@ final class SshTest {
 
     @Test
     void escapesArgument() {
+        // @checkstyle ProhibitLineSeparatorInStringsCheck (5 lines)
         MatcherAssert.assertThat(
             "should equal to ''hi,\n '\\''$1'\\'''",
             Ssh.escape("hi,\n '$1'"),

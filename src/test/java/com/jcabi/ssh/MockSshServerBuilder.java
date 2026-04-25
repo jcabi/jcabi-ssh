@@ -53,6 +53,7 @@ class MockSshServerBuilder {
      * @param prt The port number for SSH server
      */
     MockSshServerBuilder(final int prt) {
+        // @checkstyle ConstructorsCodeFreeCheck (4 lines)
         this.port = prt;
         this.factories = new ArrayList<>(2);
         this.pwd = Optional.absent();
@@ -64,6 +65,7 @@ class MockSshServerBuilder {
      * @return SSH server.
      * @throws IOException If fails
      */
+    @SuppressWarnings("PMD.PublicMemberInNonPublicType")
     public SshServer build() throws IOException {
         final SshServer sshd = SshServer.setUpDefaultServer();
         sshd.setPort(this.port);
@@ -87,6 +89,7 @@ class MockSshServerBuilder {
      * @param password Password for an authentication.
      * @return This instance of builder.
      */
+    @SuppressWarnings("PMD.PublicMemberInNonPublicType")
     public MockSshServerBuilder usePasswordAuthentication(
         final String login, final String password) {
         this.factories.add(new UserAuthPasswordFactory());
@@ -108,6 +111,7 @@ class MockSshServerBuilder {
      *
      * @return This instance of builder.
      */
+    @SuppressWarnings("PMD.PublicMemberInNonPublicType")
     public MockSshServerBuilder usePublicKeyAuthentication() {
         this.factories.add(new UserAuthPublicKeyFactory());
         final PublickeyAuthenticator auth =
@@ -122,5 +126,4 @@ class MockSshServerBuilder {
         this.pkey = Optional.of(auth);
         return this;
     }
-
 }

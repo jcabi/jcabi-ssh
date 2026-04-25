@@ -92,6 +92,7 @@ public interface Shell {
          * @param err Stderr to return
          */
         public Fake(final int exit, final String out, final String err) {
+            // @checkstyle ConstructorsCodeFreeCheck (4 lines)
             this(
                 exit,
                 out.getBytes(StandardCharsets.UTF_8),
@@ -106,6 +107,7 @@ public interface Shell {
          * @param err Stderr to return
          */
         public Fake(final int exit, final byte[] out, final byte[] err) {
+            // @checkstyle ConstructorsCodeFreeCheck (3 lines)
             this.code = exit;
             this.stdout = copyArray(out);
             this.stderr = copyArray(err);
