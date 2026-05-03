@@ -11,6 +11,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -67,7 +68,7 @@ public final class SshByPassword extends AbstractSshShell {
                 this.getLogin(), this.getAddr(), this.getPort()
             );
             session.setConfig("StrictHostKeyChecking", "no");
-            session.setPassword(this.password);
+            session.setPassword(this.password.getBytes(StandardCharsets.UTF_8));
             session.setServerAliveInterval(
                 (int) TimeUnit.SECONDS.toMillis(10)
             );

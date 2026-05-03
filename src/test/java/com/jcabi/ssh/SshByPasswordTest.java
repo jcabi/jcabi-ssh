@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link SshByPassword}.
- *
  * @since 1.4
  */
 final class SshByPasswordTest {
@@ -61,8 +60,8 @@ final class SshByPasswordTest {
 
     /**
      * Allocate free port.
-     * @return Found port.
-     * @throws IOException In case of error.
+     * @return Found port
+     * @throws IOException In case of error
      */
     private static int port() throws IOException {
         final int port;

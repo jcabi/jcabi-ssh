@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 /**
  * Integration test for ${@link Ssh}, which connects to
  * a real SSHD server.
- *
  * @since 1.0
  * @checkstyle JavadocMethodCheck (1000 lines)
  */

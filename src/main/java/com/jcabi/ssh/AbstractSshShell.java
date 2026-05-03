@@ -38,10 +38,10 @@ abstract class AbstractSshShell implements Shell {
 
     /**
      * Constructor.
-     * @param adr Address that you want to connect to.
-     * @param prt Port that you want to reach.
-     * @param user User that will be used when connecting.
-     * @throws UnknownHostException when host is unknown.
+     * @param adr Address that you want to connect to
+     * @param prt Port that you want to reach
+     * @param user User that will be used when connecting
+     * @throws UnknownHostException when host is unknown
      */
     AbstractSshShell(
         final String adr,

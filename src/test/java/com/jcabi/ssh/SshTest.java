@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ${@link Ssh}.
- *
  * @since 1.0
  */
 final class SshTest {
@@ -115,8 +114,8 @@ final class SshTest {
 
     /**
      * Allocate free port.
-     * @return Found port.
-     * @throws IOException In case of error.
+     * @return Found port
+     * @throws IOException In case of error
      */
     private static int port() throws IOException {
         final int port;

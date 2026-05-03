@@ -12,7 +12,6 @@ import org.testcontainers.utility.DockerImageName;
 /**
  * Integration test for ${@link Ssh}, which connects to
  * a real SSHD server over the Internet.
- *
  * @since 1.0
  */
 @Testcontainers(disabledWithoutDocker = true)
@@ -24,7 +23,7 @@ final class SshByPasswordITCase extends SshITCaseTemplate {
     @Container
     private final GenericContainer<?> sshd = new GenericContainer<>(
         DockerImageName.parse("linuxserver/openssh-server")
-    )
+        )
         .withEnv("USER_NAME", "jeff")
         .withEnv("USER_PASSWORD", "secret")
         .withEnv("PASSWORD_ACCESS", "true")
