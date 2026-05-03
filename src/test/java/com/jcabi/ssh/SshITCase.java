@@ -18,7 +18,6 @@ import org.testcontainers.utility.DockerImageName;
 /**
  * Integration test for ${@link Ssh}, which connects to
  * a real SSHD server over the Internet.
- *
  * @since 1.0
  */
 @Testcontainers(disabledWithoutDocker = true)
@@ -37,7 +36,7 @@ final class SshITCase extends SshITCaseTemplate {
     @SuppressWarnings("PMD.AvoidDirectAccessToStaticFields")
     private final GenericContainer<?> sshd = new GenericContainer<>(
         DockerImageName.parse("linuxserver/openssh-server")
-    )
+        )
         .withEnv("USER_NAME", "jeff")
         .withEnv("PASSWORD_ACCESS", "false")
         .withEnv("PUBLIC_KEY", new TextOf(keys.resolve("rsa.pub")).toString())
@@ -59,7 +58,7 @@ final class SshITCase extends SshITCaseTemplate {
 
     /**
      * Generate key pair.
-     * @throws Exception If fails.
+     * @throws Exception If fails
      */
     @BeforeAll
     static void setUp() throws Exception {

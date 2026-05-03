@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.4
  */
 final class Execution {
+
     /**
      * Command.
      */
@@ -65,7 +66,7 @@ final class Execution {
 
     /**
      * Executes some command.
-     * @return Return code of the command.
+     * @return Return code of the command
      * @throws IOException If fails
      */
     @SuppressWarnings("PMD.PublicMemberInNonPublicType")
@@ -127,7 +128,7 @@ final class Execution {
             } catch (final InterruptedException ex) {
                 Thread.currentThread().interrupt();
                 throw new IOException(
-                    String.format(
+                    Logger.format(
                         "Interrupted after %[ms]s of waiting",
                         System.currentTimeMillis() - start
                     ),

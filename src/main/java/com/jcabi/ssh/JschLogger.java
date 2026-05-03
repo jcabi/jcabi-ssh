@@ -11,7 +11,6 @@ import lombok.ToString;
 
 /**
  * Jsch Logger.
- *
  * @since 1.4
  */
 @ToString

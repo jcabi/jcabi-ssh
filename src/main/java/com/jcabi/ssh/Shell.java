@@ -63,6 +63,7 @@ public interface Shell {
     @ToString
     @EqualsAndHashCode(of = "code")
     final class Fake implements Shell {
+
         /**
          * Exit code.
          */
@@ -141,13 +142,13 @@ public interface Shell {
 
     /**
      * Safe run (throws if exit code is not zero).
-     *
      * @since 0.1
      */
     @Immutable
     @ToString
     @EqualsAndHashCode(of = "origin")
     final class Safe implements Shell {
+
         /**
          * Original.
          */
@@ -178,13 +179,13 @@ public interface Shell {
 
     /**
      * Without input and output.
-     *
      * @since 0.1
      */
     @Immutable
     @ToString
     @EqualsAndHashCode(of = "origin")
     final class Empty {
+
         /**
          * Original.
          */
@@ -215,13 +216,13 @@ public interface Shell {
 
     /**
      * With output only.
-     *
      * @since 0.1
      */
     @Immutable
     @ToString
     @EqualsAndHashCode(of = "origin")
     final class Plain {
+
         /**
          * Original.
          */
@@ -247,19 +248,19 @@ public interface Shell {
                 cmd, new DeadInput().stream(),
                 baos, baos
             );
-            return baos.toString(StandardCharsets.UTF_8.toString());
+            return baos.toString(StandardCharsets.UTF_8);
         }
     }
 
     /**
      * Verbose run.
-     *
      * @since 0.1
      */
     @Immutable
     @ToString
     @EqualsAndHashCode(of = "orgn")
     final class Verbose implements Shell {
+
         /**
          * Original.
          */

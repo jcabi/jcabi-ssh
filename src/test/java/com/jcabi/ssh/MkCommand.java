@@ -22,6 +22,7 @@ import org.cactoos.scalar.Unchecked;
  * @since 1.6
  */
 final class MkCommand implements Command {
+
     /**
      * Command being executed.
      */
@@ -39,7 +40,7 @@ final class MkCommand implements Command {
 
     /**
      * Constructor.
-     * @param cmd Command to echo.
+     * @param cmd Command to echo
      */
     MkCommand(final String cmd) {
         this.command = cmd;
