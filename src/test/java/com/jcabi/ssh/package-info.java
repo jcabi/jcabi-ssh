@@ -5,7 +5,6 @@
 
 /**
  * SSH client, tests.
- *
  * @since 1.0
  */
 package com.jcabi.ssh;

@@ -11,10 +11,10 @@ import org.apache.sshd.server.command.CommandFactory;
 
 /**
  * Factory for command.
- *
  * @since 1.6
  */
 final class MkCommandFactory implements CommandFactory {
+
     @Override
     public Command createCommand(
         final ChannelSession session, final String cmd) {
