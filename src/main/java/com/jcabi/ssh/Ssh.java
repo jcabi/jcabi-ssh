@@ -123,7 +123,6 @@ public final class Ssh extends AbstractSshShell {
      */
     public Ssh(final InetAddress adr, final String user, final String priv)
         throws UnknownHostException {
-        // @checkstyle ConstructorsCodeFreeCheck (1 line)
         this(adr.getCanonicalHostName(), Ssh.PORT, user, priv);
     }
 
@@ -139,7 +138,6 @@ public final class Ssh extends AbstractSshShell {
      */
     public Ssh(final String adr, final int prt,
         final String user, final URL priv) throws IOException {
-        // @checkstyle ConstructorsCodeFreeCheck (1 line)
         this(adr, prt, user, new UncheckedText(new TextOf(priv)).asString());
     }
 
@@ -155,7 +153,6 @@ public final class Ssh extends AbstractSshShell {
      */
     public Ssh(final InetAddress adr, final int prt,
         final String user, final URL priv) throws IOException {
-        // @checkstyle ConstructorsCodeFreeCheck (4 lines)
         this(
             adr.getCanonicalHostName(), prt, user,
             new UncheckedText(new TextOf(priv)).asString()

@@ -52,7 +52,6 @@ final class Execution {
      * @param out Stdout (will be closed)
      * @param err Stderr (will be closed)
      * @param sess SSH session (will be disconnected)
-     * @checkstyle ParameterNumberCheck (6 lines)
      */
     Execution(final String cmd, final InputStream input,
         final OutputStream out, final OutputStream err,

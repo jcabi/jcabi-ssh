@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 final class SshByPasswordTest {
 
     @Test
-    @SuppressWarnings({"PMD.UnitTestContainsTooManyAsserts", "PMD.UnnecessaryLocalRule"})
+    @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void executesCommand() throws Exception {
         final String username = "test";
         final String password = "password";

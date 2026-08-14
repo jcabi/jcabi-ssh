@@ -93,7 +93,6 @@ public interface Shell {
          * @param err Stderr to return
          */
         public Fake(final int exit, final String out, final String err) {
-            // @checkstyle ConstructorsCodeFreeCheck (4 lines)
             this(
                 exit,
                 out.getBytes(StandardCharsets.UTF_8),
@@ -114,7 +113,6 @@ public interface Shell {
             this.stderr = copyArray(err);
         }
 
-        // @checkstyle ParameterNumberCheck (5 line)
         @Override
         public int exec(final String command, final InputStream stdin,
             final OutputStream sout, final OutputStream serr)
@@ -162,7 +160,6 @@ public interface Shell {
             this.origin = shell;
         }
 
-        // @checkstyle ParameterNumberCheck (5 line)
         @Override
         public int exec(final String command, final InputStream stdin,
             final OutputStream stdout, final OutputStream stderr)
@@ -274,7 +271,6 @@ public interface Shell {
             this.orgn = shell;
         }
 
-        // @checkstyle ParameterNumberCheck (5 line)
         @Override
         public int exec(final String command, final InputStream stdin,
             final OutputStream stdout, final OutputStream stderr)

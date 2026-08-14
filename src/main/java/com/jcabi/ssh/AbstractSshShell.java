@@ -53,7 +53,6 @@ abstract class AbstractSshShell implements Shell {
         this.login = user;
     }
 
-    // @checkstyle ParameterNumberCheck (2 lines)
     @Override
     public int exec(final String command, final InputStream stdin,
         final OutputStream stdout, final OutputStream stderr)
