@@ -58,11 +58,6 @@ final class SshByPasswordTest {
         );
     }
 
-    /**
-     * Allocate free port.
-     * @return Found port
-     * @throws IOException In case of error
-     */
     private static int port() throws IOException {
         final int port;
         try (ServerSocket socket = new ServerSocket(0)) {

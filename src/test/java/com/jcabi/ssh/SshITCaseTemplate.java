@@ -104,12 +104,6 @@ abstract class SshITCaseTemplate {
         );
     }
 
-    /**
-     * Exec this command at this shell and return stdout.
-     * @param cmd The command
-     * @return Stdout
-     * @throws Exception If fails
-     */
     @SuppressWarnings("PMD.UnnecessaryLocalRule")
     private String exec(final String cmd) throws Exception {
         final ByteArrayOutputStream stdout = new ByteArrayOutputStream();

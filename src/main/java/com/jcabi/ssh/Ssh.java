@@ -252,12 +252,6 @@ public final class Ssh extends AbstractSshShell {
         }
     }
 
-    /**
-     * Make session.
-     * @param sch The JSch
-     * @return The session
-     * @throws JSchException If fails
-     */
     private Session session(final JSch sch) throws JSchException {
         final Session session = sch.getSession(
             this.getLogin(), this.getAddr(), this.getPort()

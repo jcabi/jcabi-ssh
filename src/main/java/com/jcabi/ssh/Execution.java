@@ -89,12 +89,6 @@ final class Execution {
         }
     }
 
-    /**
-     * Exec this channel and return its exit code.
-     * @param channel The channel to exec
-     * @return Exit code (zero in case of success)
-     * @throws IOException If fails
-     */
     private int exec(final ChannelExec channel) throws IOException {
         try {
             return this.code(channel);
@@ -103,12 +97,6 @@ final class Execution {
         }
     }
 
-    /**
-     * Wait until it's done and return its code.
-     * @param channel The channel
-     * @return The exit code
-     * @throws IOException If some IO problem inside
-     */
     @SuppressWarnings("PMD.AvoidCatchingGenericException")
     private int code(final ChannelExec channel) throws IOException {
         final long start = System.currentTimeMillis();
