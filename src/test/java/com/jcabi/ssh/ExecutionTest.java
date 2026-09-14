@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link Execution}.
+ *
  * @since 1.4
  */
 final class ExecutionTest {
@@ -32,16 +33,18 @@ final class ExecutionTest {
             .thenReturn(channel);
         Mockito.when(channel.isClosed()).thenReturn(Boolean.TRUE);
         Mockito.when(channel.getExitStatus()).thenReturn(ExecutionTest.EXIT_CODE);
-        MatcherAssert.assertThat(
-            "should equal to exit code 127",
+        try (DeadInputStream stdin = new DeadInputStream()) {
+            MatcherAssert.assertThat(
+                "should equal to exit code 127",
                 new Execution(
-                "hello",
-                new DeadInputStream(),
-                new ByteArrayOutputStream(),
-                new ByteArrayOutputStream(),
-                session
-            ).exec(),
-            Matchers.equalTo(ExecutionTest.EXIT_CODE)
-        );
+                    "hello",
+                    stdin,
+                    new ByteArrayOutputStream(),
+                    new ByteArrayOutputStream(),
+                    session
+                ).exec(),
+                Matchers.equalTo(ExecutionTest.EXIT_CODE)
+            );
+        }
     }
 }

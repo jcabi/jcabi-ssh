@@ -32,7 +32,7 @@ import org.cactoos.text.UncheckedText;
  *
  * <p>This class implements {@link Shell} interface. In order to use
  * it, just make an instance and call
- * {@link #exec(String, InputStream, OutputStream, OutputStream)} method:
+ * {@link #exec(String, InputStream, OutputStream, OutputStream)} method:</p>
  *
  * <pre> String hello = new Shell.Plain(
  *   new SSH(
@@ -76,6 +76,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param user Login
      * @param priv Private SSH key
@@ -89,6 +90,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param user Login
      * @param priv Private SSH key
@@ -102,6 +104,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param user Login
      * @param priv Private SSH key
@@ -115,6 +118,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param user Login
      * @param priv Private SSH key
@@ -128,6 +132,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param prt Port of server
      * @param user Login
@@ -143,6 +148,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param prt Port of server
      * @param user Login
@@ -161,6 +167,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param prt Port of server
      * @param user Login
@@ -175,6 +182,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param prt Port of server
      * @param user Login
@@ -194,6 +202,7 @@ public final class Ssh extends AbstractSshShell {
 
     /**
      * Escape SSH argument.
+     *
      * @param arg Argument to escape
      * @return Escaped
      */

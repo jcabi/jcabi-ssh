@@ -19,6 +19,7 @@ import org.cactoos.scalar.Unchecked;
 
 /**
  * Mock of a command that displays its name.
+ *
  * @since 1.6
  */
 final class MkCommand implements Command {
@@ -40,6 +41,7 @@ final class MkCommand implements Command {
 
     /**
      * Constructor.
+     *
      * @param cmd Command to echo
      */
     MkCommand(final String cmd) {

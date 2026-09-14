@@ -12,6 +12,7 @@ import lombok.ToString;
 
 /**
  * Host key repository that accepts all hosts.
+ *
  * @since 1.4
  */
 @ToString

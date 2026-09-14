@@ -15,6 +15,7 @@ import lombok.ToString;
 
 /**
  * Common module for any ssh shell.
+ *
  * @since 1.5.2
  */
 @ToString
@@ -38,6 +39,7 @@ abstract class AbstractSshShell implements Shell {
 
     /**
      * Constructor.
+     *
      * @param adr Address that you want to connect to
      * @param prt Port that you want to reach
      * @param user User that will be used when connecting
@@ -68,6 +70,7 @@ abstract class AbstractSshShell implements Shell {
 
     /**
      * Returns the IP address of the server.
+     *
      * @return The address
      */
     protected String getAddr() {
@@ -76,6 +79,7 @@ abstract class AbstractSshShell implements Shell {
 
     /**
      * Returns the port to use.
+     *
      * @return The port
      */
     protected int getPort() {
@@ -84,6 +88,7 @@ abstract class AbstractSshShell implements Shell {
 
     /**
      * Returns the user name.
+     *
      * @return The login
      */
     protected String getLogin() {
@@ -92,6 +97,7 @@ abstract class AbstractSshShell implements Shell {
 
     /**
      * Create and return a session, connected.
+     *
      * @return JSch session
      * @throws IOException If some IO problem inside
      */

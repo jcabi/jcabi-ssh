@@ -12,6 +12,7 @@ import org.testcontainers.utility.DockerImageName;
 /**
  * Integration test for ${@link Ssh}, which connects to
  * a real SSHD server over the Internet.
+ *
  * @since 1.0
  */
 @Testcontainers(disabledWithoutDocker = true)

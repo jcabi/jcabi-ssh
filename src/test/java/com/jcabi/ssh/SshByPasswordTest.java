@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link SshByPassword}.
+ *
  * @since 1.4
  */
 final class SshByPasswordTest {

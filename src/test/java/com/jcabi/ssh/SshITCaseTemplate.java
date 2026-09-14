@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Integration test for ${@link Ssh}, which connects to
  * a real SSHD server.
+ *
  * @since 1.0
  */
 @SuppressWarnings("PMD.JUnitTestClassShouldBeFinal")
@@ -26,6 +27,7 @@ abstract class SshITCaseTemplate {
 
     /**
      * Make a shell.
+     *
      * @return The shell
      * @throws Exception If fails
      */
@@ -45,32 +47,40 @@ abstract class SshITCaseTemplate {
 
     @Test
     void executesBrokenCommandOnServer() throws Exception {
-        MatcherAssert.assertThat(
-            "should not equal to 0",
-            this.shell().exec(
-                "this-command-doesnt-exist",
-                new DeadInputStream(),
-                Logger.stream(Level.INFO, Ssh.class),
-                Logger.stream(Level.WARNING, Ssh.class)
-            ),
-            Matchers.not(Matchers.equalTo(0))
-        );
+        try (DeadInputStream stdin = new DeadInputStream()) {
+            MatcherAssert.assertThat(
+                "should not equal to 0",
+                this.shell().exec(
+                    "this-command-doesnt-exist",
+                    stdin,
+                    Logger.stream(Level.INFO, Ssh.class),
+                    Logger.stream(Level.WARNING, Ssh.class)
+                ),
+                Matchers.not(Matchers.equalTo(0))
+            );
+        }
     }
 
     @Test
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void consumesInputStream() throws Exception {
         final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-        MatcherAssert.assertThat(
-            "should equal to 0",
-            this.shell().exec(
-                "cat",
-                new ByteArrayInputStream("Hello, world!".getBytes(StandardCharsets.UTF_8)),
-                new TeeOutputStream(stdout, Logger.stream(Level.INFO, Ssh.class)),
-                Logger.stream(Level.WARNING, Ssh.class)
-            ),
-            Matchers.equalTo(0)
-        );
+        try (
+            TeeOutputStream tee = new TeeOutputStream(
+                stdout, Logger.stream(Level.INFO, Ssh.class)
+            )
+        ) {
+            MatcherAssert.assertThat(
+                "should equal to 0",
+                this.shell().exec(
+                    "cat",
+                    new ByteArrayInputStream("Hello, world!".getBytes(StandardCharsets.UTF_8)),
+                    tee,
+                    Logger.stream(Level.WARNING, Ssh.class)
+                ),
+                Matchers.equalTo(0)
+            );
+        }
         MatcherAssert.assertThat(
             "should starts with 'Hello'",
             stdout.toString(StandardCharsets.UTF_8),

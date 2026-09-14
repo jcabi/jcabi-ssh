@@ -22,7 +22,7 @@ import org.cactoos.io.TeeOutputStream;
  *
  * <p>This interface is implemented by {@link Ssh} class. In order to use
  * it, just make an instance and call
- * {@link #exec(String,InputStream,OutputStream,OutputStream)} exec()}:
+ * {@link #exec(String,InputStream,OutputStream,OutputStream)} exec()}:</p>
  *
  * <pre> String hello = new Shell.Plain(
  *   new SSH(
@@ -40,6 +40,7 @@ public interface Shell {
 
     /**
      * Execute and return exit code.
+     *
      * @param command Command
      * @param stdin Stdin (will be closed)
      * @param stdout Stdout (will be closed)
@@ -88,6 +89,7 @@ public interface Shell {
 
         /**
          * Ctor.
+         *
          * @param exit Exit code to return
          * @param out Stdout to return
          * @param err Stderr to return
@@ -102,6 +104,7 @@ public interface Shell {
 
         /**
          * Ctor.
+         *
          * @param exit Exit code to return
          * @param out Stdout to return
          * @param err Stderr to return
@@ -140,6 +143,7 @@ public interface Shell {
 
     /**
      * Safe run (throws if exit code is not zero).
+     *
      * @since 0.1
      */
     @Immutable
@@ -154,6 +158,7 @@ public interface Shell {
 
         /**
          * Ctor.
+         *
          * @param shell Original shell
          */
         public Safe(final Shell shell) {
@@ -176,6 +181,7 @@ public interface Shell {
 
     /**
      * Without input and output.
+     *
      * @since 0.1
      */
     @Immutable
@@ -190,6 +196,7 @@ public interface Shell {
 
         /**
          * Ctor.
+         *
          * @param shell Original shell
          */
         public Empty(final Shell shell) {
@@ -198,6 +205,7 @@ public interface Shell {
 
         /**
          * Just exec.
+         *
          * @param cmd Command
          * @return Exit code
          * @throws IOException If fails
@@ -213,6 +221,7 @@ public interface Shell {
 
     /**
      * With output only.
+     *
      * @since 0.1
      */
     @Immutable
@@ -227,6 +236,7 @@ public interface Shell {
 
         /**
          * Ctor.
+         *
          * @param shell Original shell
          */
         public Plain(final Shell shell) {
@@ -235,6 +245,7 @@ public interface Shell {
 
         /**
          * Just exec.
+         *
          * @param cmd Command
          * @return Stdout
          * @throws IOException If fails
@@ -251,6 +262,7 @@ public interface Shell {
 
     /**
      * Verbose run.
+     *
      * @since 0.1
      */
     @Immutable
@@ -265,6 +277,7 @@ public interface Shell {
 
         /**
          * Ctor.
+         *
          * @param shell Original shell
          */
         public Verbose(final Shell shell) {
@@ -275,11 +288,16 @@ public interface Shell {
         public int exec(final String command, final InputStream stdin,
             final OutputStream stdout, final OutputStream stderr)
             throws IOException {
-            return this.orgn.exec(
-                command, stdin,
-                new TeeOutputStream(stdout, Logger.stream(Level.INFO, this)),
-                new TeeOutputStream(stderr, Logger.stream(Level.WARNING, this))
-            );
+            try (
+                TeeOutputStream out = new TeeOutputStream(
+                    stdout, Logger.stream(Level.INFO, this)
+                );
+                TeeOutputStream err = new TeeOutputStream(
+                    stderr, Logger.stream(Level.WARNING, this)
+                )
+            ) {
+                return this.orgn.exec(command, stdin, out, err);
+            }
         }
     }
 }

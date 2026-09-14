@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Execution of a single command.
+ *
  * @since 1.4
  */
 final class Execution {
@@ -47,6 +48,7 @@ final class Execution {
     /**
      * Uses an SSH session to execute a single command and disconnect
      * immediately.
+     *
      * @param cmd Command
      * @param input Stdin (will be closed)
      * @param out Stdout (will be closed)
@@ -65,6 +67,7 @@ final class Execution {
 
     /**
      * Executes some command.
+     *
      * @return Return code of the command
      * @throws IOException If fails
      */

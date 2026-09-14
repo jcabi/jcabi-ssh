@@ -18,6 +18,7 @@ import lombok.ToString;
 
 /**
  * SSH channel with authentication by password.
+ *
  * @see Ssh For SSH channel with authentication using private key.
  * @since 1.4
  */
@@ -32,6 +33,7 @@ public final class SshByPassword extends AbstractSshShell {
 
     /**
      * Constructor.
+     *
      * @param adr IP address
      * @param prt Port of server
      * @param user Login

@@ -6,7 +6,7 @@
 /**
  * SSH client.
  *
- * <p>Usage scenario is very simple:
+ * <p>Usage scenario is very simple:</p>
  *
  * <pre> String hello = new Shell.Plain(
  *   new SSH(
@@ -16,7 +16,7 @@
  * ).exec("echo 'Hello, world!'");</pre>
  *
  * <p>The only dependency you need is (check our latest version available
- * at <a href="http://ssh.jcabi.com">ssh.jcabi.com</a>):
+ * at <a href="http://ssh.jcabi.com">ssh.jcabi.com</a>):</p>
  *
  * <pre>&lt;dependency&gt;
  *   &lt;groupId&gt;com.jcabi&lt;/groupId&gt;

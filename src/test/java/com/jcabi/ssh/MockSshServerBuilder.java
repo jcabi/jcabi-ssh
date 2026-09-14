@@ -23,6 +23,7 @@ import org.mockito.Mockito;
 
 /**
  * Builder creating mock SSH servers.
+ *
  * @since 1.6
  */
 class MockSshServerBuilder {
@@ -49,6 +50,7 @@ class MockSshServerBuilder {
 
     /**
      * Constructor with a SSH port number.
+     *
      * @param prt The port number for SSH server
      */
     MockSshServerBuilder(final int prt) {
@@ -61,6 +63,7 @@ class MockSshServerBuilder {
 
     /**
      * Builds a new instance of SSH server.
+     *
      * @return SSH server
      * @throws IOException If fails
      */
@@ -83,6 +86,7 @@ class MockSshServerBuilder {
 
     /**
      * Setup a password authentication.
+     *
      * @param login Login for an authentication
      * @param password Password for an authentication
      * @return This instance of builder
@@ -106,6 +110,7 @@ class MockSshServerBuilder {
 
     /**
      * Setup a public key authentication.
+     *
      * @return This instance of builder
      */
     @SuppressWarnings("PMD.PublicMemberInNonPublicType")

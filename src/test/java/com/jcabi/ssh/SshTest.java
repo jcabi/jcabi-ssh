@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for ${@link Ssh}.
+ *
  * @since 1.0
  */
 final class SshTest {
